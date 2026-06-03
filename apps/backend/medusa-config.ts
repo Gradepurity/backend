@@ -12,15 +12,77 @@ if (isProd && (!jwtSecret || !cookieSecret)) {
   throw new Error('JWT_SECRET en COOKIE_SECRET moeten gezet zijn in productie.')
 }
 
+// ── Redis ─────────────────────────────────────────────────────────────────────
+// Eén REDIS_URL voedt cache, event bus, workflow engine én sessies.
+// Is REDIS_URL niet gezet, dan vallen alle modules terug op in-memory (veilig:
+// de deploy breekt niet voordat de Redis-service bestaat).
+const redisUrl = process.env.REDIS_URL
+
+// Managed providers (Upstash e.d.) draaien over TLS via `rediss://`.
+// ioredis detecteert dat zelf, maar BullMQ wil `tls: {}` expliciet zien.
+const isTls = !!redisUrl && redisUrl.startsWith('rediss://')
+const tlsOption = isTls ? { tls: {} } : {}
+
+// BullMQ (event bus + workflow engine) vereist `maxRetriesPerRequest: null` op
+// blocking-connecties, anders hangt/faalt de worker bij reconnects.
+const bullRedisOptions = { maxRetriesPerRequest: null, ...tlsOption }
+
+const redisModules = redisUrl
+  ? [
+      {
+        // Cache: ontlast Postgres bij herhaalde reads (prijzen, regio's, varianten).
+        resolve: '@medusajs/medusa/cache-redis',
+        options: {
+          redisUrl,
+          ttl: 30,
+          ...(isTls ? { redisOptions: tlsOption } : {}),
+        },
+      },
+      {
+        // Event bus: betrouwbare async events (orders, fulfilment, e-mail-hooks).
+        resolve: '@medusajs/medusa/event-bus-redis',
+        options: {
+          redisUrl,
+          ...(isTls ? { redisOptions: tlsOption } : {}),
+          // Voorkomt onbeperkte sleutelgroei in Redis (afgeronde jobs opruimen).
+          jobOptions: {
+            removeOnComplete: { age: 3600, count: 1000 },
+            removeOnFail: { age: 86400, count: 1000 },
+          },
+        },
+      },
+      {
+        // Workflow engine: workflow-state overleeft herstart/deploy.
+        resolve: '@medusajs/medusa/workflow-engine-redis',
+        options: {
+          redis: {
+            redisUrl,
+            redisOptions: bullRedisOptions,
+          },
+        },
+      },
+    ]
+  : []
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
+    // Sessies in Redis -> admin blijft ingelogd na elke deploy/herstart.
+    ...(redisUrl
+      ? { redisUrl, ...(isTls ? { redisOptions: tlsOption } : {}) }
+      : {}),
+    // Eén Railway-instance draait API + jobs in hetzelfde proces ("shared").
+    // Later te splitsen naar server/worker via env, zonder code-wijziging.
+    workerMode:
+      (process.env.MEDUSA_WORKER_MODE as 'shared' | 'server' | 'worker') ||
+      'shared',
     http: {
       storeCors: process.env.STORE_CORS!,
       adminCors: process.env.ADMIN_CORS!,
       authCors: process.env.AUTH_CORS!,
       jwtSecret,
       cookieSecret,
-    }
-  }
+    },
+  },
+  modules: redisModules,
 })

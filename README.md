@@ -152,6 +152,28 @@ The storefront is configured via environment variables in `apps/storefront/.env.
 | `NEXT_PUBLIC_BASE_URL` | Base URL of the storefront | `https://localhost:8000` |
 | `NEXT_PUBLIC_STRIPE_KEY` | Stripe publishable key (optional) | — |
 
+## Productie (Railway)
+
+De backend draait als Docker-image (gebouwd via GitHub Actions → GHCR) op Railway.
+
+### Backend env-variabelen
+
+| Variable | Beschrijving | Verplicht |
+|----------|-------------|-----------|
+| `DATABASE_URL` | Postgres-connectiestring (Railway Postgres, interne URL in productie) | ✅ |
+| `JWT_SECRET` / `COOKIE_SECRET` | Sessie-/token-secrets. Productie weigert te starten zonder. | ✅ |
+| `STORE_CORS` / `ADMIN_CORS` / `AUTH_CORS` | CORS-origins. **Moet de live storefront-URL bevatten** (bv. `https://gradepurity.com`). | ✅ |
+| `REDIS_URL` | Voedt cache, event bus, workflow engine én sessies. Niet gezet → in-memory fallback. Op Railway: verwijs naar de Redis-service via `${{Redis.REDIS_PRIVATE_URL}}` (privénetwerk, geen TLS). Upstash gebruikt `rediss://` (TLS wordt automatisch gedetecteerd). | aanbevolen |
+| `MEDUSA_WORKER_MODE` | `shared` (default, één instance doet API + jobs), of `server`/`worker` bij opschalen. | optioneel |
+
+> Zonder `REDIS_URL` draait Medusa volledig in-memory: sessies verdwijnen bij elke
+> deploy en jobs/events overleven geen herstart. Voor productie: zet `REDIS_URL`.
+
+### Cold start
+
+Staat de **Serverless**-toggle aan (Settings → Deploy), dan slaapt de service na ~10 min
+inactiviteit en duurt de eerste request ~11s. Zet 'm uit voor 24/7-draaien op het Hobby-plan.
+
 ## Resources
 
 - [Medusa Documentation](https://docs.medusajs.com)
