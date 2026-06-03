@@ -1,0 +1,2333 @@
+{
+  "hubs": [
+    {
+      "slug": "regeneratie",
+      "name": "Herstel & Regeneratie",
+      "tagline": "Weefsel · Pees · Slijmvlies",
+      "headline": "Herstel & regeneratie.",
+      "subheadline": "Peptiden onderzocht in de context van weefselherstel, angiogenese en pees-fibroblast migratie.",
+      "intro": "Synthetische peptiden bestudeerd in dierstudies naar gastro-intestinale integriteit, weefselherstel en angiogenese. Voor laboratoriumonderzoek.",
+      "trust": [
+        "Volledige COA per batch",
+        "HPLC + MS geverifieerd",
+        "Onbedrukt verzonden uit NL"
+      ],
+      "quizCta": "Bekijk herstel-peptiden",
+      "quizDescription": "Vind het juiste peptide voor je weefselherstel-protocol.",
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]"
+    },
+    {
+      "slug": "hormonaal",
+      "name": "Hormonale balans",
+      "tagline": "GH-as · Somatotroop",
+      "headline": "Hormonale balans.",
+      "subheadline": "Synthetische analogen onderzocht in studies naar somatotrope as-respons en pulsatiele kinetiek.",
+      "intro": "GHRH-analogen en ghrelin/GHS-receptor agonisten — bestudeerd in onderzoek naar groeihormoon-secretie. Voor laboratoriumonderzoek.",
+      "trust": [
+        "GMP-condities · HPLC ≥ 99%",
+        "Volledige COA per batch",
+        "Onbedrukt verzonden uit NL"
+      ],
+      "quizCta": "Bekijk hormonale peptiden",
+      "quizDescription": "Vind het juiste peptide voor je somatotrope as-protocol.",
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]"
+    },
+    {
+      "slug": "focus",
+      "name": "Focus & Stemming",
+      "tagline": "Nootropic · BDNF",
+      "headline": "Focus & stemming.",
+      "subheadline": "Russische onderzoekspeptiden bestudeerd in context van BDNF-expressie en anxiolytische respons.",
+      "intro": "Tuftsin- en ACTH-analogen met proteolytische stabilisatie. Bestudeerd in cognitieve modellen en stress-modulatie. Voor laboratoriumonderzoek.",
+      "trust": [
+        "HPLC ≥ 99% zuiverheid",
+        "Volledige COA per batch",
+        "Onbedrukt verzonden uit NL"
+      ],
+      "quizCta": "Bekijk nootropic-peptiden",
+      "quizDescription": "Vind het juiste peptide voor je cognitief onderzoek.",
+      "imageGradient": "bg-[radial-gradient(circle_at_50%_30%,#FBFDFD_0%,#EEF4F5_60%,#DCE6F3_100%)]"
+    },
+    {
+      "slug": "cosmetisch",
+      "name": "Cosmetisch & Anti-aging",
+      "tagline": "Collageen · Telomerase",
+      "headline": "Cosmetisch & anti-aging.",
+      "subheadline": "Decennialang onderzochte peptiden voor collageen-expressie, huidregeneratie en cellulaire veroudering.",
+      "intro": "Koperpeptide-complexen en pineale tetrapeptiden — best gedocumenteerd in cosmetisch en geriatrisch onderzoek. Voor laboratoriumonderzoek.",
+      "trust": [
+        "Cosmetic research-grade",
+        "HPLC ≥ 99% zuiverheid",
+        "Onbedrukt verzonden uit NL"
+      ],
+      "quizCta": "Bekijk cosmetische peptiden",
+      "quizDescription": "Vind het juiste peptide voor je cosmetisch onderzoek.",
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#DCE6F3_0%,#88A4CC_55%,#1F3F6E_100%)]"
+    },
+    {
+      "slug": "metabool",
+      "name": "Metabool & Gewicht",
+      "tagline": "GLP-1 · Incretine-respons",
+      "headline": "Metabool & gewicht.",
+      "subheadline": "GLP-1 en duale incretine-agonisten bestudeerd in onderzoek naar glucose-homeostase en gewichtsmodulatie.",
+      "intro": "GLP-1 receptor-agonisten, GIP/GLP-1 dual-agonisten en amyline-analogen — de meest bestudeerde klasse in metabool onderzoek anno 2026. Voor laboratoriumonderzoek.",
+      "trust": [
+        "HPLC ≥ 99% zuiverheid",
+        "GMP-condities · COA per batch",
+        "Onbedrukt verzonden uit NL"
+      ],
+      "quizCta": "Bekijk metabole peptiden",
+      "quizDescription": "Vind het juiste peptide voor je metabool onderzoek.",
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#F7FAFB_0%,#DCE6F3_60%,#88A4CC_100%)]"
+    },
+    {
+      "slug": "bundles",
+      "name": "Bundles & Stacks",
+      "tagline": "Combo · Voordeel",
+      "headline": "Bundles & stacks.",
+      "subheadline": "Voorgestelde peptide-combinaties uit onderzoeksliteratuur, met voordeelprijs voor onderzoekers.",
+      "intro": "Drie veelgebruikte stack-combinaties — herstel, GH-as en nootropic — als bundel verpakt en verzonden in één pakket. Voor laboratoriumonderzoek.",
+      "trust": [
+        "Tot 10 % voordeel t.o.v. los",
+        "Volledige COA per batch",
+        "Onbedrukt verzonden uit NL"
+      ],
+      "quizCta": "Bekijk bundles",
+      "quizDescription": "De meest onderzochte stack-combinaties op één plek.",
+      "imageGradient": "bg-[radial-gradient(circle_at_60%_40%,#475569_0%,#0A1424_85%)]"
+    }
+  ],
+  "products": [
+    {
+      "id": "p1",
+      "slug": "bpc-157",
+      "hub": "regeneratie",
+      "name": "BPC-157",
+      "code": "BPC-157",
+      "tagline": "Body Protection Compound — pentadecapeptide.",
+      "shortDescription": "Synthetisch pentadecapeptide afgeleid van een beschermende sequentie uit menselijk maagsap. Veel bestudeerd in dierstudies naar weefselherstel.",
+      "longDescription": "BPC-157 is een synthetisch pentadecapeptide bestaande uit 15 aminozuren, afgeleid van een beschermend eiwit uit menselijk maagsap. Onderzoek bij dieren beschrijft effecten op gastro-intestinale integriteit, weefsel-angiogenese en tendon-fibroblast migratie. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Bestseller",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v1-10mg",
+          "name": "10 mg vial",
+          "priceCents": 5495
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "Gelyofiliseerd — gestabiliseerd voor verzending",
+        "HPLC- en MS-geverifieerde zuiverheid",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "BPC-157 acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, beschermd tegen licht."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Hoe wordt zuiverheid gevalideerd?",
+          "a": "Elke batch wordt geanalyseerd via HPLC voor zuiverheid en MS voor identiteitsbevestiging. De COA wordt meegeleverd."
+        },
+        {
+          "q": "Hoe te bewaren?",
+          "a": "Gelyofiliseerd: kamertemperatuur, droog en donker. Na reconstitutie: 2–8°C, gebruik binnen 30 dagen."
+        }
+      ],
+      "reviews": {
+        "rating": 4.8,
+        "count": 142
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]",
+      "imageInitials": "BPC",
+      "peptide": {
+        "synonyms": [
+          "Body Protection Compound",
+          "PL 14736"
+        ],
+        "sequence": "GEPPPGKPADDAGLV",
+        "molecularWeight": 1419.53,
+        "formula": "C₆₂H₉₈N₁₆O₂₂",
+        "purityPct": 99.4,
+        "vialMg": 10,
+        "cas": "137525-51-0",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p2",
+      "slug": "tb-500",
+      "hub": "regeneratie",
+      "name": "TB-500",
+      "code": "TB-500",
+      "tagline": "Thymosin Beta-4 fragment — 17 aminozuren.",
+      "shortDescription": "Synthetisch fragment van het Thymosine Beta-4 eiwit. In dierstudies onderzocht voor actine-binding en weefselregeneratie.",
+      "longDescription": "TB-500 is een synthetisch 17-aminozuur fragment van het natuurlijk voorkomende Thymosine Beta-4 eiwit, een belangrijke actine-bindende regulator. Onderzoek bij dieren beschrijft rollen in celmigratie, weefselherstel en angiogenese. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 4995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v2-5mg",
+          "name": "5 mg vial",
+          "priceCents": 4995
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "Gelyofiliseerd — stabiel bij transport",
+        "HPLC ≥ 99% zuiverheid",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Thymosin Beta-4 fragment (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, beschermd tegen licht."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wat is het verschil met BPC-157?",
+          "a": "BPC-157 is afgeleid van een maagbeschermend eiwit; TB-500 is een fragment van Thymosin Beta-4. Beide worden bestudeerd in herstel-context maar via verschillende moleculaire routes."
+        }
+      ],
+      "reviews": {
+        "rating": 4.7,
+        "count": 98
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "TB",
+      "peptide": {
+        "synonyms": [
+          "Thymosin Beta-4 (1-17)",
+          "TB4-Frag"
+        ],
+        "sequence": "LKKTETQ",
+        "molecularWeight": 4963.4,
+        "formula": "C₂₁₂H₃₅₀N₅₆O₇₈S",
+        "purityPct": 99.2,
+        "vialMg": 5,
+        "cas": "77591-33-4",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p3",
+      "slug": "ghk-cu",
+      "hub": "cosmetisch",
+      "name": "GHK-Cu",
+      "code": "GHK-Cu",
+      "tagline": "Koperpeptide tripeptide — glycyl-histidyl-lysine.",
+      "shortDescription": "Natuurlijk voorkomend koperhoudend tripeptide. Decennialang onderzocht in dermatologische cosmetische wetenschap.",
+      "longDescription": "GHK-Cu is een tripeptide-kopercomplex bestaande uit de aminozuren glycine, histidine en lysine, gecomplexeerd met Cu²⁺. Eén van de best gedocumenteerde peptiden in cosmetisch onderzoek, met studies over collageen-expressie en huidregeneratie. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 2995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Bestseller",
+        "Cosmetic research",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v3-50mg",
+          "name": "50 mg vial",
+          "priceCents": 2995
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "Gestabiliseerd Cu²⁺-complex",
+        "HPLC ≥ 99% zuiverheid",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Glycyl-Histidyl-Lysine-Cu",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "In gedestilleerd water of buffer (pH 6–7,5)."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, beschermd tegen licht."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Waarom de blauwe tint?",
+          "a": "De karakteristieke blauw-paarse kleur van een GHK-Cu oplossing is afkomstig van het kopercomplex. Dit is een normaal optisch kenmerk, geen verontreiniging."
+        }
+      ],
+      "reviews": {
+        "rating": 4.9,
+        "count": 211
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_60%_40%,#475569_0%,#0A1424_85%)]",
+      "imageInitials": "GHK",
+      "peptide": {
+        "synonyms": [
+          "Copper Tripeptide-1",
+          "GHK Copper"
+        ],
+        "sequence": "GHK",
+        "molecularWeight": 402.92,
+        "formula": "C₁₄H₂₃CuN₆O₄",
+        "purityPct": 99.6,
+        "vialMg": 50,
+        "cas": "89030-95-5",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p4",
+      "slug": "epitalon",
+      "hub": "cosmetisch",
+      "name": "Epitalon",
+      "code": "EPITALON",
+      "tagline": "Tetrapeptide — pineale telomerase research.",
+      "shortDescription": "Synthetisch tetrapeptide afgeleid uit pineaal extract. Onderzocht in studies naar telomerase-activiteit en cellulaire veroudering.",
+      "longDescription": "Epitalon is een synthetisch tetrapeptide bestaande uit de aminozuren alanine, glutaminezuur, asparaginezuur en glycine. Voortkomend uit Russische pineaal-onderzoek en bestudeerd in context van telomeer-lengte en endocriene functie. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v4-10mg",
+          "name": "10 mg vial",
+          "priceCents": 3495
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Epitalon (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wat is de literatuur over Epitalon?",
+          "a": "Het meeste klinische werk is afkomstig uit Russisch geriatrisch onderzoek (Khavinson et al.). Westerse replicatie is beperkt; behandel publicaties kritisch."
+        }
+      ],
+      "reviews": {
+        "rating": 4.6,
+        "count": 87
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#DCE6F3_0%,#88A4CC_55%,#1F3F6E_100%)]",
+      "imageInitials": "EPT",
+      "peptide": {
+        "synonyms": [
+          "Epithalon",
+          "AEDG"
+        ],
+        "sequence": "AEDG",
+        "molecularWeight": 390.35,
+        "formula": "C₁₄H₂₂N₄O₉",
+        "purityPct": 99.3,
+        "vialMg": 10,
+        "cas": "307297-39-8",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p5",
+      "slug": "cjc-1295-no-dac",
+      "hub": "hormonaal",
+      "name": "CJC-1295 (no DAC)",
+      "code": "CJC-1295",
+      "tagline": "Modified GHRH (1-29) — Mod GRF (1-29).",
+      "shortDescription": "Synthetisch peptide-analoog van groeihormoon-releasing hormoon. Onderzocht in dierstudies naar somatotrope as-modulatie.",
+      "longDescription": "CJC-1295 zonder DAC, ook bekend als Mod GRF (1-29), is een synthetisch 30-aminozuur peptide gebaseerd op humane GHRH. De vier aminozuursubstituties geven verhoogde stabiliteit ten opzichte van wild-type GHRH. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v5-5mg",
+          "name": "5 mg vial",
+          "priceCents": 3995
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Mod GRF (1-29) acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 10 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wat betekent \"no DAC\"?",
+          "a": "DAC (Drug Affinity Complex) is een albumine-bindende toevoeging in de oorspronkelijke CJC-1295. De variant zonder DAC heeft een veel kortere halfwaardetijd en wordt vaak gebruikt in onderzoek dat pulsatiele kinetiek bestudeert."
+        }
+      ],
+      "reviews": {
+        "rating": 4.5,
+        "count": 64
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "CJC",
+      "peptide": {
+        "synonyms": [
+          "Mod GRF (1-29)",
+          "CJC-1295 DAC-less"
+        ],
+        "sequence": "YADAIFTNSYRKVLGQLSARKLLQDIMSR",
+        "molecularWeight": 3367.95,
+        "formula": "C₁₅₂H₂₅₂N₄₄O₄₂",
+        "purityPct": 99.1,
+        "vialMg": 5,
+        "cas": "863288-34-0",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p6",
+      "slug": "ipamorelin",
+      "hub": "hormonaal",
+      "name": "Ipamorelin",
+      "code": "IPAMORELIN",
+      "tagline": "Pentapeptide — selectieve ghrelin receptor agonist.",
+      "shortDescription": "Synthetisch pentapeptide ontwikkeld als selectieve groeihormoon-secretagoog. Onderzocht in studies naar somatotrope as-respons.",
+      "longDescription": "Ipamorelin is een synthetisch pentapeptide en selectieve agonist van de ghrelin/GHS-receptor. Ontwikkeld door Novo Nordisk in de jaren 90 en bekend om relatief selectieve GH-respons zonder significante prolactine- of cortisol-modulatie in vergelijking met andere secretagogen. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 4995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v6-10mg",
+          "name": "10 mg vial",
+          "priceCents": 4995
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Ipamorelin acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Combineerbaar met CJC-1295?",
+          "a": "In de literatuur wordt de combinatie van een GHRH-analoog (CJC-1295) met een GHRP/Ipamorelin onderzocht voor synergetische GH-respons. Raadpleeg primaire literatuur voor protocolontwerp."
+        }
+      ],
+      "reviews": {
+        "rating": 4.7,
+        "count": 79
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]",
+      "imageInitials": "IPA",
+      "peptide": {
+        "synonyms": [
+          "NNC 26-0161"
+        ],
+        "sequence": "Aib-His-D-2-Nal-D-Phe-Lys",
+        "molecularWeight": 711.85,
+        "formula": "C₃₈H₄₉N₉O₅",
+        "purityPct": 99.4,
+        "vialMg": 10,
+        "cas": "170851-70-4",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p7",
+      "slug": "selank",
+      "hub": "focus",
+      "name": "Selank",
+      "code": "SELANK",
+      "tagline": "Heptapeptide — tuftsin-analoog uit Russisch onderzoek.",
+      "shortDescription": "Synthetisch heptapeptide-analoog van het immuno-actieve tuftsin. In Russische literatuur onderzocht in context van anxiolytische respons.",
+      "longDescription": "Selank is een synthetisch heptapeptide, een analoog van het natuurlijk voorkomende immunomodulerende tetrapeptide tuftsin, uitgebreid met een tripeptide-staart (Pro-Gly-Pro) voor proteolytische stabiliteit. Onderzocht aan het Russische Instituut voor Moleculaire Genetica. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only",
+        "Nootropic research"
+      ],
+      "variants": [
+        {
+          "id": "v7-5mg",
+          "name": "5 mg vial",
+          "priceCents": 3495
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Selank (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 30 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met Semax?",
+          "a": "Beide zijn Russische onderzoekspeptiden maar Semax is afgeleid van ACTH (4-10), terwijl Selank een tuftsin-analoog is. Andere moleculaire route, andere onderzoekscontext."
+        }
+      ],
+      "reviews": {
+        "rating": 4.5,
+        "count": 51
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_50%_30%,#FBFDFD_0%,#EEF4F5_60%,#DCE6F3_100%)]",
+      "imageInitials": "SLK",
+      "peptide": {
+        "synonyms": [
+          "TP-7"
+        ],
+        "sequence": "TKPRPGP",
+        "molecularWeight": 751.88,
+        "formula": "C₃₃H₅₇N₁₁O₉",
+        "purityPct": 99,
+        "vialMg": 5,
+        "cas": "129954-34-3",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p8",
+      "slug": "semax",
+      "hub": "focus",
+      "name": "Semax",
+      "code": "SEMAX",
+      "tagline": "Heptapeptide — ACTH (4-10) analoog.",
+      "shortDescription": "Synthetisch heptapeptide afgeleid van een fragment van adrenocorticotroop hormoon. In Russische literatuur onderzocht voor neurotrofe respons.",
+      "longDescription": "Semax is een synthetisch heptapeptide gebaseerd op de ACTH (4-10) sequentie, gewijzigd met een Pro-Gly-Pro extensie voor proteolytische stabiliteit. Ontwikkeld aan de Lomonosov-universiteit en bestudeerd in context van BDNF-expressie en cognitieve modellen. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 2995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only",
+        "Nootropic research"
+      ],
+      "variants": [
+        {
+          "id": "v8-5mg",
+          "name": "5 mg vial",
+          "priceCents": 2995
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Semax (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 30 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Welke literatuur is er?",
+          "a": "Voornamelijk Russisch werk uit de jaren 90 en 2000. PubMed bevat enkele Engelstalige reviews. Behandel primaire bronnen kritisch."
+        }
+      ],
+      "reviews": {
+        "rating": 4.6,
+        "count": 58
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#F7FAFB_0%,#DCE6F3_60%,#88A4CC_100%)]",
+      "imageInitials": "SMX",
+      "peptide": {
+        "synonyms": [
+          "MEHFPGP",
+          "ACTH(4-10) Pro-Gly-Pro"
+        ],
+        "sequence": "MEHFPGP",
+        "molecularWeight": 813.93,
+        "formula": "C₃₇H₅₁N₉O₁₀S",
+        "purityPct": 99.2,
+        "vialMg": 5,
+        "cas": "80714-61-0",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p9",
+      "slug": "retatrutide",
+      "hub": "metabool",
+      "name": "Retatrutide",
+      "code": "LY-3437943",
+      "tagline": "Triple agonist — GLP-1 · GIP · Glucagon.",
+      "shortDescription": "Synthetisch triple receptor-agonist peptide. Hot SKU in metabool onderzoek 2025-2026, bestudeerd in fase-2/3 obesitas trials.",
+      "longDescription": "Retatrutide (Eli Lilly code LY-3437943) is een synthetisch peptide dat als triple agonist werkt op GLP-1, GIP en glucagon receptoren. In dierstudies en menselijke fase-2 trials wordt het bestudeerd voor incretine-respons en gewichtsmodulatie. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 8495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Hot SKU",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v9-10mg",
+          "name": "10 mg vial",
+          "priceCents": 8495
+        },
+        {
+          "id": "v9-20mg",
+          "name": "20 mg vial",
+          "priceCents": 13995
+        }
+      ],
+      "benefits": [
+        "GLP-1 / GIP / Glucagon triple agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Retatrutide acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 28 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met Tirzepatide?",
+          "a": "Tirzepatide is een dual GLP-1/GIP agonist. Retatrutide voegt glucagon-receptor activiteit toe — een derde route die in dierstudies sterkere lipolyse laat zien."
+        }
+      ],
+      "reviews": {
+        "rating": 4.8,
+        "count": 34
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#DCE6F3_0%,#88A4CC_55%,#1F3F6E_100%)]",
+      "imageInitials": "RT",
+      "peptide": {
+        "synonyms": [
+          "LY-3437943",
+          "GLP-3"
+        ],
+        "sequence": "Modified 39-AA sequence",
+        "molecularWeight": 4731.2,
+        "formula": "C₂₂₁H₃₄₃N₅₉O₆₈",
+        "purityPct": 99.3,
+        "vialMg": 10,
+        "cas": "2381089-83-2",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p10",
+      "slug": "tirzepatide",
+      "hub": "metabool",
+      "name": "Tirzepatide",
+      "code": "LY-3298176",
+      "tagline": "Dual agonist — GLP-1 · GIP.",
+      "shortDescription": "Synthetisch dual receptor-agonist peptide. Bestudeerd in obesitas- en glucose-homeostase onderzoek.",
+      "longDescription": "Tirzepatide (Eli Lilly code LY-3298176, klinisch bekend als Mounjaro/Zepbound) is een synthetisch peptide met duale receptor-affiniteit voor GLP-1 en GIP. Sinds 2022 goedgekeurd in klinische context; in laboratoriumonderzoek bestudeerd voor incretine-respons. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Bestseller",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v10-10mg",
+          "name": "10 mg vial",
+          "priceCents": 5495
+        }
+      ],
+      "benefits": [
+        "GLP-1 / GIP dual agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Tirzepatide acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 28 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Halfwaardetijd?",
+          "a": "Tirzepatide heeft een halfwaardetijd van ongeveer 5 dagen. Dit ondersteunt eenmaal-per-week dosering in protocollen die de klinische respondentie nabootsen."
+        }
+      ],
+      "reviews": {
+        "rating": 4.9,
+        "count": 87
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#F7FAFB_0%,#DCE6F3_60%,#88A4CC_100%)]",
+      "imageInitials": "TR",
+      "peptide": {
+        "synonyms": [
+          "LY-3298176",
+          "Mounjaro (research)"
+        ],
+        "sequence": "Modified 39-AA sequence",
+        "molecularWeight": 4813.45,
+        "formula": "C₂₂₅H₃₄₈N₄₈O₆₈",
+        "purityPct": 99.4,
+        "vialMg": 10,
+        "cas": "2023788-19-2",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p11",
+      "slug": "semaglutide",
+      "hub": "metabool",
+      "name": "Semaglutide",
+      "code": "NN9535",
+      "tagline": "GLP-1 receptor agonist — 31 aminozuren.",
+      "shortDescription": "Synthetisch GLP-1 analoog ontwikkeld door Novo Nordisk. Eén van de meest bestudeerde incretine-mimetics in metabool onderzoek.",
+      "longDescription": "Semaglutide (Novo Nordisk code NN9535, klinisch bekend als Ozempic/Wegovy) is een synthetisch 31-aminozuur GLP-1 receptor agonist. Modificaties op positie 8 en 34 plus een vetzuurketen geven verlengde halfwaardetijd. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Bestseller",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v11-10mg",
+          "name": "10 mg vial",
+          "priceCents": 5495
+        }
+      ],
+      "benefits": [
+        "GLP-1 receptor agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Semaglutide acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 28 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met Tirzepatide?",
+          "a": "Semaglutide werkt alleen op de GLP-1 receptor. Tirzepatide combineert GLP-1 met GIP-receptor activiteit, wat in trials een sterkere metabole respons laat zien."
+        }
+      ],
+      "reviews": {
+        "rating": 4.9,
+        "count": 124
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_50%_30%,#FBFDFD_0%,#EEF4F5_60%,#DCE6F3_100%)]",
+      "imageInitials": "SM",
+      "peptide": {
+        "synonyms": [
+          "NN9535",
+          "Ozempic (research)"
+        ],
+        "sequence": "HAEGTFTSDVSSYLEGQAAK(C18-diacid)EFIAWLVRGRG",
+        "molecularWeight": 4113.58,
+        "formula": "C₁₈₇H₂₉₁N₄₅O₅₉",
+        "purityPct": 99.4,
+        "vialMg": 10,
+        "cas": "910463-68-2",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p12",
+      "slug": "survodutide",
+      "hub": "metabool",
+      "name": "Survodutide",
+      "code": "BI-456906",
+      "tagline": "Dual agonist — GLP-1 · Glucagon.",
+      "shortDescription": "Synthetisch dual GLP-1/Glucagon receptor agonist peptide. Boehringer Ingelheim research compound in fase-2 trials.",
+      "longDescription": "Survodutide (BI-456906) is een synthetisch peptide ontwikkeld door Boehringer Ingelheim, met duale receptor-affiniteit voor GLP-1 en glucagon receptoren. Bestudeerd in fase-2 trials naar gewichtsmodulatie en MASH (metabolic dysfunction-associated steatohepatitis). Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 15995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Premium",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v12-10mg",
+          "name": "10 mg vial",
+          "priceCents": 15995
+        }
+      ],
+      "benefits": [
+        "GLP-1 / Glucagon dual agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Survodutide acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 28 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Waarom is dit duurder dan Semaglutide?",
+          "a": "Survodutide is een nieuwere research compound met beperktere synthese-capaciteit en complexere zuivering. De wholesale-kostprijs ligt ~5x hoger dan Semaglutide."
+        }
+      ],
+      "reviews": {
+        "rating": 4.7,
+        "count": 18
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]",
+      "imageInitials": "SUR",
+      "peptide": {
+        "synonyms": [
+          "BI-456906"
+        ],
+        "sequence": "Modified 29-AA sequence",
+        "molecularWeight": 3300.2,
+        "formula": "Modified glucagon-based",
+        "purityPct": 99.2,
+        "vialMg": 10,
+        "cas": "2230621-90-2",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p13",
+      "slug": "cagrilintide",
+      "hub": "metabool",
+      "name": "Cagrilintide",
+      "code": "AM833",
+      "tagline": "Amyline-analoog — lang-werkend.",
+      "shortDescription": "Synthetisch lang-werkend amyline-analoog van Novo Nordisk. Bestudeerd in combinatie met Semaglutide voor verbeterde metabole respons.",
+      "longDescription": "Cagrilintide (AM833) is een synthetisch amyline-receptor agonist met verlengde halfwaardetijd. In klinische trials wordt het bestudeerd als monotherapie en in combinatie met Semaglutide (de CagriSema combinatie). Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 6995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v13-5mg",
+          "name": "5 mg vial",
+          "priceCents": 6995
+        }
+      ],
+      "benefits": [
+        "Lang-werkende amyline-analoog",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Cagrilintide acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 28 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Werkingsroute?",
+          "a": "Amyline werkt complementair aan GLP-1: het remt maaglediging en glucagon-secretie via een aparte receptor. Combinatie met Semaglutide wordt bestudeerd voor synergetische respons."
+        }
+      ],
+      "reviews": {
+        "rating": 4.6,
+        "count": 22
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "CGL",
+      "peptide": {
+        "synonyms": [
+          "AM833"
+        ],
+        "sequence": "Modified amylin-based 37-AA",
+        "molecularWeight": 3805.4,
+        "formula": "Modified amylin",
+        "purityPct": 99.2,
+        "vialMg": 5,
+        "cas": "1606902-37-3",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p14",
+      "slug": "pt-141",
+      "hub": "hormonaal",
+      "name": "PT-141",
+      "code": "BREMELANOTIDE",
+      "tagline": "Melanocortin agonist — cyclisch heptapeptide.",
+      "shortDescription": "Synthetisch cyclisch heptapeptide. Melanocortin receptor agonist bestudeerd in onderzoek naar libido- en seksuele responsroutes.",
+      "longDescription": "PT-141 (bremelanotide) is een synthetisch cyclisch heptapeptide, afgeleid van melanotan II maar met andere receptor-selectiviteit. Bestudeerd als melanocortin 3/4 receptor agonist in context van libido en seksuele functie. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 4495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v14-10mg",
+          "name": "10 mg vial",
+          "priceCents": 4495
+        }
+      ],
+      "benefits": [
+        "Melanocortin 3/4 receptor agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "PT-141 (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 30 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met Melanotan II?",
+          "a": "Beide zijn cyclische heptapeptiden uit dezelfde onderzoekslijn, maar PT-141 heeft een aangepaste structuur die andere receptor-selectiviteit geeft — minder pigmentatie, andere onderzoekscontext."
+        }
+      ],
+      "reviews": {
+        "rating": 4.5,
+        "count": 47
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#DCE6F3_0%,#88A4CC_55%,#1F3F6E_100%)]",
+      "imageInitials": "PT1",
+      "peptide": {
+        "synonyms": [
+          "Bremelanotide",
+          "PT-141"
+        ],
+        "sequence": "Ac-Nle-cyclo[Asp-His-D-Phe-Arg-Trp-Lys]-OH",
+        "molecularWeight": 1025.18,
+        "formula": "C₅₀H₆₈N₁₄O₁₀",
+        "purityPct": 99.2,
+        "vialMg": 10,
+        "cas": "189691-06-3",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p15",
+      "slug": "tesamorelin",
+      "hub": "hormonaal",
+      "name": "Tesamorelin",
+      "code": "TH9507",
+      "tagline": "GHRH-analoog — 44 aminozuren.",
+      "shortDescription": "Synthetisch GHRH-analoog met N-terminal hexenoyl modificatie. Klinisch bestudeerd voor visceraal vetweefsel respons.",
+      "longDescription": "Tesamorelin (TH9507) is een synthetisch 44-aminozuur analoog van humaan groeihormoon-releasing hormoon (GHRH 1-44), gemodificeerd met een trans-3-hexenoylgroep voor proteolytische stabiliteit. Klinisch goedgekeurd voor HIV-geassocieerde lipodystrofie. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v15-5mg",
+          "name": "5 mg vial",
+          "priceCents": 5995
+        }
+      ],
+      "benefits": [
+        "GHRH receptor agonist (langer-werkend)",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Tesamorelin (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met CJC-1295?",
+          "a": "Beide zijn GHRH-analogen. Tesamorelin is een gemodificeerde GHRH(1-44); CJC-1295 zonder DAC is een verkorte GHRH(1-29) variant. Verschillende halfwaardetijd-profielen."
+        }
+      ],
+      "reviews": {
+        "rating": 4.5,
+        "count": 31
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "TSM",
+      "peptide": {
+        "synonyms": [
+          "TH9507",
+          "Egrifta"
+        ],
+        "sequence": "YADAIFTNSYRKVLGQLSARKLLQDIMSRQQGESNQERGARARL",
+        "molecularWeight": 5135.92,
+        "formula": "C₂₂₁H₃₆₆N₇₂O₆₇S",
+        "purityPct": 99,
+        "vialMg": 5,
+        "cas": "218949-48-5",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p16",
+      "slug": "ghrp-2",
+      "hub": "hormonaal",
+      "name": "GHRP-2",
+      "code": "GHRP-2",
+      "tagline": "Growth Hormone Releasing Peptide-2.",
+      "shortDescription": "Synthetisch hexapeptide ghrelin/GHS-receptor agonist. Bestudeerd in onderzoek naar somatotrope as-respons.",
+      "longDescription": "GHRP-2 (Growth Hormone Releasing Peptide-2) is een synthetisch hexapeptide en agonist van de ghrelin/GHS-receptor. Onderzocht in dier- en humane studies voor stimulatie van groeihormoon-secretie. In sommige protocollen gecombineerd met GHRH-analogen voor synergetische respons. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v16-10mg",
+          "name": "10 mg vial",
+          "priceCents": 5995
+        }
+      ],
+      "benefits": [
+        "Ghrelin/GHS receptor agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "GHRP-2 (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met GHRP-6?",
+          "a": "GHRP-2 wordt vaak beschreven als sterker en met minder eetlust-respons dan GHRP-6. Beide stimuleren GH-secretie via dezelfde receptor maar met verschillende profielen."
+        }
+      ],
+      "reviews": {
+        "rating": 4.4,
+        "count": 26
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]",
+      "imageInitials": "GH2",
+      "peptide": {
+        "synonyms": [
+          "Pralmorelin",
+          "KP-102"
+        ],
+        "sequence": "D-Ala-D-2-Nal-Ala-Trp-D-Phe-Lys",
+        "molecularWeight": 817.96,
+        "formula": "C₄₅H₅₅N₉O₆",
+        "purityPct": 99.1,
+        "vialMg": 10,
+        "cas": "158861-67-7",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p17",
+      "slug": "ghrp-6",
+      "hub": "hormonaal",
+      "name": "GHRP-6",
+      "code": "GHRP-6",
+      "tagline": "Growth Hormone Releasing Peptide-6.",
+      "shortDescription": "Synthetisch hexapeptide ghrelin/GHS-receptor agonist. Vroege generatie GHRP — uitgebreid bestudeerd sinds de jaren 90.",
+      "longDescription": "GHRP-6 (Growth Hormone Releasing Peptide-6) is een synthetisch hexapeptide en één van de eerst ontwikkelde GHRPs. Bestudeerd in onderzoek naar groeihormoon-respons en, anders dan GHRP-2, ook bekend om sterkere modulatie van eetlust-routes. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v17-10mg",
+          "name": "10 mg vial",
+          "priceCents": 5995
+        }
+      ],
+      "benefits": [
+        "Ghrelin/GHS receptor agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "GHRP-6 (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Eetlust-respons?",
+          "a": "In de literatuur wordt GHRP-6 vaak beschreven als sterker eetlust-stimulerend dan latere GHRPs. Relevant in onderzoekscontext naar ghrelin-route en honger-modulatie."
+        }
+      ],
+      "reviews": {
+        "rating": 4.3,
+        "count": 21
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_60%_40%,#475569_0%,#0A1424_85%)]",
+      "imageInitials": "GH6",
+      "peptide": {
+        "synonyms": [
+          "SKF-110679"
+        ],
+        "sequence": "His-D-Trp-Ala-Trp-D-Phe-Lys",
+        "molecularWeight": 872.99,
+        "formula": "C₄₆H₅₆N₁₂O₆",
+        "purityPct": 99,
+        "vialMg": 10,
+        "cas": "87616-84-0",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p18",
+      "slug": "igf-1-lr3",
+      "hub": "hormonaal",
+      "name": "IGF-1 LR3",
+      "code": "IGF-1 LR3",
+      "tagline": "Long R3 Insulin-like Growth Factor-1.",
+      "shortDescription": "Gemodificeerde IGF-1 variant met verlengde halfwaardetijd. Bestudeerd in onderzoek naar cellulaire groei en differentiatie.",
+      "longDescription": "IGF-1 LR3 (Long Arg3) is een gemodificeerde 83-aminozuur variant van humaan IGF-1, met een N-terminale 13-aminozuur uitbreiding en een Arg→Gly substitutie op positie 3. Deze modificaties verminderen binding aan IGF-bindende eiwitten, wat de halfwaardetijd verlengt. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 8995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Premium",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v18-1mg",
+          "name": "1 mg vial",
+          "priceCents": 8995
+        }
+      ],
+      "benefits": [
+        "IGF-1 receptor agonist (verlengde t1/2)",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "IGF-1 LR3 (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water of 0,6% azijnzuur volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Waarom 1mg per vial?",
+          "a": "IGF-1 LR3 is een complex 83-aminozuur eiwit met hoge kostprijs en sterke werking in lage doses (microgram-range). Standaard vial-grootte in de literatuur is 1 mg."
+        }
+      ],
+      "reviews": {
+        "rating": 4.6,
+        "count": 38
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_50%_30%,#FBFDFD_0%,#EEF4F5_60%,#DCE6F3_100%)]",
+      "imageInitials": "IGF",
+      "peptide": {
+        "synonyms": [
+          "Long R3 IGF-1",
+          "IGF-I LR3"
+        ],
+        "sequence": "MFPAMPLSSLFVNGPRTLCGAELVDALQFVCGDRGFYFNKPTGYGSSSRRAPQTGIVDECCFRSCDLRRLEMYCAPLKPAKSA",
+        "molecularWeight": 9117.51,
+        "formula": "C₄₀₀H₆₂₅N₁₁₁O₁₁₅S₈",
+        "purityPct": 98.5,
+        "vialMg": 1,
+        "cas": "946870-92-4",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p19",
+      "slug": "gonadorelin",
+      "hub": "hormonaal",
+      "name": "Gonadorelin",
+      "code": "GnRH",
+      "tagline": "Gonadotropin-releasing hormone — 10 aminozuren.",
+      "shortDescription": "Synthetische vorm van endogeen GnRH. Bestudeerd in onderzoek naar hypofyse-as en gonadotrope respons.",
+      "longDescription": "Gonadorelin is een synthetische 10-aminozuur sequentie identiek aan humaan gonadotropin-releasing hormone (GnRH). Onderzocht in studies naar de hypothalamus-hypofyse-gonadale as en pulsatiele LH/FSH-secretie. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 2495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v19-2mg",
+          "name": "2 mg vial",
+          "priceCents": 2495
+        }
+      ],
+      "benefits": [
+        "GnRH receptor agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Gonadorelin acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Onderzoekscontext?",
+          "a": "Gonadorelin wordt in protocollen onderzocht voor pulsatiele stimulatie van de hypofyse. Continue toediening daarentegen down-reguleert receptoren — bekend effect uit klinische literatuur."
+        }
+      ],
+      "reviews": {
+        "rating": 4.4,
+        "count": 19
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "GND",
+      "peptide": {
+        "synonyms": [
+          "GnRH",
+          "LHRH",
+          "Luteinizing-Releasing Hormone"
+        ],
+        "sequence": "pGlu-His-Trp-Ser-Tyr-Gly-Leu-Arg-Pro-Gly-NH₂",
+        "molecularWeight": 1182.31,
+        "formula": "C₅₅H₇₅N₁₇O₁₃",
+        "purityPct": 99.2,
+        "vialMg": 2,
+        "cas": "33515-09-2",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p20",
+      "slug": "hmg",
+      "hub": "hormonaal",
+      "name": "HMG",
+      "code": "MENOTROPIN",
+      "tagline": "Human Menopausal Gonadotropin — 75 IU.",
+      "shortDescription": "Glycoproteïne-hormoon mengsel van FSH en LH. Bestudeerd in onderzoek naar gonadotrope stimulatie en fertiliteit.",
+      "longDescription": "HMG (Human Menopausal Gonadotropin, menotropin) is een gepurificeerd mengsel van follikelstimulerend hormoon (FSH) en luteïniserend hormoon (LH), traditioneel geïsoleerd uit urine van postmenopauzale vrouwen. Klinisch gebruikt in fertiliteit-onderzoek. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v20-75iu",
+          "name": "75 IU vial",
+          "priceCents": 3495
+        }
+      ],
+      "benefits": [
+        "FSH + LH activiteit (~75 IU elk)",
+        "Gepurificeerd · COA per batch",
+        "Gelyofiliseerd voor verzending",
+        "Volledige documentatie"
+      ],
+      "ingredients": [
+        "Menotropin (FSH + LH)",
+        "Lactose (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met meegeleverd oplosmiddel of steriel water."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, direct gebruiken."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is dit een peptide?",
+          "a": "HMG bevat twee glycoproteïne-hormonen (FSH en LH), niet kleine peptiden zoals de meeste andere SKUs. Ze worden anders gesynthetiseerd en bewaard."
+        }
+      ],
+      "reviews": {
+        "rating": 4.3,
+        "count": 14
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_60%_40%,#475569_0%,#0A1424_85%)]",
+      "imageInitials": "HMG",
+      "peptide": {
+        "synonyms": [
+          "Menotropin",
+          "Pergonal"
+        ],
+        "sequence": "FSH + LH heterodimer glycoproteïnen",
+        "molecularWeight": 30000,
+        "formula": "Glycoproteïne-mix",
+        "purityPct": 98,
+        "vialMg": 0,
+        "cas": "9002-68-0",
+        "storage": "2–8°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p21",
+      "slug": "ahk-cu",
+      "hub": "cosmetisch",
+      "name": "AHK-Cu",
+      "code": "AHK-Cu",
+      "tagline": "Koperpeptide tripeptide — alanyl-histidyl-lysine.",
+      "shortDescription": "Synthetisch koperhoudend tripeptide. Onderzocht in cosmetische literatuur voor haarfollikel-stimulatie en huidregeneratie.",
+      "longDescription": "AHK-Cu is een tripeptide-kopercomplex bestaande uit alanine, histidine en lysine, gecomplexeerd met Cu²⁺. Verwant aan GHK-Cu maar met andere N-terminale residue. In cosmetisch onderzoek bestudeerd voor haarfollikel-routes en collageen-expressie. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Cosmetic research",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v21-20mg",
+          "name": "20 mg vial",
+          "priceCents": 3495
+        }
+      ],
+      "benefits": [
+        "Gestabiliseerd Cu²⁺-complex",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Alanyl-Histidyl-Lysine-Cu",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "In gedestilleerd water of buffer (pH 6–7,5)."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, beschermd tegen licht."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met GHK-Cu?",
+          "a": "AHK-Cu vervangt de N-terminale glycine van GHK-Cu door alanine. Onderzoek suggereert verschillende focus — AHK-Cu wordt vaker geassocieerd met haarfollikel-routes, GHK-Cu met huidregeneratie."
+        }
+      ],
+      "reviews": {
+        "rating": 4.5,
+        "count": 23
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_60%_40%,#475569_0%,#0A1424_85%)]",
+      "imageInitials": "AHK",
+      "peptide": {
+        "synonyms": [
+          "Alanyl-Histidyl-Lysine-Cu",
+          "AHK Copper"
+        ],
+        "sequence": "AHK",
+        "molecularWeight": 339.81,
+        "formula": "C₁₅H₂₅CuN₆O₄",
+        "purityPct": 99.4,
+        "vialMg": 20,
+        "cas": "147658-07-9",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p22",
+      "slug": "snap-8",
+      "hub": "cosmetisch",
+      "name": "SNAP-8",
+      "code": "Acetyl Octapeptide-3",
+      "tagline": "Cosmetic octapeptide — anti-wrinkle research.",
+      "shortDescription": "Synthetisch acetyl-octapeptide. Verlengde analoog van Argireline, bestudeerd in cosmetische context voor expressielijnen-onderzoek.",
+      "longDescription": "SNAP-8 (Acetyl Octapeptide-3) is een synthetisch 8-aminozuur peptide, een verlengde variant van het bekende Argireline (Acetyl Hexapeptide-3). In cosmetisch onderzoek bestudeerd voor SNARE-eiwit interferentie en spierspanning. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Cosmetic research",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v22-10mg",
+          "name": "10 mg vial",
+          "priceCents": 3495
+        }
+      ],
+      "benefits": [
+        "SNARE-eiwit modulator (research)",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Acetyl-Octapeptide-3",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met gedestilleerd water of cosmetic-grade buffer."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, beschermd tegen licht."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met Argireline?",
+          "a": "SNAP-8 is een 8-aminozuur uitbreiding van het 6-aminozuur Argireline (Acetyl Hexapeptide-3). De literatuur claimt sterkere SNARE-interactie maar onafhankelijke vergelijking is beperkt."
+        }
+      ],
+      "reviews": {
+        "rating": 4.4,
+        "count": 16
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#F7FAFB_0%,#DCE6F3_60%,#88A4CC_100%)]",
+      "imageInitials": "SN8",
+      "peptide": {
+        "synonyms": [
+          "Acetyl Octapeptide-3",
+          "SNAP-25 inhibitor"
+        ],
+        "sequence": "Ac-Glu-Glu-Met-Gln-Arg-Arg-Ala-Asp-NH₂",
+        "molecularWeight": 894.99,
+        "formula": "C₃₇H₆₂N₁₂O₁₄S",
+        "purityPct": 99.1,
+        "vialMg": 10,
+        "cas": "868844-74-0",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p23",
+      "slug": "melanotan-2",
+      "hub": "cosmetisch",
+      "name": "Melanotan II",
+      "code": "MT-II",
+      "tagline": "Cyclisch heptapeptide — melanocortin agonist.",
+      "shortDescription": "Synthetisch cyclisch heptapeptide. Niet-selectieve melanocortin receptor agonist, bestudeerd in onderzoek naar pigmentatie-routes.",
+      "longDescription": "Melanotan II (MT-II) is een synthetisch cyclisch heptapeptide en niet-selectieve agonist van melanocortin receptoren (MC1, MC3, MC4, MC5). Origineel ontwikkeld aan de University of Arizona voor onderzoek naar fotoprotectieve pigmentatie-routes. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Cosmetic research",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v23-10mg",
+          "name": "10 mg vial",
+          "priceCents": 3495
+        }
+      ],
+      "benefits": [
+        "Melanocortin receptor agonist",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Melanotan II (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 30 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil met PT-141?",
+          "a": "PT-141 (bremelanotide) is afgeleid van Melanotan II maar heeft een lineaire (open) structuur na hydrolyse. Verschillende receptor-selectiviteit en onderzoekscontext."
+        }
+      ],
+      "reviews": {
+        "rating": 4.4,
+        "count": 41
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "MT2",
+      "peptide": {
+        "synonyms": [
+          "MT-II",
+          "MT-2"
+        ],
+        "sequence": "Ac-Nle-cyclo[Asp-His-D-Phe-Arg-Trp-Lys]-NH₂",
+        "molecularWeight": 1024.18,
+        "formula": "C₅₀H₆₉N₁₅O₉",
+        "purityPct": 99.2,
+        "vialMg": 10,
+        "cas": "121062-08-6",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p24",
+      "slug": "5-amino-1mq",
+      "hub": "cosmetisch",
+      "name": "5-Amino-1MQ",
+      "code": "5-AMINO-1MQ",
+      "tagline": "NNMT-remmer — kleine molecule.",
+      "shortDescription": "Synthetisch kleinmolecuul nicotinamide N-methyltransferase (NNMT) remmer. Bestudeerd in onderzoek naar NAD+ metabolisme en cellulaire energie.",
+      "longDescription": "5-Amino-1MQ (5-amino-1-methylquinolinium) is een kleinmolecuul NNMT-remmer. Door NNMT te blokkeren wordt SAM-conservering en NAD+ recycling onderzocht — relevant in studies naar metabool en cellulair energie-onderzoek. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Longevity research",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v24-10mg",
+          "name": "10 mg vial",
+          "priceCents": 3495
+        }
+      ],
+      "benefits": [
+        "NNMT enzym-remmer",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "5-Amino-1-methylquinolinium iodide",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met gedestilleerd water of buffer (pH-neutraal)."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 30 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is dit een peptide?",
+          "a": "Nee — 5-Amino-1MQ is een kleinmolecuul (quinolinium-derivaat), geen peptide. Vaak gegroepeerd met peptide-research vanwege de overlap in metabool/longevity-context."
+        }
+      ],
+      "reviews": {
+        "rating": 4.5,
+        "count": 12
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#DCE6F3_0%,#88A4CC_55%,#1F3F6E_100%)]",
+      "imageInitials": "AMQ",
+      "peptide": {
+        "synonyms": [
+          "5-Amino-1-methylquinolinium",
+          "NNMT inhibitor"
+        ],
+        "sequence": "Niet-peptide (kleinmolecuul)",
+        "molecularWeight": 159.21,
+        "formula": "C₁₀H₁₁N₂⁺",
+        "purityPct": 99.4,
+        "vialMg": 10,
+        "cas": "1158285-39-6",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p25",
+      "slug": "nad-plus",
+      "hub": "cosmetisch",
+      "name": "NAD+",
+      "code": "NAD+",
+      "tagline": "Nicotinamide Adenine Dinucleotide — coenzym.",
+      "shortDescription": "Endogeen coenzym in cellulair energiemetabolisme. Bestudeerd in longevity- en mitochondriaal onderzoek.",
+      "longDescription": "NAD+ (Nicotinamide Adenine Dinucleotide) is een essentieel coenzym in cellulair energiemetabolisme en redox-reacties. De endogene niveaus dalen met leeftijd; daarom bestudeerd in longevity-research, sirtuin-activatie en mitochondriaal onderzoek. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Longevity research",
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v25-500mg",
+          "name": "500 mg vial",
+          "priceCents": 5995
+        }
+      ],
+      "benefits": [
+        "Endogeen coenzym (research-grade)",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "NAD+ (β-NAD)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met steriel water of buffer (pH 7)."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 7 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is dit een peptide?",
+          "a": "Nee — NAD+ is een nucleotide-coenzym, geen peptide. We bieden het aan vanwege overlap in onderzoekscontext (longevity, mitochondriaal)."
+        }
+      ],
+      "reviews": {
+        "rating": 4.6,
+        "count": 28
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_50%_30%,#FBFDFD_0%,#EEF4F5_60%,#DCE6F3_100%)]",
+      "imageInitials": "NAD",
+      "peptide": {
+        "synonyms": [
+          "β-NAD",
+          "Nicotinamide Adenine Dinucleotide"
+        ],
+        "sequence": "Niet-peptide (nucleotide-coenzym)",
+        "molecularWeight": 663.43,
+        "formula": "C₂₁H₂₇N₇O₁₄P₂",
+        "purityPct": 99.3,
+        "vialMg": 500,
+        "cas": "53-84-9",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p26",
+      "slug": "ss-31",
+      "hub": "regeneratie",
+      "name": "SS-31",
+      "code": "ELAMIPRETIDE",
+      "tagline": "Mitochondriaal-gerichte tetrapeptide.",
+      "shortDescription": "Synthetisch tetrapeptide met affiniteit voor cardiolipine in mitochondriale binnenmembraan. Bestudeerd in mitochondriaal onderzoek.",
+      "longDescription": "SS-31 (Elamipretide, ook bekend als MTP-131 of Bendavia) is een synthetisch aromatic-cationic tetrapeptide met selectieve binding aan cardiolipine in de mitochondriale binnenmembraan. Bestudeerd in fase-3 trials voor primaire mitochondriale myopathieën. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v26-10mg",
+          "name": "10 mg vial",
+          "priceCents": 5995
+        }
+      ],
+      "benefits": [
+        "Cardiolipine-bindend tetrapeptide",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "SS-31 / Elamipretide (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Onderzoekscontext?",
+          "a": "SS-31 wordt bestudeerd in studies naar ischemie/reperfusie schade en mitochondriale dysfunctie. De aromatic-cationic structuur geeft selectieve ophoping in mitochondriaal membraan."
+        }
+      ],
+      "reviews": {
+        "rating": 4.6,
+        "count": 19
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]",
+      "imageInitials": "SS",
+      "peptide": {
+        "synonyms": [
+          "Elamipretide",
+          "MTP-131",
+          "Bendavia"
+        ],
+        "sequence": "D-Arg-Dmt-Lys-Phe-NH₂",
+        "molecularWeight": 639.79,
+        "formula": "C₃₂H₄₉N₉O₅",
+        "purityPct": 99.2,
+        "vialMg": 10,
+        "cas": "736992-21-5",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "p27",
+      "slug": "mots-c",
+      "hub": "regeneratie",
+      "name": "MOTS-c",
+      "code": "MOTS-c",
+      "tagline": "Mitochondriaal-gecodeerd 16-aminozuur peptide.",
+      "shortDescription": "Endogeen mitochondriaal peptide gecodeerd in 12S rRNA. Bestudeerd in onderzoek naar metabool homeostase en oefenrespons.",
+      "longDescription": "MOTS-c (Mitochondrial ORF of the 12S rRNA-c) is een 16-aminozuur peptide gecodeerd in het mitochondriale 12S rRNA gen. Eén van de eerst-ontdekte \"mitochondrial-derived peptides\" (MDPs), bestudeerd in onderzoek naar AMPK-route, insulinerespons en mitochondriaal-nucleair signaling. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 4495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "v27-10mg",
+          "name": "10 mg vial",
+          "priceCents": 4495
+        }
+      ],
+      "benefits": [
+        "Endogeen mitochondriaal peptide",
+        "GMP-condities · HPLC ≥ 99%",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "MOTS-c (acetaat)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wat is een MDP?",
+          "a": "Mitochondrial-Derived Peptides zijn korte peptiden gecodeerd in het mitochondriale genoom. MOTS-c was één van de eerst-ontdekte (2015) en wordt onderzocht voor zijn rol in metabool-homeostase."
+        }
+      ],
+      "reviews": {
+        "rating": 4.5,
+        "count": 22
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "MOT",
+      "peptide": {
+        "synonyms": [
+          "Mitochondrial-Derived Peptide (12S rRNA-c)"
+        ],
+        "sequence": "MRWQEMGYIFYPRKLR",
+        "molecularWeight": 2174.61,
+        "formula": "C₁₀₂H₁₅₆N₂₈O₂₂S₂",
+        "purityPct": 99.1,
+        "vialMg": 10,
+        "cas": "1627580-64-6",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
+      "id": "b1",
+      "slug": "recovery-stack",
+      "hub": "bundles",
+      "name": "Recovery Stack",
+      "code": "BPC + TB",
+      "tagline": "BPC-157 + TB-500 — herstelstack.",
+      "shortDescription": "Twee meest onderzochte regeneratie-peptiden in één pakket. BPC-157 (5 mg vial) gecombineerd met TB-500 (5 mg vial).",
+      "longDescription": "Een veelgenoemde stack-combinatie uit dierliteratuur naar weefselregeneratie. BPC-157 wordt bestudeerd voor gastro-intestinale en pees-fibroblast effecten, TB-500 voor actine-binding en celmigratie. Bundel-prijs t.o.v. los kopen. Uitsluitend voor laboratoriumonderzoek.",
+      "priceCents": 6995,
+      "comparePriceCents": 7995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Bundle · 13% korting",
+        "Research only"
+      ],
+      "benefits": [
+        "BPC-157 5 mg + TB-500 5 mg",
+        "Per peptide aparte vial — niet gemengd",
+        "HPLC ≥ 99% per component",
+        "COA per component meegeleverd"
+      ],
+      "howItWorks": [
+        {
+          "title": "Inhoud",
+          "description": "Twee aparte gelyofiliseerde vials in één pakket."
+        },
+        {
+          "title": "Reconstitueer",
+          "description": "Elk peptide los volgens eigen protocol."
+        },
+        {
+          "title": "Documenteer",
+          "description": "Beide COAs en lotnummers archiveren."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wat zit er in deze bundle?",
+          "a": "1× BPC-157 5 mg vial + 1× TB-500 5 mg vial, beide gelyofiliseerd en afzonderlijk verpakt. Geen voorgemengde oplossing."
+        }
+      ],
+      "reviews": {
+        "rating": 4.9,
+        "count": 47
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]",
+      "imageInitials": "RS",
+      "bundle": [
+        {
+          "name": "BPC-157",
+          "vialMg": 5
+        },
+        {
+          "name": "TB-500",
+          "vialMg": 5
+        }
+      ]
+    },
+    {
+      "id": "b2",
+      "slug": "gh-stack",
+      "hub": "bundles",
+      "name": "GH Stack",
+      "code": "CJC + IPA",
+      "tagline": "CJC-1295 + Ipamorelin — somatotrope as.",
+      "shortDescription": "GHRH-analoog gecombineerd met selectieve ghrelin-receptor agonist. Veel bestudeerd in synergetische GH-respons.",
+      "longDescription": "CJC-1295 (Mod GRF 1-29) en Ipamorelin worden in de literatuur vaak gecombineerd onderzocht voor synergetische groeihormoon-secretie. Aparte vials, beide gelyofiliseerd. Uitsluitend voor laboratoriumonderzoek.",
+      "priceCents": 8900,
+      "comparePriceCents": 9400,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Bundle · 5% korting",
+        "Research only"
+      ],
+      "benefits": [
+        "CJC-1295 5 mg + Ipamorelin 5 mg",
+        "GMP-condities · HPLC ≥ 99%",
+        "COA per component",
+        "Aparte vials — niet gemengd"
+      ],
+      "howItWorks": [
+        {
+          "title": "Inhoud",
+          "description": "Twee aparte gelyofiliseerde vials."
+        },
+        {
+          "title": "Reconstitueer",
+          "description": "Bacteriostatisch water per protocol."
+        },
+        {
+          "title": "Documenteer",
+          "description": "Beide lotnummers in onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Waarom CJC zonder DAC + Ipamorelin?",
+          "a": "De combinatie van een GHRH-analoog met een GHRP wordt in pulsatiele kinetiek-studies onderzocht. De DAC-vrije variant wordt gekozen wanneer kortere halfwaardetijd gewenst is."
+        }
+      ],
+      "reviews": {
+        "rating": 4.7,
+        "count": 32
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "GH",
+      "bundle": [
+        {
+          "name": "CJC-1295 (no DAC)",
+          "vialMg": 5
+        },
+        {
+          "name": "Ipamorelin",
+          "vialMg": 5
+        }
+      ]
+    },
+    {
+      "id": "b3",
+      "slug": "nootropic-stack",
+      "hub": "bundles",
+      "name": "Nootropic Stack",
+      "code": "SLK + SMX",
+      "tagline": "Selank + Semax — Russische research-peptiden.",
+      "shortDescription": "Twee meest bestudeerde Russische heptapeptiden — tuftsin-analoog Selank en ACTH-analoog Semax. Voor cognitief onderzoek.",
+      "longDescription": "Selank en Semax zijn beide synthetische heptapeptiden uit Russisch onderzoek, ontwikkeld als stabiele analogen van endogene peptiden. Vaak bestudeerd in BDNF-expressie en anxiolytische respons. Aparte 10 mg vials.",
+      "priceCents": 11900,
+      "comparePriceCents": 13000,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Bundle · 8% korting",
+        "Research only"
+      ],
+      "benefits": [
+        "Selank 10 mg + Semax 10 mg",
+        "HPLC ≥ 99% per component",
+        "COA per component",
+        "Aparte vials — niet gemengd"
+      ],
+      "howItWorks": [
+        {
+          "title": "Inhoud",
+          "description": "Twee aparte 10 mg vials."
+        },
+        {
+          "title": "Reconstitueer",
+          "description": "Volgens eigen protocol per peptide."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COAs en lotnummers archiveren."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Verschil Selank vs Semax?",
+          "a": "Selank is een tuftsin-analoog (immuun-actief), Semax is een ACTH(4-10) analoog (neurotroof). Verschillende moleculaire routes, beide onderzocht in cognitief modellen."
+        }
+      ],
+      "reviews": {
+        "rating": 4.8,
+        "count": 28
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_50%_30%,#FBFDFD_0%,#EEF4F5_60%,#DCE6F3_100%)]",
+      "imageInitials": "NS",
+      "bundle": [
+        {
+          "name": "Selank",
+          "vialMg": 10
+        },
+        {
+          "name": "Semax",
+          "vialMg": 10
+        }
+      ]
+    },
+    {
+      "id": "b4",
+      "slug": "cagrisema",
+      "hub": "metabool",
+      "name": "CagriSema",
+      "code": "CAGRI + SEMA",
+      "tagline": "Cagrilintide + Semaglutide — co-geformuleerde GLP-1.",
+      "shortDescription": "Twee meest bestudeerde metabole peptiden co-geformuleerd in één 10mg vial: 5mg Cagrilintide + 5mg Semaglutide. Bekend uit de CagriSema fase-3 trials.",
+      "longDescription": "CagriSema combineert Cagrilintide (amyline-analoog) met Semaglutide (GLP-1 agonist) in één gelyofiliseerde 10mg vial. Deze co-formulatie — onderzocht als \"CagriSema\" in Novo Nordisk fase-3 trials — wordt bestudeerd voor synergetische metabole respons. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 8995,
+      "comparePriceCents": 10495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "14% korting",
+        "Research only"
+      ],
+      "benefits": [
+        "Cagrilintide 5mg + Semaglutide 5mg",
+        "Gecombineerd in één vial — voorgemengd",
+        "HPLC ≥ 99% per component",
+        "COA met beide componenten meegeleverd"
+      ],
+      "howItWorks": [
+        {
+          "title": "Inhoud",
+          "description": "Eén 10mg gelyofiliseerde vial met beide peptiden voorgemengd."
+        },
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens CagriSema protocol."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA met beide componenten archiveren."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Waarom voorgemengd ipv aparte vials?",
+          "a": "In CagriSema trials worden beide peptiden gelijktijdig toegediend in dezelfde injectie. Voorgemengde vials reduceren protocol-variatie en handling-fouten."
+        }
+      ],
+      "reviews": {
+        "rating": 4.7,
+        "count": 15
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "CS",
+      "bundle": [
+        {
+          "name": "Cagrilintide",
+          "vialMg": 5
+        },
+        {
+          "name": "Semaglutide",
+          "vialMg": 5
+        }
+      ]
+    }
+  ]
+}
