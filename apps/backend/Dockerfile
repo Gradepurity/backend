@@ -1,5 +1,5 @@
-# Medusa v2 backend — productie-image (Railway).
-# Build-context = apps/backend (Railway rootDirectory). Self-contained, één stage = robuust.
+# Medusa v2 backend — productie-image (Railway), gebouwd via GitHub Actions.
+# Build-context = apps/backend.
 FROM node:20-slim
 WORKDIR /app
 
@@ -7,15 +7,19 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends python3 build-essential \
   && rm -rf /var/lib/apt/lists/*
 
-# Install MET devDependencies (nodig voor `medusa build`). NODE_ENV pas op production ná de build.
+# Install MET devDependencies (nodig voor `medusa build`).
 COPY package.json ./
 RUN npm install
 
 COPY . .
-# medusa build -> .medusa/server (server + admin dashboard)
-RUN npm run build && test -d .medusa/server
+# medusa build -> .medusa/server (server + admin dashboard in .medusa/server/public/admin)
+RUN npm run build && test -f .medusa/server/public/admin/index.html
+
+# De server draait VANUIT .medusa/server (anders wordt de admin-build niet gevonden).
+WORKDIR /app/.medusa/server
+RUN npm install
 
 ENV NODE_ENV=production
 EXPOSE 9000
-# Migraties bij elke deploy (idempotent), daarna server starten (medusa start vindt .medusa/server vanuit de root).
+# Migraties bij elke deploy (idempotent), daarna server starten.
 CMD ["sh", "-c", "npx medusa db:migrate && npm run start"]
