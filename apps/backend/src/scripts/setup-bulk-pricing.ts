@@ -9,10 +9,11 @@ import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
  * base price. Medusa's price selection filters by the cart line quantity and,
  * on a tie, picks the cheapest matching price (ORDER BY amount ASC) — so the
  * right tier is chosen automatically and the base price is never modified:
- *   qty 1–4  → base price
- *   qty 5–9  → −10%
- *   qty 10–14→ −15%
- *   qty 15+  → −20%
+ *   qty 1–2  → base price
+ *   qty 3–4  → −25%
+ *   qty 5–9  → −30%
+ *   qty 10–14→ −40%
+ *   qty 15+  → −50%
  *
  * Idempotent: re-running first removes the tiers it previously added (any EUR
  * price with a min_quantity), then re-adds them from the current base price.
@@ -24,9 +25,10 @@ import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
 const CURRENCY = "eur"
 
 const TIERS: { minQty: number; maxQty: number | null; fraction: number }[] = [
-  { minQty: 5, maxQty: 9, fraction: 0.1 },
-  { minQty: 10, maxQty: 14, fraction: 0.15 },
-  { minQty: 15, maxQty: null, fraction: 0.2 },
+  { minQty: 3, maxQty: 4, fraction: 0.25 },
+  { minQty: 5, maxQty: 9, fraction: 0.3 },
+  { minQty: 10, maxQty: 14, fraction: 0.4 },
+  { minQty: 15, maxQty: null, fraction: 0.5 },
 ]
 
 export default async function setupBulkPricing({
