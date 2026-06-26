@@ -64,6 +64,74 @@ const redisModules = redisUrl
     ]
   : []
 
+// ── Crypto payment (BTCPay Server) ────────────────────────────────────────────
+// Alleen registreren zodra de keys gezet zijn: vóór die tijd boot de backend
+// gewoon met enkel de system/manual provider (validateOptions zou anders gooien).
+// Provider-key wordt `pp_crypto_btcpay`; configureer de BTCPay-webhook (in de
+// BTCPay-UI) naar <backend>/hooks/payment/pp_crypto_btcpay met BTCPAY_WEBHOOK_SECRET.
+const cryptoEnabled =
+  !!process.env.BTCPAY_URL &&
+  !!process.env.BTCPAY_API_KEY &&
+  !!process.env.BTCPAY_STORE_ID &&
+  !!process.env.BTCPAY_WEBHOOK_SECRET
+
+const cryptoProviderId = 'btcpay'
+const storefrontUrl = process.env.STOREFRONT_URL || 'https://gradepurity.com'
+
+// ── Transactionele e-mail (Resend) ────────────────────────────────────────────
+// Order­bevestiging / betaling ontvangen / verzonden lopen via de Resend-provider.
+// Alleen registreren zodra de keys gezet zijn, anders gooit validateOptions bij
+// boot. Zonder keys valt het notification-module terug op de default (log-only),
+// zodat de backend blijft draaien.
+const resendEnabled = !!process.env.RESEND_API_KEY && !!process.env.RESEND_FROM
+
+const notificationModules = resendEnabled
+  ? [
+      {
+        resolve: '@medusajs/medusa/notification',
+        options: {
+          providers: [
+            {
+              resolve: './src/modules/resend',
+              id: 'resend',
+              options: {
+                channels: ['email'],
+                api_key: process.env.RESEND_API_KEY,
+                from: process.env.RESEND_FROM,
+                reply_to: process.env.RESEND_REPLY_TO,
+              },
+            },
+          ],
+        },
+      },
+    ]
+  : []
+
+const paymentModules = cryptoEnabled
+  ? [
+      {
+        resolve: '@medusajs/medusa/payment',
+        options: {
+          providers: [
+            {
+              resolve: './src/modules/btcpay',
+              id: cryptoProviderId,
+              options: {
+                serverUrl: process.env.BTCPAY_URL,
+                apiKey: process.env.BTCPAY_API_KEY,
+                storeId: process.env.BTCPAY_STORE_ID,
+                webhookSecret: process.env.BTCPAY_WEBHOOK_SECRET,
+                storefrontUrl,
+                successPath:
+                  process.env.CRYPTO_SUCCESS_PATH || '/nl/bestelling-ontvangen',
+              },
+            },
+          ],
+        },
+      },
+    ]
+  : []
+
 module.exports = defineConfig({
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
@@ -84,5 +152,5 @@ module.exports = defineConfig({
       cookieSecret,
     },
   },
-  modules: redisModules,
+  modules: [...redisModules, ...paymentModules, ...notificationModules],
 })
