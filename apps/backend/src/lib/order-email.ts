@@ -1,6 +1,12 @@
 // Bouwt de e-maildata voor een order op uit de query-graph, zodat de subscribers
 // (order.placed / payment.captured / shipment.created) dezelfde, betrouwbaar
 // berekende totalen en regels gebruiken.
+//
+// BELANGRIJK: vraag `items.*` op (niet losse velden als items.quantity). Alleen
+// met de wildcard triggert het order-module de totaalberekening; losse velden
+// geven anders undefined/0 terug (quantity zit op de order_item-detail, prijzen
+// zijn BigNumber). Met `items.*` komen quantity/unit_price/total als gewone
+// getallen mee, en de order-totalen (total/item_total/...) kloppen.
 
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
 import { MedusaContainer } from "@medusajs/framework/types"
@@ -10,6 +16,21 @@ export type OrderEmailPayload = {
   /** Ontvanger van de mail. */
   email: string
   data: OrderEmailData
+}
+
+/** Normaliseert getallen die soms als BigNumber-object of string binnenkomen. */
+function toNum(v: unknown): number {
+  if (v == null) return 0
+  if (typeof v === "number") return v
+  if (typeof v === "string") {
+    const n = parseFloat(v)
+    return isNaN(n) ? 0 : n
+  }
+  if (typeof v === "object") {
+    const o = v as Record<string, unknown>
+    return toNum(o.value ?? o.amount ?? o.numeric)
+  }
+  return 0
 }
 
 /**
@@ -29,14 +50,12 @@ export async function buildOrderEmailData(
       "display_id",
       "email",
       "currency_code",
+      "total",
       "item_total",
       "shipping_total",
       "tax_total",
-      "total",
-      "items.title",
-      "items.subtitle",
-      "items.quantity",
-      "items.unit_price",
+      // Wildcard = totalen worden berekend en quantity/unit_price komen als getal mee.
+      "items.*",
       "shipping_address.first_name",
       "shipping_address.last_name",
       "shipping_address.address_1",
@@ -55,16 +74,16 @@ export async function buildOrderEmailData(
     display_id: order.display_id ?? order.id,
     currency_code: order.currency_code ?? "eur",
     items: (order.items ?? []).map((i: any) => ({
-      title: i.title,
-      subtitle: i.subtitle,
-      quantity: i.quantity,
-      unit_price: Number(i.unit_price ?? 0),
+      title: i.product_title ?? i.title,
+      subtitle: i.variant_title ?? i.subtitle,
+      quantity: Math.round(toNum(i.quantity)) || 1,
+      unit_price: toNum(i.unit_price),
     })),
     totals: {
-      subtotal: Number(order.item_total ?? 0),
-      shipping: Number(order.shipping_total ?? 0),
-      tax: Number(order.tax_total ?? 0),
-      total: Number(order.total ?? 0),
+      subtotal: toNum(order.item_total),
+      shipping: toNum(order.shipping_total),
+      tax: toNum(order.tax_total),
+      total: toNum(order.total),
     },
     shipping_address: order.shipping_address ?? null,
     payment_method: derivePaymentMethod(order),
@@ -82,7 +101,7 @@ function derivePaymentMethod(order: any): PaymentMethod {
   if (providerIds.some((id) => id.includes("btcpay") || id.includes("crypto"))) {
     return "crypto"
   }
-  // Bankoverschrijving loopt via de manual/system-provider (geen PSP).
+  // Bankoverschrijving loopt via de manual/system-provider (pp_system_default).
   if (providerIds.some((id) => id.includes("system") || id.includes("manual"))) {
     return "bank"
   }
