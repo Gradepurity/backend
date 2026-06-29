@@ -51,9 +51,10 @@ export default async function setStockZero({
   for (const p of products) {
     for (const v of p.variants ?? []) {
       for (const ii of v.inventory_items ?? []) {
-        const inv = ii.inventory;
+        const inv = ii?.inventory;
         if (!inv) continue;
         for (const lvl of inv.location_levels ?? []) {
+          if (!lvl) continue;
           updates.push({
             inventory_item_id: inv.id,
             location_id: lvl.location_id,
