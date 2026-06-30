@@ -46,6 +46,8 @@ export default async function setupBulkPricing({
       "id",
       "title",
       "product.title",
+      "product.handle",
+      "product.metadata",
       "price_set.id",
       "price_set.prices.id",
       "price_set.prices.amount",
@@ -58,6 +60,7 @@ export default async function setupBulkPricing({
   let updated = 0
   let removed = 0
   let skipped = 0
+  let accessoriesCleared = 0
 
   for (const v of variants as any[]) {
     const priceSet = v.price_set
@@ -86,6 +89,17 @@ export default async function setupBulkPricing({
       removed += existingTierIds.length
     }
 
+    // Accessoires (naalden/water/swabs) krijgen GEEN staffelkorting: bestaande
+    // tiers zijn hierboven al opgeruimd, we slaan het toevoegen over.
+    const isAccessory = v.product?.metadata?.accessory === true
+    if (isAccessory) {
+      accessoriesCleared++
+      logger.info(
+        `· ${v.product?.title ?? "?"} — ${v.title}: accessoire, geen staffel.`
+      )
+      continue
+    }
+
     const tierPrices = TIERS.map((t) => ({
       amount: Math.round(baseCents * (1 - t.fraction)) / 100,
       currency_code: CURRENCY,
@@ -103,6 +117,6 @@ export default async function setupBulkPricing({
   }
 
   logger.info(
-    `Bulk pricing tiers set: ${updated} variants updated, ${removed} old tiers removed, ${skipped} skipped (no EUR base price).`
+    `Bulk pricing tiers set: ${updated} variants updated, ${accessoriesCleared} accessoires zonder staffel, ${removed} old tiers removed, ${skipped} skipped (no EUR base price).`
   )
 }
