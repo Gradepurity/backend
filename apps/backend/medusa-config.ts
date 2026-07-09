@@ -78,6 +78,15 @@ const cryptoEnabled =
 const cryptoProviderId = 'btcpay'
 const storefrontUrl = process.env.STOREFRONT_URL || 'https://gradepurity.com'
 
+// ── Wallid hosted checkout ────────────────────────────────────────────────────
+// Zelfde gate-patroon als BTCPay: alleen registreren zodra alle keys gezet zijn.
+// Provider-key wordt `pp_card_wallid`; Wallid stuurt de webhook naar
+// <backend>/hooks/payment/pp_card_wallid, gesigneerd met WALLID_WEBHOOK_SECRET.
+const wallidEnabled =
+  !!process.env.WALLID_KEY_ID &&
+  !!process.env.WALLID_KEY_SECRET &&
+  !!process.env.WALLID_WEBHOOK_SECRET
+
 // ── Transactionele e-mail (Resend) ────────────────────────────────────────────
 // Order­bevestiging / betaling ontvangen / verzonden lopen via de Resend-provider.
 // Alleen registreren zodra de keys gezet zijn, anders gooit validateOptions bij
@@ -107,27 +116,50 @@ const notificationModules = resendEnabled
     ]
   : []
 
-const paymentModules = cryptoEnabled
+const paymentProviders = [
+  ...(cryptoEnabled
+    ? [
+        {
+          resolve: './src/modules/btcpay',
+          id: cryptoProviderId,
+          options: {
+            serverUrl: process.env.BTCPAY_URL,
+            apiKey: process.env.BTCPAY_API_KEY,
+            storeId: process.env.BTCPAY_STORE_ID,
+            webhookSecret: process.env.BTCPAY_WEBHOOK_SECRET,
+            storefrontUrl,
+            successPath:
+              process.env.CRYPTO_SUCCESS_PATH || '/nl/bestelling-ontvangen',
+          },
+        },
+      ]
+    : []),
+  ...(wallidEnabled
+    ? [
+        {
+          resolve: './src/modules/wallid',
+          id: 'wallid',
+          options: {
+            apiUrl:
+              process.env.WALLID_API_URL ||
+              'https://payment-api.wallid.co/api/payment-gw/v1',
+            keyId: process.env.WALLID_KEY_ID,
+            keySecret: process.env.WALLID_KEY_SECRET,
+            webhookSecret: process.env.WALLID_WEBHOOK_SECRET,
+            storefrontUrl,
+            successPath: '/nl/bestelling-ontvangen',
+            failPath: '/nl/afrekenen',
+          },
+        },
+      ]
+    : []),
+]
+
+const paymentModules = paymentProviders.length
   ? [
       {
         resolve: '@medusajs/medusa/payment',
-        options: {
-          providers: [
-            {
-              resolve: './src/modules/btcpay',
-              id: cryptoProviderId,
-              options: {
-                serverUrl: process.env.BTCPAY_URL,
-                apiKey: process.env.BTCPAY_API_KEY,
-                storeId: process.env.BTCPAY_STORE_ID,
-                webhookSecret: process.env.BTCPAY_WEBHOOK_SECRET,
-                storefrontUrl,
-                successPath:
-                  process.env.CRYPTO_SUCCESS_PATH || '/nl/bestelling-ontvangen',
-              },
-            },
-          ],
-        },
+        options: { providers: paymentProviders },
       },
     ]
   : []
