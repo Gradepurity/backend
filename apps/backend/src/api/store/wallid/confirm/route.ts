@@ -22,6 +22,8 @@ import { WallidClient } from "../../../../modules/wallid/lib/client"
  * POST /store/wallid/confirm  { cart_id: string }  ->  { status, order? }
  */
 type OrderSummary = {
+  /** Medusa order-id — de storefront koppelt hiermee de gast-order aan een account. */
+  orderId: string
   displayId: number
   currency: string
   subtotal: number
@@ -88,6 +90,7 @@ async function fetchOrderSummary(
 
   const addr = order.shipping_address
   return {
+    orderId: order.id,
     displayId: Number(order.display_id ?? 0),
     currency: order.currency_code,
     subtotal: Number(order.subtotal ?? 0),
