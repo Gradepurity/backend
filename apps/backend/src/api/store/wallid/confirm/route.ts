@@ -14,8 +14,106 @@ import { WallidClient } from "../../../../modules/wallid/lib/client"
  * webhook (autoriseren + capturen + cart afronden). Idempotent: is de order er
  * al, dan gebeurt er niets meer.
  *
- * POST /store/wallid/confirm  { cart_id: string }  ->  { status }
+ * Bij een afgeronde betaling sturen we de order-samenvatting mee zodat de
+ * retourpagina een volledige bevestiging kan tonen (ordernummer, regels,
+ * bedragen, adres). De cart-id is een onraadbare bearer-referentie die alleen
+ * de browser van de koper kent.
+ *
+ * POST /store/wallid/confirm  { cart_id: string }  ->  { status, order? }
  */
+type OrderSummary = {
+  displayId: number
+  currency: string
+  subtotal: number
+  shippingTotal: number
+  taxTotal: number
+  total: number
+  items: { title: string; quantity: number; total: number }[]
+  customer: {
+    firstName: string
+    lastName: string
+    address: string
+    postalCode: string
+    city: string
+    email: string
+    phone?: string
+  }
+}
+
+async function fetchOrderSummary(
+  req: MedusaRequest,
+  cartId: string
+): Promise<OrderSummary | null> {
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
+
+  const { data: links } = await query.graph({
+    entity: "order_cart",
+    fields: ["order_id"],
+    filters: { cart_id: cartId },
+  })
+  const orderId = links[0]?.order_id
+  if (!orderId) {
+    return null
+  }
+
+  const { data: orders } = await query.graph({
+    entity: "order",
+    fields: [
+      "id",
+      "display_id",
+      "email",
+      "currency_code",
+      "total",
+      "subtotal",
+      "shipping_total",
+      "tax_total",
+      "items.title",
+      "items.product_title",
+      "items.variant_title",
+      "items.quantity",
+      "items.total",
+      "shipping_address.first_name",
+      "shipping_address.last_name",
+      "shipping_address.address_1",
+      "shipping_address.postal_code",
+      "shipping_address.city",
+      "shipping_address.phone",
+    ],
+    filters: { id: orderId },
+  })
+  const order = orders[0]
+  if (!order) {
+    return null
+  }
+
+  const addr = order.shipping_address
+  return {
+    displayId: Number(order.display_id ?? 0),
+    currency: order.currency_code,
+    subtotal: Number(order.subtotal ?? 0),
+    shippingTotal: Number(order.shipping_total ?? 0),
+    taxTotal: Number(order.tax_total ?? 0),
+    total: Number(order.total ?? 0),
+    items: (order.items ?? []).filter(Boolean).map((i) => ({
+      title:
+        [i!.product_title, i!.variant_title].filter(Boolean).join(" · ") ||
+        i!.title ||
+        "Item",
+      quantity: Number(i!.quantity ?? 1),
+      total: Number(i!.total ?? 0),
+    })),
+    customer: {
+      firstName: addr?.first_name ?? "",
+      lastName: addr?.last_name ?? "",
+      address: addr?.address_1 ?? "",
+      postalCode: addr?.postal_code ?? "",
+      city: addr?.city ?? "",
+      email: order.email ?? "",
+      phone: addr?.phone ?? undefined,
+    },
+  }
+}
+
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const cartId = String((req.body as { cart_id?: string })?.cart_id ?? "")
   if (!cartId.startsWith("cart_")) {
@@ -50,7 +148,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     return
   }
   if (cart.completed_at) {
-    res.json({ status: "completed" })
+    res.json({ status: "completed", order: await fetchOrderSummary(req, cartId) })
     return
   }
 
@@ -84,7 +182,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         },
       },
     })
-    res.json({ status: "success" })
+    res.json({ status: "success", order: await fetchOrderSummary(req, cartId) })
     return
   }
 
