@@ -31,6 +31,11 @@ export default async function paymentCapturedHandler({
     const payload = await buildOrderEmailData(container, orderId)
     if (!payload) return
 
+    // Wallid: de order-placed-subscriber stuurt al de "betaling ontvangen"-mail
+    // (betaling en order ontstaan daar in één keer) — hier overslaan voorkomt
+    // een dubbele mail.
+    if (payload.data.payment_method === "wallid") return
+
     const notificationModuleService = container.resolve(Modules.NOTIFICATION)
     await notificationModuleService.createNotifications({
       to: payload.email,

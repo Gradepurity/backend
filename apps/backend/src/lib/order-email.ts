@@ -98,6 +98,11 @@ function derivePaymentMethod(order: any): PaymentMethod {
     .flatMap((pc: any) => pc.payments ?? [])
     .map((p: any) => String(p.provider_id ?? ""))
 
+  // Wallid hosted checkout (pp_card_wallid): de order ontstaat pas ná een
+  // geslaagde betaling — de klant heeft dus al betaald.
+  if (providerIds.some((id) => id.includes("wallid") || id.includes("pp_card"))) {
+    return "wallid"
+  }
   if (providerIds.some((id) => id.includes("btcpay") || id.includes("crypto"))) {
     return "crypto"
   }

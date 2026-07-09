@@ -4,7 +4,11 @@ import { buildOrderEmailData } from "../lib/order-email"
 
 /**
  * Bestelling geplaatst -> "We hebben je bestelling ontvangen" (in afwachting
- * van betaling). Bevat de juiste betaalinstructie-tekst per methode (bank/crypto).
+ * van betaling), met bankgegevens bij een overschrijving.
+ *
+ * Wallid-orders ontstaan pas NA een geslaagde betaling; die klant krijgt hier
+ * direct de "betaling ontvangen"-bevestiging (de payment-captured-subscriber
+ * slaat wallid over, zodat er nooit een dubbele of "in afwachting"-mail komt).
  */
 export default async function orderPlacedHandler({
   event: { data },
@@ -15,11 +19,14 @@ export default async function orderPlacedHandler({
     const payload = await buildOrderEmailData(container, data.id)
     if (!payload) return
 
+    const template =
+      payload.data.payment_method === "wallid" ? "payment-captured" : "order-placed"
+
     const notificationModuleService = container.resolve(Modules.NOTIFICATION)
     await notificationModuleService.createNotifications({
       to: payload.email,
       channel: "email",
-      template: "order-placed",
+      template,
       data: payload.data as unknown as Record<string, unknown>,
     })
   } catch (e: any) {

@@ -13,7 +13,17 @@ import {
   UI,
 } from "./layout"
 
-export type PaymentMethod = "bank" | "crypto" | "other"
+export type PaymentMethod = "bank" | "crypto" | "wallid" | "other"
+
+/**
+ * Bankgegevens voor de vooruitbetaling-mail. Spiegel van BANK_DETAILS in de
+ * storefront (forma/src/lib/payment-info.ts) — bij wijziging beide aanpassen.
+ */
+const BANK = {
+  payee: "Gradepurity",
+  iban: "NL81 FNOM 0779 1759 17",
+  bic: "FNOMNL22",
+} as const
 
 /** Data die elke order-mail nodig heeft (door de subscriber samengesteld). */
 export type OrderEmailData = {
@@ -68,6 +78,28 @@ function orderPlaced(data: OrderEmailData, locale: Locale): RenderedEmail {
   const method = data.payment_method ?? "other"
   const payNote = method === "bank" ? c.placed.bank : method === "crypto" ? c.placed.crypto : c.placed.generic
 
+  // Betaalkenmerk — zelfde formaat als op de bevestigingspagina (GP-00012),
+  // zodat overschrijvingen op één kenmerk te matchen zijn.
+  const orderRef = `GP-${String(data.display_id).padStart(5, "0")}`
+  const bankRow = (label: string, value: string) => `
+      <tr>
+        <td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;white-space:nowrap;">${label}</td>
+        <td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${value}</td>
+      </tr>`
+  const bankBlock =
+    method === "bank"
+      ? `
+    <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
+      <table role="presentation" cellpadding="0" cellspacing="0">
+        ${bankRow(c.placed.bankDetails.payee, BANK.payee)}
+        ${bankRow("IBAN", BANK.iban)}
+        ${bankRow("BIC", BANK.bic)}
+        ${bankRow(c.placed.bankDetails.amount, money(data.totals.total, data.currency_code, locale))}
+        ${bankRow(c.placed.bankDetails.reference, `<strong>${orderRef}</strong>`)}
+      </table>
+    </div>`
+      : ""
+
   const body = `
     <p style="margin:0 0 16px;">${c.placed.intro}</p>
     <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
@@ -76,6 +108,7 @@ function orderPlaced(data: OrderEmailData, locale: Locale): RenderedEmail {
     </div>
     <p style="margin:0 0 4px;font-weight:700;">${payNote.title}</p>
     <p style="margin:0 0 24px;color:${UI.muted};">${payNote.text}</p>
+    ${bankBlock}
     <h2 style="margin:0 0 4px;font-family:Georgia,serif;font-size:18px;font-weight:400;color:${UI.text};">${c.summary}</h2>
     ${renderOrderTable(data.items, data.totals, data.currency_code, locale)}
     ${addressBlock(data, c)}
@@ -176,10 +209,15 @@ const COPY = {
       preheader: "Bedankt voor je bestelling bij GradePurity.",
       heading: "Bedankt voor je bestelling",
       intro: "We hebben je bestelling ontvangen en gaan ermee aan de slag zodra de betaling binnen is.",
-      cta: "Bekijk je bestelling",
+      cta: "Naar GradePurity",
       bank: {
-        title: "In afwachting van je overschrijving",
-        text: "Je ontvangt de betaalgegevens in een aparte stap. Zodra de overschrijving binnen is, sturen we je een bevestiging en verzenden we je bestelling.",
+        title: "Maak het bedrag over om je bestelling af te ronden",
+        text: "Gebruik onderstaande gegevens en vermeld het kenmerk bij je overschrijving. Zodra de betaling binnen is, sturen we je een bevestiging en verzenden we je bestelling.",
+      },
+      bankDetails: {
+        payee: "Ten name van",
+        amount: "Bedrag",
+        reference: "Kenmerk",
       },
       crypto: {
         title: "In afwachting van je betaling",
@@ -197,7 +235,7 @@ const COPY = {
       badge: "Betaling bevestigd",
       intro: "Goed nieuws — we hebben je betaling ontvangen en je bestelling is bevestigd.",
       next: "We maken je bestelling klaar voor verzending. Je krijgt een bericht met track & trace zodra het pakket onderweg is.",
-      cta: "Bekijk je bestelling",
+      cta: "Naar GradePurity",
     },
     shipped: {
       subject: "Je bestelling is onderweg —",
@@ -207,7 +245,7 @@ const COPY = {
       carrier: "Vervoerder",
       trackingNo: "Track & trace",
       cta: "Volg je pakket",
-      ctaFallback: "Bekijk je bestelling",
+      ctaFallback: "Naar GradePurity",
     },
   },
   en: {
@@ -219,10 +257,15 @@ const COPY = {
       preheader: "Thank you for your order at GradePurity.",
       heading: "Thank you for your order",
       intro: "We've received your order and will get started as soon as your payment comes in.",
-      cta: "View your order",
+      cta: "Go to GradePurity",
       bank: {
-        title: "Awaiting your bank transfer",
-        text: "You'll receive the payment details in a separate step. Once the transfer arrives, we'll send a confirmation and ship your order.",
+        title: "Transfer the amount to complete your order",
+        text: "Use the details below and include the reference with your transfer. Once the payment arrives, we'll send a confirmation and ship your order.",
+      },
+      bankDetails: {
+        payee: "Payee",
+        amount: "Amount",
+        reference: "Reference",
       },
       crypto: {
         title: "Awaiting your payment",
@@ -240,7 +283,7 @@ const COPY = {
       badge: "Payment confirmed",
       intro: "Good news — we've received your payment and your order is confirmed.",
       next: "We're preparing your order for shipment. You'll get a message with tracking as soon as it's on its way.",
-      cta: "View your order",
+      cta: "Go to GradePurity",
     },
     shipped: {
       subject: "Your order is on its way —",
@@ -250,7 +293,7 @@ const COPY = {
       carrier: "Carrier",
       trackingNo: "Tracking",
       cta: "Track your parcel",
-      ctaFallback: "View your order",
+      ctaFallback: "Go to GradePurity",
     },
   },
   de: {
@@ -262,10 +305,15 @@ const COPY = {
       preheader: "Vielen Dank für Ihre Bestellung bei GradePurity.",
       heading: "Vielen Dank für Ihre Bestellung",
       intro: "Wir haben Ihre Bestellung erhalten und legen los, sobald Ihre Zahlung eingegangen ist.",
-      cta: "Bestellung ansehen",
+      cta: "Zu GradePurity",
       bank: {
-        title: "Warten auf Ihre Überweisung",
-        text: "Die Zahlungsdaten erhalten Sie in einem separaten Schritt. Sobald die Überweisung eingeht, senden wir eine Bestätigung und versenden Ihre Bestellung.",
+        title: "Überweisen Sie den Betrag, um Ihre Bestellung abzuschließen",
+        text: "Nutzen Sie die untenstehenden Daten und geben Sie den Verwendungszweck bei Ihrer Überweisung an. Sobald die Zahlung eingeht, senden wir eine Bestätigung und versenden Ihre Bestellung.",
+      },
+      bankDetails: {
+        payee: "Empfänger",
+        amount: "Betrag",
+        reference: "Verwendungszweck",
       },
       crypto: {
         title: "Warten auf Ihre Zahlung",
@@ -283,7 +331,7 @@ const COPY = {
       badge: "Zahlung bestätigt",
       intro: "Gute Nachrichten — wir haben Ihre Zahlung erhalten und Ihre Bestellung ist bestätigt.",
       next: "Wir bereiten Ihre Bestellung für den Versand vor. Sie erhalten eine Nachricht mit Sendungsverfolgung, sobald das Paket unterwegs ist.",
-      cta: "Bestellung ansehen",
+      cta: "Zu GradePurity",
     },
     shipped: {
       subject: "Ihre Bestellung ist unterwegs —",
@@ -293,7 +341,7 @@ const COPY = {
       carrier: "Versanddienstleister",
       trackingNo: "Sendungsverfolgung",
       cta: "Paket verfolgen",
-      ctaFallback: "Bestellung ansehen",
+      ctaFallback: "Zu GradePurity",
     },
   },
 } as const
