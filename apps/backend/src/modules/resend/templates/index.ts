@@ -39,11 +39,17 @@ export type OrderEmailData = {
   tracking_numbers?: string[]
   tracking_url?: string | null
   carrier?: string | null
+  /** E-mailadres van de klant — alleen gebruikt in de admin-notificatie. */
+  customer_email?: string
 }
 
 export type RenderedEmail = { subject: string; html: string }
 
-export type TemplateId = "order-placed" | "payment-captured" | "order-shipped"
+export type TemplateId =
+  | "order-placed"
+  | "payment-captured"
+  | "order-shipped"
+  | "admin-new-order"
 
 const ORDER_URL = "https://gradepurity.com"
 
@@ -65,6 +71,8 @@ export function render(template: TemplateId, data: OrderEmailData): RenderedEmai
       return paymentCaptured(data, locale)
     case "order-shipped":
       return orderShipped(data, locale)
+    case "admin-new-order":
+      return adminNewOrder(data)
     default:
       throw new Error(`Onbekende e-mailtemplate: ${template}`)
   }
@@ -171,6 +179,46 @@ function orderShipped(data: OrderEmailData, locale: Locale): RenderedEmail {
   return {
     subject: `${c.shipped.subject} ${orderNo}`,
     html: renderLayout({ preheader: c.shipped.preheader, heading: c.shipped.heading, body }, locale),
+  }
+}
+
+// ── 4. Admin-notificatie — nieuwe bestelling (intern, altijd NL) ──────────────
+
+function adminNewOrder(data: OrderEmailData): RenderedEmail {
+  const locale: Locale = "nl"
+  const orderNo = `#${data.display_id}`
+  const method = data.payment_method ?? "other"
+  const methodLabel =
+    method === "wallid"
+      ? "Wallid — BETAALD"
+      : method === "bank"
+        ? "Bankoverschrijving — wacht op betaling (kenmerk GP-" +
+          String(data.display_id).padStart(5, "0") +
+          ")"
+        : method === "crypto"
+          ? "Crypto"
+          : "Onbekend"
+
+  const body = `
+    <p style="margin:0 0 16px;">Er is een nieuwe bestelling geplaatst op gradepurity.com.</p>
+    <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
+      <table role="presentation" cellpadding="0" cellspacing="0">
+        <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Bestelnummer</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${orderNo}</td></tr>
+        <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Klant</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${escapeAttr(data.customer_email ?? "onbekend")}</td></tr>
+        <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Betaling</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${methodLabel}</td></tr>
+        <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Totaal</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${money(data.totals.total, data.currency_code, locale)}</td></tr>
+      </table>
+    </div>
+    ${renderOrderTable(data.items, data.totals, data.currency_code, locale)}
+    ${addressBlock(data, COPY.nl)}
+    ${button("https://backend-production-2a64.up.railway.app/app/orders", "Open Medusa-admin")}
+  `
+  return {
+    subject: `Nieuwe bestelling ${orderNo} — ${money(data.totals.total, data.currency_code, locale)} (${method === "wallid" ? "betaald" : method === "bank" ? "vooruitbetaling" : method})`,
+    html: renderLayout(
+      { preheader: `Nieuwe bestelling ${orderNo}`, heading: "Nieuwe bestelling", body },
+      locale
+    ),
   }
 }
 

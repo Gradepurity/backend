@@ -29,6 +29,22 @@ export default async function orderPlacedHandler({
       template,
       data: payload.data as unknown as Record<string, unknown>,
     })
+
+    // Interne notificatie: elke nieuwe bestelling ook naar de shop-inbox.
+    try {
+      const adminEmail = process.env.ADMIN_ORDER_EMAIL || "info@gradepurity.com"
+      await notificationModuleService.createNotifications({
+        to: adminEmail,
+        channel: "email",
+        template: "admin-new-order",
+        data: {
+          ...payload.data,
+          customer_email: payload.email,
+        } as unknown as Record<string, unknown>,
+      })
+    } catch (e: any) {
+      logger.error(`admin-notificatie mislukt voor order ${data.id}: ${e?.message}`)
+    }
   } catch (e: any) {
     // E-mail mag het plaatsen van de order nooit breken: loggen, niet rethrowen.
     logger.error(`order-placed mail mislukt voor order ${data.id}: ${e?.message}`)

@@ -66,14 +66,12 @@ async function fetchOrderSummary(
       "email",
       "currency_code",
       "total",
-      "subtotal",
+      "item_total",
       "shipping_total",
       "tax_total",
-      "items.title",
-      "items.product_title",
-      "items.variant_title",
-      "items.quantity",
-      "items.total",
+      // Wildcard is verplicht: alleen dan rekent de order-module de totalen
+      // door en komen quantity/total als getallen mee (zie lib/order-email.ts).
+      "items.*",
       "shipping_address.first_name",
       "shipping_address.last_name",
       "shipping_address.address_1",
@@ -88,22 +86,37 @@ async function fetchOrderSummary(
     return null
   }
 
+  // Bedragen komen soms als BigNumber-object of string binnen.
+  const toNum = (v: unknown): number => {
+    if (v == null) return 0
+    if (typeof v === "number") return v
+    if (typeof v === "string") {
+      const n = parseFloat(v)
+      return Number.isNaN(n) ? 0 : n
+    }
+    if (typeof v === "object") {
+      const o = v as Record<string, unknown>
+      return toNum(o.value ?? o.amount ?? o.numeric)
+    }
+    return 0
+  }
+
   const addr = order.shipping_address
   return {
     orderId: order.id,
     displayId: Number(order.display_id ?? 0),
     currency: order.currency_code,
-    subtotal: Number(order.subtotal ?? 0),
-    shippingTotal: Number(order.shipping_total ?? 0),
-    taxTotal: Number(order.tax_total ?? 0),
-    total: Number(order.total ?? 0),
-    items: (order.items ?? []).filter(Boolean).map((i) => ({
+    subtotal: toNum(order.item_total),
+    shippingTotal: toNum(order.shipping_total),
+    taxTotal: toNum(order.tax_total),
+    total: toNum(order.total),
+    items: (order.items ?? []).filter(Boolean).map((i: any) => ({
       title:
-        [i!.product_title, i!.variant_title].filter(Boolean).join(" · ") ||
-        i!.title ||
+        [i.product_title, i.variant_title].filter(Boolean).join(" · ") ||
+        i.title ||
         "Item",
-      quantity: Number(i!.quantity ?? 1),
-      total: Number(i!.total ?? 0),
+      quantity: Math.round(toNum(i.quantity)) || 1,
+      total: toNum(i.total),
     })),
     customer: {
       firstName: addr?.first_name ?? "",
