@@ -318,15 +318,34 @@ class WallidProviderService extends AbstractPaymentProvider<WallidOptions> {
     }
 
     const raw = normalizeRawBody(rawData)
-    const verified = this.client_.verifyWebhookSignature(
-      raw,
-      header("X-Webhook-Timestamp"),
-      header("X-Webhook-Signature")
+
+    // ── Diagnostische logging (tijdelijk) ──────────────────────────────────
+    // De webhook faalt stil: bij een ongeldige signature geeft Medusa 200 terug
+    // en stuurt Wallid nooit opnieuw. Log daarom exact wát binnenkomt en waaróm
+    // verificatie faalt, zodat we secret-mismatch / klok-skew / body-mismatch
+    // kunnen onderscheiden. Prefix [WALLID-HOOK] om terug te vinden in de logs.
+    const ts = header("X-Webhook-Timestamp")
+    const sig = header("X-Webhook-Signature")
+    const tsNum = ts ? Number.parseInt(ts, 10) : NaN
+    const ageSec = Number.isFinite(tsNum) ? Math.abs(Date.now() / 1000 - tsNum) : NaN
+    this.logger_.info(
+      `[WALLID-HOOK] ontvangen: ts=${ts ?? "GEEN"} (leeftijd ${Number.isFinite(ageSec) ? Math.round(ageSec) + "s" : "n.v.t."}), ` +
+        `sig=${sig ? sig.slice(0, 16) + "…" : "GEEN"}, rawBody-lengte=${raw.length}`
     )
+
+    const verified = this.client_.verifyWebhookSignature(raw, ts, sig)
     if (!verified) {
-      this.logger_.warn("Wallid webhook: ongeldige of ontbrekende signature — genegeerd.")
+      // Log wélke reden, zonder het secret te lekken.
+      let reden = "signature-mismatch"
+      if (!ts || !sig) reden = "ontbrekende header(s)"
+      else if (!Number.isFinite(tsNum)) reden = "timestamp niet-numeriek"
+      else if (Number.isFinite(ageSec) && ageSec > 300) reden = `timestamp te oud (${Math.round(ageSec)}s > 300s) — klok-skew?`
+      this.logger_.warn(
+        `[WALLID-HOOK] GEWEIGERD (${reden}). Als de betaling wél slaagde, maakt de reconcile-job de order alsnog binnen ~3 min.`
+      )
       return { action: PaymentActions.NOT_SUPPORTED }
     }
+    this.logger_.info("[WALLID-HOOK] signature OK — order wordt aangemaakt.")
 
     const events = (data as { events?: WallidWebhookEvent[] })?.events ?? []
     const finalEvents = events.filter(
