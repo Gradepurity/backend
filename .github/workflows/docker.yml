@@ -37,3 +37,15 @@ jobs:
             ghcr.io/gradepurity/backend:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # Railway pollt GHCR niet: zonder expliciete redeploy blijft prod op de
+      # oude image draaien (dat gebeurde 9–13 juli). Trigger daarom na elke
+      # geslaagde push een redeploy van de backend-service.
+      - name: Redeploy backend op Railway
+        run: |
+          RESP=$(curl -s -X POST https://backboard.railway.app/graphql/v2 \
+            -H "Project-Access-Token: ${{ secrets.RAILWAY_PROJECT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"query":"mutation { serviceInstanceRedeploy(environmentId: \"bfc50eb6-ff1a-46ce-bd68-0c4cee9a115d\", serviceId: \"331843f2-ad54-4103-9b05-541e47adb4ab\") }"}')
+          echo "$RESP"
+          echo "$RESP" | grep -q '"serviceInstanceRedeploy":true'
