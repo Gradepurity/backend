@@ -89,32 +89,31 @@ const wallidEnabled =
 
 // ── Transactionele e-mail (Resend) ────────────────────────────────────────────
 // Order­bevestiging / betaling ontvangen / verzonden lopen via de Resend-provider.
-// Alleen registreren zodra de keys gezet zijn, anders gooit validateOptions bij
-// boot. Zonder keys valt het notification-module terug op de default (log-only),
-// zodat de backend blijft draaien.
-const resendEnabled = !!process.env.RESEND_API_KEY && !!process.env.RESEND_FROM
-
-const notificationModules = resendEnabled
-  ? [
-      {
-        resolve: '@medusajs/medusa/notification',
-        options: {
-          providers: [
-            {
-              resolve: './src/modules/resend',
-              id: 'resend',
-              options: {
-                channels: ['email'],
-                api_key: process.env.RESEND_API_KEY,
-                from: process.env.RESEND_FROM,
-                reply_to: process.env.RESEND_REPLY_TO,
-              },
-            },
-          ],
+// ALTIJD registreren, desnoods met dummy-key: elke boot (ook een lokale
+// `medusa exec` tegen de prod-DB!) synct de notification_provider-tabel naar
+// zijn eigen config. Een boot zónder provider zette `resend` op disabled in de
+// gedeelde DB en dan faalden de prod-mails tot een herstart (13-07 gebeurd,
+// orders #4/#5). Met dummy-key blijft de provider geregistreerd; alleen het
+// daadwerkelijke verzenden faalt dan lokaal (subscribers vangen dat af).
+const notificationModules = [
+  {
+    resolve: '@medusajs/medusa/notification',
+    options: {
+      providers: [
+        {
+          resolve: './src/modules/resend',
+          id: 'resend',
+          options: {
+            channels: ['email'],
+            api_key: process.env.RESEND_API_KEY || 're_dummy_zonder_env_key',
+            from: process.env.RESEND_FROM || 'GradePurity <orders@gradepurity.com>',
+            reply_to: process.env.RESEND_REPLY_TO || 'info@gradepurity.com',
+          },
         },
-      },
-    ]
-  : []
+      ],
+    },
+  },
+]
 
 const paymentProviders = [
   ...(cryptoEnabled
