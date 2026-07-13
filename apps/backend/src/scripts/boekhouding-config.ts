@@ -12,8 +12,9 @@ export const BEDRIJF = {
   naam: "Gradepurity",
   adres: "Oslostraat 66, 6135 LM Sittard",
   kvk: "42106879",
-  // TODO: BTW-id invullen (staat op de brief van de Belastingdienst na KvK-inschrijving).
-  btwId: process.env.GP_BTW_ID ?? "",
+  btwId: "NL005498490B56",
+  // Omzetbelastingnummer — alleen voor de aangifte zelf, staat niet op facturen.
+  obNummer: "218854626B02",
   iban: "NL81FNOM0779175917",
   bic: "FNOMNL22",
   email: "info@gradepurity.com",
@@ -23,9 +24,9 @@ export const BEDRIJF = {
 // NL BTW-tarief; alle catalogusprijzen zijn inclusief.
 export const BTW_TARIEF = 0.21;
 
-// Orders die geen factuur horen te krijgen (display_id's van bijv. testorders).
-// Vul dit VÓÓR de eerste echte (niet-dry) run — factuurnummers zijn daarna definitief.
-export const SKIP_DISPLAY_IDS: number[] = [];
+// Orders die geen factuur horen te krijgen (display_id's van testorders).
+// Alle orders t/m 13-07-2026 waren Testproduct-tests (bevestigd door klant).
+export const SKIP_DISPLAY_IDS: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
 
 // Waar de administratie-map staat, relatief aan apps/backend (= cwd bij `medusa exec`).
 // Overschrijfbaar met ADMINISTRATIE_DIR in .env.
