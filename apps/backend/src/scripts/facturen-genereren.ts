@@ -238,7 +238,7 @@ function factuurHtml(o: any, entry: RegisterEntry, orderTotaal: number): string 
     <div class="eind"><span>Totaal</span><span>${eur(orderTotaal)}</span></div>
   </div>
   <div class="voet">
-    ${esc(BEDRIJF.naam)}${BEDRIJF.adresregel1 ? " · " + esc(BEDRIJF.adresregel1) : ""}${BEDRIJF.adresregel2 ? " · " + esc(BEDRIJF.adresregel2) : ""}<br>
+    ${esc(BEDRIJF.naam)}<br>
     KvK ${esc(BEDRIJF.kvk)}${BEDRIJF.btwId ? " · Btw-id " + esc(BEDRIJF.btwId) : ""} · IBAN ${esc(BEDRIJF.iban)} (BIC ${esc(BEDRIJF.bic)})<br>
     ${esc(BEDRIJF.email)} · ${esc(BEDRIJF.site)}
   </div>

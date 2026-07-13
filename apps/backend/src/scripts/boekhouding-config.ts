@@ -5,12 +5,10 @@ import path from "path";
  * (facturen-genereren.ts en btw-kwartaal.ts).
  */
 
-// Bedrijfsgegevens zoals ze op de factuur komen.
+// Bedrijfsgegevens zoals ze op de factuur komen. Facturen zijn intern
+// (eigen administratie) — klanten krijgen alleen de bevestigingsmail.
 export const BEDRIJF = {
   naam: "Gradepurity",
-  // TODO: publiek adres invullen zodra de ALLSAFE-postbus rond is.
-  adresregel1: process.env.GP_ADRES_REGEL1 ?? "",
-  adresregel2: process.env.GP_ADRES_REGEL2 ?? "",
   kvk: "42106879",
   // TODO: BTW-id invullen (staat op de brief van de Belastingdienst na KvK-inschrijving).
   btwId: process.env.GP_BTW_ID ?? "",
