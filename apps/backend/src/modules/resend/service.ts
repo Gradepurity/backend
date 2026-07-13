@@ -74,13 +74,30 @@ export default class ResendNotificationProviderService extends AbstractNotificat
       (notification.data ?? {}) as unknown as OrderEmailData
     )
 
-    const { data, error } = await this.resend.emails.send({
+    let { data, error } = await this.resend.emails.send({
       from: this.options.from,
       to: [notification.to],
       subject,
       html,
       ...(this.options.reply_to ? { replyTo: this.options.reply_to } : {}),
     })
+
+    // Resend limiteert op 2 req/sec; de klant- en admin-mail van dezelfde order
+    // gaan direct na elkaar de deur uit. Bij een rate-limit even wachten en één
+    // keer opnieuw proberen in plaats van de admin-mail stil te laten vallen.
+    if (error && /rate.?limit|too many/i.test(`${error.name} ${error.message}`)) {
+      this.logger.warn(
+        `Resend rate-limit bij ${notification.template} naar ${notification.to} — retry over 1,2s.`
+      )
+      await new Promise((r) => setTimeout(r, 1200))
+      ;({ data, error } = await this.resend.emails.send({
+        from: this.options.from,
+        to: [notification.to],
+        subject,
+        html,
+        ...(this.options.reply_to ? { replyTo: this.options.reply_to } : {}),
+      }))
+    }
 
     if (error) {
       this.logger.error(
