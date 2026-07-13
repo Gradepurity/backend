@@ -69,6 +69,13 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       verified ? "OK" : "FAALT"
     } (ts=${ts ?? "GEEN"}, rawBody=${raw ? "aanwezig" : "ONTBREEKT"})`
   )
+  if (!verified) {
+    // Strikte HMAC (terug sinds 13-07): echte Wallid-webhooks verifiëren
+    // aantoonbaar met het prod-secret, dus een mismatch = niet van Wallid.
+    // Vangnet blijft: de reconcile-cron rondt een gemiste betaling ≤3 min af.
+    res.sendStatus(401)
+    return
+  }
 
   const events =
     ((req.body as { events?: WallidWebhookEvent[] })?.events ?? []).filter((e) =>
