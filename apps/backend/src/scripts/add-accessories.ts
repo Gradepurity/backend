@@ -27,6 +27,15 @@ type Accessory = {
 
 const ACCESSORIES: Accessory[] = [
   {
+    // Standaard inbegrepen bij elke injecteerbare vial (gratis regel op de
+    // order); de storefront voegt hem automatisch toe, nooit los verkocht.
+    handle: "bacteriostatisch-water-3ml",
+    title: "Bacteriostatisch water 3ml",
+    description:
+      "3ml bacteriostatisch water voor reconstitutie, standaard inbegrepen bij elke vial. Uitsluitend voor laboratoriumonderzoek.",
+    priceCents: 0,
+  },
+  {
     handle: "bacteriostatisch-water-10ml",
     title: "Bacteriostatisch water 10ml",
     description:
