@@ -27,20 +27,30 @@ type Accessory = {
 
 const ACCESSORIES: Accessory[] = [
   {
-    // Standaard inbegrepen bij elke injecteerbare vial (gratis regel op de
-    // order); de storefront voegt hem automatisch toe, nooit los verkocht.
+    // Gratis regel: ÉÉN per order zodra er een injecteerbare peptide in de mand
+    // zit. De storefront voegt hem automatisch toe (INCLUDED_WATER_SLUG), nooit
+    // los verkocht — apart van het betaalde 3ml-verkoopproduct hieronder.
+    handle: "bacteriostatisch-water-3ml-inbegrepen",
+    title: "Bacteriostatisch water 3ml (inbegrepen)",
+    description:
+      "3ml bacteriostatisch water, standaard gratis inbegrepen bij elke bestelling met een injecteerbare peptide. Uitsluitend voor laboratoriumonderzoek.",
+    priceCents: 0,
+  },
+  {
+    // Los te koop in de shop. Prijs €6,95 — als het product al bestaat wordt
+    // het create hier overgeslagen; prijs zetten via set-variant-price.ts.
     handle: "bacteriostatisch-water-3ml",
     title: "Bacteriostatisch water 3ml",
     description:
-      "3ml bacteriostatisch water voor reconstitutie, standaard inbegrepen bij elke vial. Uitsluitend voor laboratoriumonderzoek.",
-    priceCents: 0,
+      "3ml bacteriostatisch water voor reconstitutie. Uitsluitend voor laboratoriumonderzoek.",
+    priceCents: 695,
   },
   {
     handle: "bacteriostatisch-water-10ml",
     title: "Bacteriostatisch water 10ml",
     description:
       "10ml bacteriostatisch water voor reconstitutie. Uitsluitend voor laboratoriumonderzoek.",
-    priceCents: 495,
+    priceCents: 995,
   },
   {
     handle: "insulinenaalden-1ml-10",
