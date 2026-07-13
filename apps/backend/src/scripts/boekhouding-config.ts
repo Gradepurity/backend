@@ -6,9 +6,11 @@ import path from "path";
  */
 
 // Bedrijfsgegevens zoals ze op de factuur komen. Facturen zijn intern
-// (eigen administratie) — klanten krijgen alleen de bevestigingsmail.
+// (eigen administratie, KvK-vestigingsadres mag hier) — klanten krijgen
+// alleen de bevestigingsmail.
 export const BEDRIJF = {
   naam: "Gradepurity",
+  adres: "Oslostraat 66, 6135 LM Sittard",
   kvk: "42106879",
   // TODO: BTW-id invullen (staat op de brief van de Belastingdienst na KvK-inschrijving).
   btwId: process.env.GP_BTW_ID ?? "",
