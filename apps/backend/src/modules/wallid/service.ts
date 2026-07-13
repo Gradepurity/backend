@@ -335,17 +335,23 @@ class WallidProviderService extends AbstractPaymentProvider<WallidOptions> {
 
     const verified = this.client_.verifyWebhookSignature(raw, ts, sig)
     if (!verified) {
-      // Log wélke reden, zonder het secret te lekken.
+      // Handtekening faalt (verkeerd prod-secret / klok-skew / body-mangeling).
+      // NIET zomaar weigeren: de order-aanmaak hangt hier volledig van af en de
+      // klant mag niet terug hoeven naar de bedankpagina. In plaats daarvan
+      // vertrouwen we op de AUTHORITATIVE server-side status-call hieronder
+      // (getPayment bij Wallid): alleen een echt op SUCCESS staande betaling met
+      // een geldig, ongokbaar api_payment_id wordt verwerkt. De HMAC is dan
+      // defense-in-depth, niet de enige poort.
       let reden = "signature-mismatch"
       if (!ts || !sig) reden = "ontbrekende header(s)"
       else if (!Number.isFinite(tsNum)) reden = "timestamp niet-numeriek"
-      else if (Number.isFinite(ageSec) && ageSec > 300) reden = `timestamp te oud (${Math.round(ageSec)}s > 300s) — klok-skew?`
+      else if (Number.isFinite(ageSec) && ageSec > 300) reden = `timestamp te oud (${Math.round(ageSec)}s) — klok-skew?`
       this.logger_.warn(
-        `[WALLID-HOOK] GEWEIGERD (${reden}). Als de betaling wél slaagde, maakt de reconcile-job de order alsnog binnen ~3 min.`
+        `[WALLID-HOOK] signature faalde (${reden}) — val terug op authoritative Wallid-status-check.`
       )
-      return { action: PaymentActions.NOT_SUPPORTED }
+    } else {
+      this.logger_.info("[WALLID-HOOK] signature OK.")
     }
-    this.logger_.info("[WALLID-HOOK] signature OK — order wordt aangemaakt.")
 
     const events = (data as { events?: WallidWebhookEvent[] })?.events ?? []
     const finalEvents = events.filter(
