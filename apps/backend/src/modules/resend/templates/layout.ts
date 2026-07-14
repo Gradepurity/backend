@@ -100,6 +100,7 @@ export type ShippingAddress = {
   postal_code?: string | null
   city?: string | null
   country_code?: string | null
+  phone?: string | null
 }
 
 /** Bedragen in Medusa v2 zijn decimalen (19.99), niet centen. */
@@ -166,6 +167,7 @@ export function renderAddress(addr: ShippingAddress): string {
     addr.address_1,
     [addr.postal_code, addr.city].filter(Boolean).join(" "),
     addr.country_code?.toUpperCase(),
+    addr.phone ? `Tel: ${addr.phone}` : null,
   ].filter(Boolean)
   return parts.map((p) => escapeHtml(String(p))).join("<br/>")
 }

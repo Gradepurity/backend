@@ -62,6 +62,7 @@ export async function buildOrderEmailData(
       "shipping_address.postal_code",
       "shipping_address.city",
       "shipping_address.country_code",
+      "shipping_address.phone",
       "payment_collections.payments.provider_id",
     ],
     filters: { id: orderId },
