@@ -29,7 +29,8 @@ export default async function captureBankPayment({ container, args }: ExecArgs) 
       "payment_collections.payments.amount",
       "payment_collections.payments.captured_at",
     ],
-    filters: { display_id: displayId },
+    // display_id is numeriek in de DB maar het gegenereerde filter-type verwacht string
+    filters: { display_id: displayId as unknown as string },
   });
 
   const order = (orders as any[])[0];
