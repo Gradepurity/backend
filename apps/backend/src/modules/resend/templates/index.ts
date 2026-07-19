@@ -47,6 +47,7 @@ export type RenderedEmail = { subject: string; html: string }
 
 export type TemplateId =
   | "order-placed"
+  | "payment-reminder"
   | "payment-captured"
   | "order-shipped"
   | "admin-new-order"
@@ -67,6 +68,8 @@ export function render(template: TemplateId, data: OrderEmailData): RenderedEmai
   switch (template) {
     case "order-placed":
       return orderPlaced(data, locale)
+    case "payment-reminder":
+      return paymentReminder(data, locale)
     case "payment-captured":
       return paymentCaptured(data, locale)
     case "order-shipped":
@@ -86,27 +89,7 @@ function orderPlaced(data: OrderEmailData, locale: Locale): RenderedEmail {
   const method = data.payment_method ?? "other"
   const payNote = method === "bank" ? c.placed.bank : method === "crypto" ? c.placed.crypto : c.placed.generic
 
-  // Betaalkenmerk — zelfde formaat als op de bevestigingspagina (GP-00012),
-  // zodat overschrijvingen op één kenmerk te matchen zijn.
-  const orderRef = `GP-${String(data.display_id).padStart(5, "0")}`
-  const bankRow = (label: string, value: string) => `
-      <tr>
-        <td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;white-space:nowrap;">${label}</td>
-        <td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${value}</td>
-      </tr>`
-  const bankBlock =
-    method === "bank"
-      ? `
-    <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
-      <table role="presentation" cellpadding="0" cellspacing="0">
-        ${bankRow(c.placed.bankDetails.payee, BANK.payee)}
-        ${bankRow("IBAN", BANK.iban)}
-        ${bankRow("BIC", BANK.bic)}
-        ${bankRow(c.placed.bankDetails.amount, money(data.totals.total, data.currency_code, locale))}
-        ${bankRow(c.placed.bankDetails.reference, `<strong>${orderRef}</strong>`)}
-      </table>
-    </div>`
-      : ""
+  const bankBlock = method === "bank" ? bankDetailsBlock(data, locale) : ""
 
   const body = `
     <p style="margin:0 0 16px;">${c.placed.intro}</p>
@@ -125,6 +108,29 @@ function orderPlaced(data: OrderEmailData, locale: Locale): RenderedEmail {
   return {
     subject: `${c.placed.subject} ${orderNo}`,
     html: renderLayout({ preheader: c.placed.preheader, heading: c.placed.heading, body }, locale),
+  }
+}
+
+// ── 1b. Betaalherinnering — vooruitbetaling nog niet binnen ───────────────────
+
+function paymentReminder(data: OrderEmailData, locale: Locale): RenderedEmail {
+  const c = COPY[locale]
+  const orderNo = `#${data.display_id}`
+  const body = `
+    <p style="margin:0 0 16px;">${c.reminder.intro}</p>
+    <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
+      <span style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};">${c.orderNumber}</span><br/>
+      <span style="font-family:Georgia,serif;font-size:20px;color:${UI.navy};">${orderNo}</span>
+    </div>
+    <p style="margin:0 0 24px;color:${UI.muted};">${c.reminder.text}</p>
+    ${bankDetailsBlock(data, locale)}
+    <h2 style="margin:0 0 4px;font-family:Georgia,serif;font-size:18px;font-weight:400;color:${UI.text};">${c.summary}</h2>
+    ${renderOrderTable(data.items, data.totals, data.currency_code, locale)}
+    <p style="margin:24px 0 0;color:${UI.muted};">${c.reminder.outro}</p>
+  `
+  return {
+    subject: `${c.reminder.subject} ${orderNo}`,
+    html: renderLayout({ preheader: c.reminder.preheader, heading: c.reminder.heading, body }, locale),
   }
 }
 
@@ -224,6 +230,31 @@ function adminNewOrder(data: OrderEmailData): RenderedEmail {
 
 // ── Gedeelde fragmenten ───────────────────────────────────────────────────────
 
+/**
+ * Bankgegevens-tabel voor vooruitbetaling, met het GP-kenmerk in hetzelfde
+ * formaat als op de bevestigingspagina (GP-00012) zodat overschrijvingen op
+ * één kenmerk te matchen zijn.
+ */
+function bankDetailsBlock(data: OrderEmailData, locale: Locale): string {
+  const labels = COPY[locale].placed.bankDetails
+  const orderRef = `GP-${String(data.display_id).padStart(5, "0")}`
+  const bankRow = (label: string, value: string) => `
+      <tr>
+        <td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;white-space:nowrap;">${label}</td>
+        <td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${value}</td>
+      </tr>`
+  return `
+    <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
+      <table role="presentation" cellpadding="0" cellspacing="0">
+        ${bankRow(labels.payee, BANK.payee)}
+        ${bankRow("IBAN", BANK.iban)}
+        ${bankRow("BIC", BANK.bic)}
+        ${bankRow(labels.amount, money(data.totals.total, data.currency_code, locale))}
+        ${bankRow(labels.reference, `<strong>${orderRef}</strong>`)}
+      </table>
+    </div>`
+}
+
 function addressBlock(data: OrderEmailData, c: { shippingTo: string }): string {
   if (!data.shipping_address) return ""
   return `
@@ -276,6 +307,14 @@ const COPY = {
         text: "Zodra je betaling verwerkt is, ontvang je een bevestiging en verzenden we je bestelling.",
       },
     },
+    reminder: {
+      subject: "Herinnering: je bestelling wacht op betaling —",
+      preheader: "We hebben je betaling nog niet ontvangen.",
+      heading: "Je bestelling wacht nog op betaling",
+      intro: "Een tijdje geleden plaatste je een bestelling bij GradePurity, maar we hebben je betaling nog niet ontvangen.",
+      text: "Maak het bedrag over met onderstaande gegevens en vermeld het kenmerk bij je overschrijving. Zodra de betaling binnen is, sturen we je een bevestiging en verzenden we je bestelling.",
+      outro: "Al betaald? Dan kunnen de betaling en deze mail elkaar gekruist hebben — je hoeft niets te doen. Wil je de bestelling liever annuleren of heb je een vraag? Reageer dan gerust op deze mail.",
+    },
     paid: {
       subject: "Betaling ontvangen —",
       preheader: "Je betaling is binnen, je bestelling wordt klaargemaakt.",
@@ -324,6 +363,14 @@ const COPY = {
         text: "As soon as your payment is processed, you'll receive a confirmation and we'll ship your order.",
       },
     },
+    reminder: {
+      subject: "Reminder: your order is awaiting payment —",
+      preheader: "We haven't received your payment yet.",
+      heading: "Your order is still awaiting payment",
+      intro: "A little while ago you placed an order at GradePurity, but we haven't received your payment yet.",
+      text: "Transfer the amount using the details below and include the reference with your transfer. Once the payment arrives, we'll send a confirmation and ship your order.",
+      outro: "Already paid? Then your payment and this email may have crossed — no action needed. Prefer to cancel your order, or have a question? Just reply to this email.",
+    },
     paid: {
       subject: "Payment received —",
       preheader: "Your payment is in, your order is being prepared.",
@@ -371,6 +418,14 @@ const COPY = {
         title: "Warten auf Zahlung",
         text: "Sobald Ihre Zahlung verarbeitet ist, erhalten Sie eine Bestätigung und wir versenden Ihre Bestellung.",
       },
+    },
+    reminder: {
+      subject: "Erinnerung: Ihre Bestellung wartet auf Zahlung —",
+      preheader: "Wir haben Ihre Zahlung noch nicht erhalten.",
+      heading: "Ihre Bestellung wartet noch auf Zahlung",
+      intro: "Vor einiger Zeit haben Sie eine Bestellung bei GradePurity aufgegeben, wir haben Ihre Zahlung jedoch noch nicht erhalten.",
+      text: "Überweisen Sie den Betrag mit den untenstehenden Daten und geben Sie den Verwendungszweck bei Ihrer Überweisung an. Sobald die Zahlung eingeht, senden wir eine Bestätigung und versenden Ihre Bestellung.",
+      outro: "Bereits bezahlt? Dann haben sich Zahlung und diese E-Mail möglicherweise überschnitten — Sie müssen nichts tun. Möchten Sie die Bestellung lieber stornieren oder haben Sie eine Frage? Antworten Sie einfach auf diese E-Mail.",
     },
     paid: {
       subject: "Zahlung erhalten —",
