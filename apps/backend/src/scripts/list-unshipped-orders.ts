@@ -30,9 +30,9 @@ export default async function listUnshippedOrders({ container }: { container: Me
     ],
   });
 
-  const sorted = (orders as any[]).sort((a, b) =>
-    String(b.created_at).localeCompare(String(a.created_at))
-  );
+  const sorted = (orders as any[])
+    .filter((o) => o.status !== "canceled")
+    .sort((a, b) => String(b.created_at).localeCompare(String(a.created_at)));
 
   logger.info(`\n===== LAATSTE 15 ORDERS (nieuwste eerst) =====`);
   for (const o of sorted.slice(0, 15)) {
