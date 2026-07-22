@@ -91,13 +91,12 @@ export default async function addGhkCu100({
     fields: ["id", "location_levels.id"],
   });
   const withoutLevel = inventoryItems.filter(
-    (i: { location_levels?: unknown[] }) =>
-      !i.location_levels || i.location_levels.length === 0
+    (i) => !i.location_levels || i.location_levels.length === 0
   );
   if (withoutLevel.length) {
     await createInventoryLevelsWorkflow(container).run({
       input: {
-        inventory_levels: withoutLevel.map((item: { id: string }) => ({
+        inventory_levels: withoutLevel.map((item) => ({
           location_id: stockLocation.id,
           stocked_quantity: STOCK,
           inventory_item_id: item.id,
