@@ -2090,6 +2090,79 @@
       }
     },
     {
+      "id": "p33",
+      "slug": "aod9604",
+      "hub": "metabool",
+      "name": "AOD9604",
+      "code": "AOD9604",
+      "tagline": "Gemodificeerd hGH-fragment (176-191), onderzocht rond vetafbraak.",
+      "shortDescription": "Gemodificeerd fragment van het menselijk groeihormoon (residuen 176-191), onderzocht rond lipolyse zonder de bloedsuiker- en groei-effecten van volledig groeihormoon. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "longDescription": "AOD9604 is een synthetisch peptide afgeleid van het C-terminale fragment (176-191) van humaan groeihormoon, met een extra tyrosine. Ontwikkeld door Metabolic Pharmaceuticals en in onderzoek bestudeerd rond vetafbraak (lipolyse) en het remmen van lipogenese, zonder significante effecten op glucose of IGF-1. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 4995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "aod-5mg",
+          "name": "5 mg vial",
+          "priceCents": 4995
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "AOD9604 (gemodificeerd hGH-fragment)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wordt AOD9604 als vial geleverd?",
+          "a": "Ja, uitsluitend als gevriesdroogde vial voor laboratoriumonderzoek. Orale capsules of pennen voeren we niet."
+        }
+      ],
+      "reviews": {
+        "rating": 4.7,
+        "count": 23
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "AOD",
+      "peptide": {
+        "synonyms": [
+          "AOD-9604",
+          "Tyr-hGH 176-191"
+        ],
+        "sequence": "Tyr-Leu-Arg-Ile-Val-Gln-Cys-Arg-Ser-Val-Glu-Gly-Ser-Cys-Gly-Phe",
+        "molecularWeight": 1815.08,
+        "formula": "C₇₈H₁₂₃N₂₃O₂₃S₂",
+        "purityPct": 99.2,
+        "vialMg": 5,
+        "cas": "221231-10-3",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
       "id": "b1",
       "slug": "recovery-stack",
       "hub": "bundles",
@@ -2325,6 +2398,70 @@
         },
         {
           "name": "Semaglutide",
+          "vialMg": 5
+        }
+      ]
+    },
+    {
+      "id": "b5",
+      "slug": "reta-cagri-stack",
+      "hub": "metabool",
+      "name": "Reta + Cagri Stack",
+      "code": "RETA + CAGRI",
+      "tagline": "Retatrutide + Cagrilintide — quad-route metabool.",
+      "shortDescription": "Triple-agonist Retatrutide (10 mg vial) naast amyline-analoog Cagrilintide (5 mg vial). Twee aparte vials voor een gestaffeld onderzoeksprotocol.",
+      "longDescription": "Retatrutide (GLP-1 / GIP / glucagon triple agonist) gecombineerd met Cagrilintide (amyline-analoog) dekt vier onafhankelijke metabole routes af. De combinatie is in de onderzoeksliteratuur afgeleid van de CagriSema fase-3 data; een eigen klinische trial van exact deze stack is er nog niet (juni 2026). Geleverd als twee aparte gelyofiliseerde vials — Retatrutide en Cagrilintide worden gescheiden bewaard en gereconstitueerd, zodat een gestaffeld titratieprotocol mogelijk blijft. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 13995,
+      "comparePriceCents": 15490,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Bundle · 10% korting",
+        "Research only"
+      ],
+      "benefits": [
+        "Retatrutide 10 mg + Cagrilintide 5 mg",
+        "Twee aparte vials — niet voorgemengd",
+        "HPLC ≥ 99% per component",
+        "COA per component meegeleverd"
+      ],
+      "howItWorks": [
+        {
+          "title": "Inhoud",
+          "description": "Twee aparte gelyofiliseerde vials in één pakket."
+        },
+        {
+          "title": "Reconstitueer",
+          "description": "Elk peptide los met bacteriostatisch water volgens eigen protocol."
+        },
+        {
+          "title": "Documenteer",
+          "description": "Beide COAs en lotnummers archiveren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Waarom aparte vials en niet voorgemengd zoals CagriSema?",
+          "a": "In de gangbare onderzoeksprotocollen wordt Retatrutide eerst los getitreerd (tot ~2–4 mg/week) en pas daarna Cagrilintide vanaf 0,25 mg/week toegevoegd, elk met een eigen titratieschema. Aparte vials maken die gestaffeld opbouw mogelijk; een voormengsel zou de twee titraties aan elkaar koppelen."
+        },
+        {
+          "q": "Is deze combinatie klinisch onderzocht?",
+          "a": "Niet als exacte combinatie. Retatrutide en Cagrilintide hebben elk eigen fase-2/3 data, en de combinatie wordt geëxtrapoleerd uit de CagriSema fase-3 trials (Cagrilintide + Semaglutide). Behandel het protocol als experimenteel en raadpleeg primaire literatuur."
+        }
+      ],
+      "reviews": {
+        "rating": 4.8,
+        "count": 11
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#DCE6F3_0%,#88A4CC_55%,#1F3F6E_100%)]",
+      "imageInitials": "RC",
+      "bundle": [
+        {
+          "name": "Retatrutide",
+          "vialMg": 10
+        },
+        {
+          "name": "Cagrilintide",
           "vialMg": 5
         }
       ]
