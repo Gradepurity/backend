@@ -2469,7 +2469,7 @@
       "tagline": "Voorgemengde herstel-blend: BPC-157, GHK-Cu, TB-500 én KPV in één vial.",
       "shortDescription": "Eén vial met vier peptiden die in onderzoek rond herstel en weefsel worden bestudeerd: BPC-157, GHK-Cu, TB-500 en KPV. Uitgebreide versie van de GLOW-blend. Uitsluitend bestemd voor laboratoriumonderzoek.",
       "longDescription": "KLOW is een voorgemengde combinatie van vier peptiden in één vial: BPC-157 (10 mg), GHK-Cu (50 mg), TB-500 (10 mg) en KPV (10 mg) — de uitgebreide versie van de GLOW-blend, met KPV als vierde component. In onderzoek worden deze peptiden elk rond herstel, weefsel en ontsteking bestudeerd. Uitsluitend bestemd voor laboratoriumonderzoek.",
-      "priceCents": 9995,
+      "priceCents": 12495,
       "prescription": false,
       "researchOnly": true,
       "badges": [
@@ -2479,7 +2479,7 @@
         {
           "id": "klow-80mg",
           "name": "80 mg vial",
-          "priceCents": 9995
+          "priceCents": 12495
         }
       ],
       "benefits": [
