@@ -2385,6 +2385,77 @@
       }
     },
     {
+      "id": "p37",
+      "slug": "cjc-1295-ipamorelin",
+      "hub": "hormonaal",
+      "name": "CJC-1295 + Ipamorelin",
+      "code": "CJC-IPA",
+      "tagline": "Voorgemengde GH-blend: CJC-1295 (zonder DAC) + Ipamorelin in één vial.",
+      "shortDescription": "Eén vial met de voorgemengde combinatie van CJC-1295 (zonder DAC) en Ipamorelin, in onderzoek samen bestudeerd rond de groeihormoon-afgifte. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "longDescription": "Voorgemengde vial met CJC-1295 (zonder DAC) en Ipamorelin. In onderzoek worden deze twee vaak samen bestudeerd: CJC-1295 als GHRH-analoog tilt de basisafgifte omhoog, Ipamorelin als GHRP lokt een korte puls uit. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 6495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "cji-10mg",
+          "name": "10 mg vial",
+          "priceCents": 6495
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "CJC-1295 zonder DAC (5 mg)",
+        "Ipamorelin (5 mg)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wat zit er in de vial?",
+          "a": "Eén voorgemengde vial met 5 mg CJC-1295 (zonder DAC) en 5 mg Ipamorelin samen, klaar voor reconstitutie."
+        }
+      ],
+      "reviews": {
+        "rating": 4.8,
+        "count": 33
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "CJI",
+      "peptide": {
+        "synonyms": [
+          "CJC-1295/Ipamorelin",
+          "Mod GRF 1-29 + Ipamorelin",
+          "CJC + IPA blend"
+        ],
+        "purityPct": 99.2,
+        "vialMg": 10,
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
       "id": "b1",
       "slug": "recovery-stack",
       "hub": "bundles",
