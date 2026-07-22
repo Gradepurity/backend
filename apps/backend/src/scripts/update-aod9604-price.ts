@@ -7,7 +7,7 @@ import { updateProductVariantsWorkflow } from "@medusajs/medusa/core-flows";
  * Non-destructief — werkt alleen het price set van de bestaande variant bij.
  */
 const TARGET_SLUG = "aod9604";
-const NEW_AMOUNT = 44.95;
+const NEW_AMOUNT = 39.95;
 
 export default async function updateAod9604Price({
   container,

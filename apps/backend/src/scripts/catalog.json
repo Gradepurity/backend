@@ -2103,7 +2103,7 @@
       "tagline": "Gemodificeerd hGH-fragment (176-191), onderzocht rond vetafbraak.",
       "shortDescription": "Gemodificeerd fragment van het menselijk groeihormoon (residuen 176-191), onderzocht rond lipolyse zonder de bloedsuiker- en groei-effecten van volledig groeihormoon. Uitsluitend bestemd voor laboratoriumonderzoek.",
       "longDescription": "AOD9604 is een synthetisch peptide afgeleid van het C-terminale fragment (176-191) van humaan groeihormoon, met een extra tyrosine. Ontwikkeld door Metabolic Pharmaceuticals en in onderzoek bestudeerd rond vetafbraak (lipolyse) en het remmen van lipogenese, zonder significante effecten op glucose of IGF-1. Uitsluitend bestemd voor laboratoriumonderzoek.",
-      "priceCents": 4495,
+      "priceCents": 3995,
       "prescription": false,
       "researchOnly": true,
       "badges": [
@@ -2113,7 +2113,7 @@
         {
           "id": "aod-5mg",
           "name": "5 mg vial",
-          "priceCents": 4495
+          "priceCents": 3995
         }
       ],
       "benefits": [
