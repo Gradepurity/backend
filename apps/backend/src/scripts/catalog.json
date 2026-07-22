@@ -271,6 +271,11 @@
           "id": "v3-50mg",
           "name": "50 mg vial",
           "priceCents": 2995
+        },
+        {
+          "id": "v3-100mg",
+          "name": "100 mg vial",
+          "priceCents": 4995
         }
       ],
       "benefits": [
