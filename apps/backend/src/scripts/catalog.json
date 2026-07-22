@@ -2163,6 +2163,81 @@
       }
     },
     {
+      "id": "p34",
+      "slug": "thymosin-alpha-1",
+      "hub": "regeneratie",
+      "name": "Thymosin Alpha-1",
+      "code": "THYMOSIN-A1",
+      "tagline": "Thymus-peptide (28 aminozuren), onderzocht rond de immuunrespons.",
+      "shortDescription": "Van nature voorkomend thymus-peptide van 28 aminozuren, in onderzoek bestudeerd als immuunmodulator. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "longDescription": "Thymosin Alpha-1 is een peptide van 28 aminozuren dat van nature in de thymus wordt aangemaakt en in onderzoek bekendstaat als immuunmodulator, met studies rond de aansturing van T-cellen en de bredere afweer. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 6495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "ta1-10mg",
+          "name": "10 mg vial",
+          "priceCents": 6495
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Thymosin Alpha-1 acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wordt Thymosin Alpha-1 als vial geleverd?",
+          "a": "Ja, uitsluitend als gevriesdroogde vial voor laboratoriumonderzoek. Orale capsules of pennen voeren we niet."
+        }
+      ],
+      "reviews": {
+        "rating": 4.8,
+        "count": 31
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]",
+      "imageInitials": "TA1",
+      "peptide": {
+        "synonyms": [
+          "Tα1",
+          "TA1",
+          "Thymalfasin",
+          "Zadaxin"
+        ],
+        "sequence": "Ac-Ser-Asp-Ala-Ala-Val-Asp-Thr-Ser-Ser-Glu-Ile-Thr-Thr-Lys-Asp-Leu-Lys-Glu-Lys-Lys-Glu-Val-Val-Glu-Glu-Ala-Glu-Asn",
+        "molecularWeight": 3108.3,
+        "formula": "C₁₂₉H₂₁₅N₃₃O₅₅",
+        "purityPct": 99.1,
+        "vialMg": 10,
+        "cas": "62304-98-7",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
       "id": "b1",
       "slug": "recovery-stack",
       "hub": "bundles",
