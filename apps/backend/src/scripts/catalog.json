@@ -2311,6 +2311,80 @@
       }
     },
     {
+      "id": "p36",
+      "slug": "sermorelin",
+      "hub": "hormonaal",
+      "name": "Sermorelin",
+      "code": "SERMORELIN",
+      "tagline": "GHRH-analoog (GRF 1-29), onderzocht rond de groeihormoon-afgifte.",
+      "shortDescription": "Analoog van het groeihormoon-afgevende hormoon (eerste 29 aminozuren van GHRH), in onderzoek bestudeerd rond stimulatie van de eigen groeihormoon-afgifte. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "longDescription": "Sermorelin komt overeen met de eerste 29 aminozuren van het natuurlijke GHRH, het kortste fragment dat de volledige werking behoudt, en wordt in onderzoek bestudeerd als GHRH-analoog die de hypofyse aanzet tot afgifte van het eigen groeihormoon. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 7995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "smo-10mg",
+          "name": "10 mg vial",
+          "priceCents": 7995
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "Sermorelin acetaat",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wordt Sermorelin als vial geleverd?",
+          "a": "Ja, uitsluitend als gevriesdroogde vial voor laboratoriumonderzoek. Orale capsules of pennen voeren we niet."
+        }
+      ],
+      "reviews": {
+        "rating": 4.7,
+        "count": 24
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_20%,#16243E_0%,#0B1120_55%,#05070E_100%)]",
+      "imageInitials": "SRM",
+      "peptide": {
+        "synonyms": [
+          "GRF 1-29",
+          "GHRH (1-29)",
+          "Geref"
+        ],
+        "sequence": "Tyr-Ala-Asp-Ala-Ile-Phe-Thr-Asn-Ser-Tyr-Arg-Lys-Val-Leu-Gly-Gln-Leu-Ser-Ala-Arg-Lys-Leu-Leu-Gln-Asp-Ile-Met-Ser-Arg-NH₂",
+        "molecularWeight": 3357.9,
+        "formula": "C₁₄₉H₂₄₆N₄₄O₄₂S",
+        "purityPct": 99.2,
+        "vialMg": 10,
+        "cas": "86168-78-7",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
       "id": "b1",
       "slug": "recovery-stack",
       "hub": "bundles",
