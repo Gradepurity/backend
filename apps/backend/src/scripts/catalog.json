@@ -2238,6 +2238,79 @@
       }
     },
     {
+      "id": "p35",
+      "slug": "kpv",
+      "hub": "regeneratie",
+      "name": "KPV",
+      "code": "KPV",
+      "tagline": "Tripeptide (Lys-Pro-Val), fragment van α-MSH, onderzocht rond ontsteking.",
+      "shortDescription": "Klein tripeptide (lysine-proline-valine), het C-terminale fragment van α-MSH, in onderzoek bestudeerd rond ontstekingsprocessen. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "longDescription": "KPV is een tripeptide (lysine, proline, valine) en het C-terminale fragment van het hormoon α-MSH, in onderzoek bestudeerd rond ontstekingsprocessen met aandacht voor darm- en huidmodellen. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 3495,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "kpv-10mg",
+          "name": "10 mg vial",
+          "priceCents": 3495
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "KPV (Lys-Pro-Val)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wordt KPV als vial geleverd?",
+          "a": "Ja, uitsluitend als gevriesdroogde vial voor laboratoriumonderzoek. Orale capsules of pennen voeren we niet."
+        }
+      ],
+      "reviews": {
+        "rating": 4.7,
+        "count": 27
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "KPV",
+      "peptide": {
+        "synonyms": [
+          "Lys-Pro-Val",
+          "α-MSH (11-13)"
+        ],
+        "sequence": "Lys-Pro-Val",
+        "molecularWeight": 342.43,
+        "formula": "C₁₆H₃₀N₄O₄",
+        "purityPct": 99.3,
+        "vialMg": 10,
+        "cas": "67727-97-3",
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
       "id": "b1",
       "slug": "recovery-stack",
       "hub": "bundles",
