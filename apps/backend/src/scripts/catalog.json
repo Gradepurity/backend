@@ -2461,6 +2461,79 @@
       }
     },
     {
+      "id": "p38",
+      "slug": "klow",
+      "hub": "regeneratie",
+      "name": "KLOW",
+      "code": "KLOW",
+      "tagline": "Voorgemengde herstel-blend: BPC-157, GHK-Cu, TB-500 én KPV in één vial.",
+      "shortDescription": "Eén vial met vier peptiden die in onderzoek rond herstel en weefsel worden bestudeerd: BPC-157, GHK-Cu, TB-500 en KPV. Uitgebreide versie van de GLOW-blend. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "longDescription": "KLOW is een voorgemengde combinatie van vier peptiden in één vial: BPC-157 (10 mg), GHK-Cu (50 mg), TB-500 (10 mg) en KPV (10 mg) — de uitgebreide versie van de GLOW-blend, met KPV als vierde component. In onderzoek worden deze peptiden elk rond herstel, weefsel en ontsteking bestudeerd. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 9995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "klow-80mg",
+          "name": "80 mg vial",
+          "priceCents": 9995
+        }
+      ],
+      "benefits": [
+        "Gesynthetiseerd onder GMP-condities",
+        "HPLC ≥ 99% zuiverheid",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "BPC-157 (10 mg)",
+        "GHK-Cu (50 mg)",
+        "TB-500 (10 mg)",
+        "KPV (10 mg)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "COA en lotnummer bewaren bij onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wat zit er in de KLOW-vial?",
+          "a": "Eén voorgemengde vial met BPC-157 (10 mg), GHK-Cu (50 mg), TB-500 (10 mg) en KPV (10 mg) samen, klaar voor reconstitutie."
+        }
+      ],
+      "reviews": {
+        "rating": 4.8,
+        "count": 29
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_70%_30%,#152C50_0%,#0A1424_80%)]",
+      "imageInitials": "KLW",
+      "peptide": {
+        "synonyms": [
+          "KL80",
+          "BPC-157 + GHK-Cu + TB-500 + KPV blend",
+          "GLOW + KPV"
+        ],
+        "purityPct": 99,
+        "vialMg": 80,
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
       "id": "b1",
       "slug": "recovery-stack",
       "hub": "bundles",
