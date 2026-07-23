@@ -2534,6 +2534,77 @@
       }
     },
     {
+      "id": "p39",
+      "slug": "bpc-157-tb-500",
+      "hub": "regeneratie",
+      "name": "BPC-157 + TB-500",
+      "code": "BPC-TB",
+      "tagline": "Voorgemengde herstel-blend: BPC-157 + TB-500 in één vial — de \"Wolverine\"-combinatie.",
+      "shortDescription": "BPC-157 + TB-500 kopen — ≥99% HPLC, same-day uit Nederland. Voorgemengde research-vial met de twee peptiden die in herstel-onderzoek vaak samen worden bestudeerd. Uitsluitend voor laboratoriumonderzoek.",
+      "longDescription": "Voorgemengde vial met BPC-157 (5 mg) en TB-500 (5 mg) — het duo dat in herstel-onderzoek zelden apart voorkomt en online bekendstaat als de \"Wolverine\"-stack. BPC-157 wordt vooral lokaal rond pezen, banden en het maag-darmslijmvlies bestudeerd, TB-500 als fragment van thymosine bèta-4 rond celmigratie en systemisch weefselherstel. Uitsluitend bestemd voor laboratoriumonderzoek.",
+      "priceCents": 5995,
+      "prescription": false,
+      "researchOnly": true,
+      "badges": [
+        "Research only"
+      ],
+      "variants": [
+        {
+          "id": "bpctb-10mg",
+          "name": "10 mg vial",
+          "priceCents": 5995
+        }
+      ],
+      "benefits": [
+        "BPC-157 + TB-500 voorgemengd, vaste verhouding",
+        "HPLC ≥ 99% zuiverheid per component",
+        "Gelyofiliseerd voor verzending",
+        "Volledige COA per batch"
+      ],
+      "ingredients": [
+        "BPC-157 (5 mg)",
+        "TB-500 (5 mg)",
+        "Mannitol (excipient)"
+      ],
+      "howItWorks": [
+        {
+          "title": "Reconstitueer",
+          "description": "Met bacteriostatisch water volgens protocol."
+        },
+        {
+          "title": "Bewaar",
+          "description": "Na reconstitutie 2–8°C, gebruik binnen 14 dagen."
+        },
+        {
+          "title": "Documenteer",
+          "description": "Noteer lotnummer en condities in je onderzoeksdossier."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Wat zit er in de vial?",
+          "a": "Eén voorgemengde vial met 5 mg BPC-157 en 5 mg TB-500 samen, klaar voor reconstitutie."
+        }
+      ],
+      "reviews": {
+        "rating": 4.8,
+        "count": 27
+      },
+      "imageGradient": "bg-[radial-gradient(circle_at_30%_30%,#DCE6F3_0%,#88A4CC_55%,#1F3F6E_100%)]",
+      "imageInitials": "BT",
+      "peptide": {
+        "synonyms": [
+          "BPC-157/TB-500",
+          "Wolverine stack",
+          "BPC + TB blend"
+        ],
+        "purityPct": 99.2,
+        "vialMg": 10,
+        "storage": "−20°C · droog · donker",
+        "coaAvailable": true
+      }
+    },
+    {
       "id": "b1",
       "slug": "recovery-stack",
       "hub": "bundles",
