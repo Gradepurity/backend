@@ -243,19 +243,21 @@ function adminNewOrder(data: OrderEmailData): RenderedEmail {
 function bankDetailsBlock(data: OrderEmailData, locale: Locale): string {
   const labels = COPY[locale].placed.bankDetails
   const orderRef = `GP-${String(data.display_id).padStart(5, "0")}`
-  const bankRow = (label: string, value: string) => `
+  // IBAN/BIC/kenmerk in monospace: in Georgia is de hoofdletter O vrijwel
+  // gelijk aan een nul (FNOM leest als FN0M) — bij overtypen gaat dat mis.
+  const bankRow = (label: string, value: string, mono = false) => `
       <tr>
         <td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;white-space:nowrap;">${label}</td>
-        <td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${value}</td>
+        <td style="font-family:${mono ? "Consolas,'Courier New',monospace" : "Georgia,serif"};font-size:${mono ? 14 : 15}px;color:${UI.navy};padding:3px 0;letter-spacing:${mono ? "0.5px" : "normal"};">${value}</td>
       </tr>`
   return `
     <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
       <table role="presentation" cellpadding="0" cellspacing="0">
         ${bankRow(labels.payee, BANK.payee)}
-        ${bankRow("IBAN", BANK.iban)}
-        ${bankRow("BIC", BANK.bic)}
+        ${bankRow("IBAN", BANK.iban, true)}
+        ${bankRow("BIC", BANK.bic, true)}
         ${bankRow(labels.amount, money(data.totals.total, data.currency_code, locale))}
-        ${bankRow(labels.reference, `<strong>${orderRef}</strong>`)}
+        ${bankRow(labels.reference, `<strong>${orderRef}</strong>`, true)}
       </table>
     </div>`
 }
