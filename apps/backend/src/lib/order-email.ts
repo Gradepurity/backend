@@ -49,6 +49,7 @@ export async function buildOrderEmailData(
       "id",
       "display_id",
       "email",
+      "metadata",
       "currency_code",
       "total",
       "item_total",
@@ -82,6 +83,11 @@ export async function buildOrderEmailData(
     unit_price: toNum(i.unit_price),
   }))
 
+  // Gratis cadeaus (reward-ladder) zijn géén orderregels: de storefront legt ze
+  // vast in metadata.gifts als "1× ghk-cu (50 mg vial), ...". Zonder deze stap
+  // ontbreken ze in elke mail — klant én admin zien dan niet wat er bij moet.
+  items.push(...(await buildGiftLines(query, order)))
+
   // Kortingscode-korting: item_total is ná promotie-adjustments, de regels
   // (unit_price × aantal) zijn ervóór — het verschil is de korting. Zo hoeven
   // we discount_total niet op te vragen (zelfde 2.15-bug als hierboven) en
@@ -112,6 +118,63 @@ export async function buildOrderEmailData(
   }
 
   return { email: order.email, data }
+}
+
+/** Cadeau-label in de taal die resolveLocale in de templates ook kiest. */
+const GIFT_LABEL: Record<string, string> = {
+  nl: "gratis cadeau",
+  en: "free gift",
+  de: "Gratisgeschenk",
+}
+
+/**
+ * Zet metadata.gifts ("1× ghk-cu (50 mg vial), 1× tb-500 (2 mg vial)") om in
+ * €0-orderregels met de echte productnaam. Formaat komt uit buildOrderMetadata
+ * in de storefront (checkout.ts) — bij wijziging daar ook hier aanpassen.
+ */
+async function buildGiftLines(
+  query: any,
+  order: any
+): Promise<{ title: string; subtitle: string; quantity: number; unit_price: number }[]> {
+  const giftsRaw = order?.metadata?.gifts
+  if (typeof giftsRaw !== "string" || !giftsRaw.trim()) return []
+
+  const parsed = giftsRaw
+    .split(", ")
+    .map((entry: string) => /^(\d+)× ([a-z0-9-]+)(?: \((.+)\))?$/.exec(entry.trim()))
+    .filter(Boolean)
+    .map((m: RegExpExecArray) => ({
+      quantity: Number(m[1]) || 1,
+      slug: m[2],
+      variant: m[3] ?? null,
+    }))
+  if (!parsed.length) return []
+
+  // Slug → productnaam (val terug op de slug als het product weg is).
+  const titles = new Map<string, string>()
+  try {
+    const { data: products } = await query.graph({
+      entity: "product",
+      fields: ["handle", "title"],
+      filters: { handle: parsed.map((g) => g.slug) },
+    })
+    for (const p of products ?? []) {
+      if (p?.handle && p?.title) titles.set(p.handle, p.title)
+    }
+  } catch {
+    // naamlookup is best-effort; slug is altijd nog leesbaar
+  }
+
+  const cc = order?.shipping_address?.country_code?.toLowerCase()
+  const label =
+    GIFT_LABEL[cc === "de" || cc === "at" ? "de" : cc === "nl" || cc === "be" ? "nl" : cc ? "en" : "nl"]
+
+  return parsed.map((g) => ({
+    title: titles.get(g.slug) ?? g.slug,
+    subtitle: g.variant ? `${g.variant} · ${label}` : label,
+    quantity: g.quantity,
+    unit_price: 0,
+  }))
 }
 
 /** Leidt de betaalmethode af uit de provider-id van de payment(s). */
