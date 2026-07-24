@@ -64,6 +64,10 @@ export async function buildOrderEmailData(
       "shipping_address.country_code",
       "shipping_address.phone",
       "payment_collections.payments.provider_id",
+      // Kortingscode op de order (order<>promotion-link). Alleen veilig in
+      // deze single-id-query: de lijst-variant (pagination) crasht in 2.15 op
+      // een shipping-adjustment-version-bug zodra totalen meegevraagd worden.
+      "promotions.code",
     ],
     filters: { id: orderId },
   })
@@ -71,17 +75,34 @@ export async function buildOrderEmailData(
   const order = orders?.[0]
   if (!order?.email) return null
 
+  const items = (order.items ?? []).map((i: any) => ({
+    title: i.product_title ?? i.title,
+    subtitle: i.variant_title ?? i.subtitle,
+    quantity: Math.round(toNum(i.quantity)) || 1,
+    unit_price: toNum(i.unit_price),
+  }))
+
+  // Kortingscode-korting: item_total is ná promotie-adjustments, de regels
+  // (unit_price × aantal) zijn ervóór — het verschil is de korting. Zo hoeven
+  // we discount_total niet op te vragen (zelfde 2.15-bug als hierboven) en
+  // klopt subtotaal − korting + verzending = totaal altijd in de mail.
+  const lineSum =
+    Math.round(items.reduce((s, i) => s + i.unit_price * i.quantity, 0) * 100) /
+    100
+  const itemTotal = toNum(order.item_total)
+  const discount = Math.max(0, Math.round((lineSum - itemTotal) * 100) / 100)
+  const promoCodes = ((order as any).promotions ?? [])
+    .map((p: any) => p?.code)
+    .filter(Boolean)
+
   const data: OrderEmailData = {
     display_id: order.display_id ?? order.id,
     currency_code: order.currency_code ?? "eur",
-    items: (order.items ?? []).map((i: any) => ({
-      title: i.product_title ?? i.title,
-      subtitle: i.variant_title ?? i.subtitle,
-      quantity: Math.round(toNum(i.quantity)) || 1,
-      unit_price: toNum(i.unit_price),
-    })),
+    items,
     totals: {
-      subtotal: toNum(order.item_total),
+      subtotal: lineSum,
+      discount,
+      promo_code: promoCodes.length ? promoCodes.join(", ") : null,
       shipping: toNum(order.shipping_total),
       tax: toNum(order.tax_total),
       total: toNum(order.total),

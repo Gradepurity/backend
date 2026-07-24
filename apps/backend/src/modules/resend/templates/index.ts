@@ -212,6 +212,11 @@ function adminNewOrder(data: OrderEmailData): RenderedEmail {
         <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Bestelnummer</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${orderNo}</td></tr>
         <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Klant</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${escapeAttr(data.customer_email ?? "onbekend")}</td></tr>
         <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Betaling</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${methodLabel}</td></tr>
+        ${
+          (data.totals.discount ?? 0) > 0
+            ? `<tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Kortingscode</td><td style="font-family:Georgia,serif;font-size:15px;color:#B4552D;padding:3px 0;"><strong>${escapeAttr((data.totals.promo_code ?? "onbekend").toUpperCase())}</strong> (&minus;${money(data.totals.discount ?? 0, data.currency_code, locale)})</td></tr>`
+            : ""
+        }
         <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Totaal</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${money(data.totals.total, data.currency_code, locale)}</td></tr>
       </table>
     </div>

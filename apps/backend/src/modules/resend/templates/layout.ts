@@ -88,6 +88,10 @@ export type OrderLine = {
 
 export type OrderTotals = {
   subtotal: number
+  /** Kortingscode-korting (promotie); 0/undefined = geen kortingsregel. */
+  discount?: number
+  /** Gebruikte kortingscode(s), voor het label "Korting (CODE)". */
+  promo_code?: string | null
   shipping: number
   tax: number
   total: number
@@ -148,12 +152,17 @@ export function renderOrderTable(
       <td align="right" style="padding:6px 0;font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${COLORS.text};${bold ? "font-weight:700;padding-top:12px;" : ""}white-space:nowrap;">${value}</td>
     </tr>`
 
+  const discountLabel = totals.promo_code
+    ? `${t.discount} (${escapeHtml(totals.promo_code.toUpperCase())})`
+    : t.discount
+
   return `
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0 24px;">
     ${rows}
   </table>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
     ${totalRow(t.subtotal, money(totals.subtotal, currency, locale))}
+    ${(totals.discount ?? 0) > 0 ? totalRow(discountLabel, `&minus;${money(totals.discount!, currency, locale)}`) : ""}
     ${totalRow(t.shipping, totals.shipping > 0 ? money(totals.shipping, currency, locale) : t.free)}
     ${totals.tax > 0 ? totalRow(t.tax, money(totals.tax, currency, locale)) : ""}
     ${totalRow(t.total, money(totals.total, currency, locale), true)}
@@ -173,9 +182,9 @@ export function renderAddress(addr: ShippingAddress): string {
 }
 
 const TABLE_LABELS: Record<Locale, Record<string, string>> = {
-  nl: { subtotal: "Subtotaal", shipping: "Verzending", tax: "Waarvan btw", total: "Totaal", free: "Gratis" },
-  en: { subtotal: "Subtotal", shipping: "Shipping", tax: "Incl. VAT", total: "Total", free: "Free" },
-  de: { subtotal: "Zwischensumme", shipping: "Versand", tax: "Inkl. MwSt.", total: "Gesamt", free: "Kostenlos" },
+  nl: { subtotal: "Subtotaal", discount: "Korting", shipping: "Verzending", tax: "Waarvan btw", total: "Totaal", free: "Gratis" },
+  en: { subtotal: "Subtotal", discount: "Discount", shipping: "Shipping", tax: "Incl. VAT", total: "Total", free: "Free" },
+  de: { subtotal: "Zwischensumme", discount: "Rabatt", shipping: "Versand", tax: "Inkl. MwSt.", total: "Gesamt", free: "Kostenlos" },
 }
 
 export function escapeHtml(s: string): string {
