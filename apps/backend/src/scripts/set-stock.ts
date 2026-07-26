@@ -4,6 +4,7 @@ import {
   createInventoryLevelsWorkflow,
   updateInventoryLevelsWorkflow,
 } from "@medusajs/medusa/core-flows";
+import { pingStockRevalidate } from "../lib/revalidate-stock";
 
 /**
  * Voorraad-schakelaar per product. Geen aantallen bijhouden: gebruik 0 om iets
@@ -113,4 +114,6 @@ export default async function setStock({
   logger.info(
     `Klaar: ${updates.length + creates.length} niveau(s) op ${label} gezet. ✅`
   );
+
+  await pingStockRevalidate(logger);
 }

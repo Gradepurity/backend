@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework";
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 import { updateInventoryLevelsWorkflow } from "@medusajs/medusa/core-flows";
+import { pingStockRevalidate } from "../lib/revalidate-stock";
 
 /**
  * Sets stocked_quantity to 0 for products that went out of stock, so the
@@ -81,4 +82,6 @@ export default async function setStockZero({
   logger.info(
     `Voorraad op 0 gezet voor ${updates.length} niveau(s) over ${products.length} product(en). ✅`
   );
+
+  await pingStockRevalidate(logger);
 }

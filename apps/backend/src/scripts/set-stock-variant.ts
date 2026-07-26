@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework";
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 import { updateInventoryLevelsWorkflow } from "@medusajs/medusa/core-flows";
+import { pingStockRevalidate } from "../lib/revalidate-stock";
 
 /**
  * Voorraad-schakelaar per VARIANT (set-stock.ts zet alle varianten van een
@@ -85,4 +86,6 @@ export default async function setStockVariant({
     input: { updates },
   });
   logger.info(`Klaar: ${updates.length} niveau(s) bijgewerkt. ✅`);
+
+  await pingStockRevalidate(logger);
 }
