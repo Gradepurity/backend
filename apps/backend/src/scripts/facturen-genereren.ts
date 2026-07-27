@@ -59,7 +59,7 @@ export default async function facturenGenereren({
   const orders = await orderService.listOrders(
     {},
     {
-      select: ["id", "display_id", "status", "email", "created_at", "currency_code"],
+      select: ["id", "display_id", "status", "email", "created_at", "currency_code", "metadata"],
       relations: ["items", "shipping_methods", "shipping_address", "billing_address"],
       take: 5000,
     }
@@ -147,7 +147,8 @@ export default async function facturenGenereren({
     );
     if (dry || (bestondAl && fs.existsSync(pdfPad))) continue;
 
-    fs.writeFileSync(htmlPad, factuurHtml(o, entry, totaal, betaaldPerOrder.get(o.id)), "utf8");
+    const gifts = await parseGifts(query, o.metadata?.gifts);
+    fs.writeFileSync(htmlPad, factuurHtml(o, entry, totaal, betaaldPerOrder.get(o.id), gifts), "utf8");
     if (edge) {
       try {
         execFileSync(edge, [
@@ -174,6 +175,39 @@ export default async function facturenGenereren({
   );
 }
 
+type Gift = { quantity: number; name: string; variant: string | null };
+
+/**
+ * metadata.gifts staat als "1× retatrutide (10 mg vial), 1× mots-c (10 mg vial)"
+ * (zie buildOrderMetadata in de storefront checkout.ts). Slug wordt waar
+ * mogelijk geresolved naar de echte productnaam; slug blijft de fallback.
+ */
+async function parseGifts(query: any, raw: unknown): Promise<Gift[]> {
+  if (typeof raw !== "string" || !raw.trim()) return [];
+  const parsed = raw
+    .split(", ")
+    .map((entry) => /^(\d+)× ([a-z0-9-]+)(?: \((.+)\))?$/.exec(entry.trim()))
+    .filter((m): m is RegExpExecArray => Boolean(m))
+    .map((m) => ({ quantity: Number(m[1]) || 1, slug: m[2], variant: m[3] ?? null }));
+  if (!parsed.length) return [];
+  const titles = new Map<string, string>();
+  try {
+    const { data: products } = await query.graph({
+      entity: "product",
+      fields: ["handle", "title"],
+      filters: { handle: parsed.map((g) => g.slug) } as any,
+    });
+    for (const p of products ?? []) if (p?.handle && p?.title) titles.set(p.handle, p.title);
+  } catch {
+    // best-effort; slug blijft leesbaar
+  }
+  return parsed.map((g) => ({
+    quantity: g.quantity,
+    name: titles.get(g.slug) ?? g.slug,
+    variant: g.variant,
+  }));
+}
+
 type Lang = "nl" | "de";
 
 const TEKSTEN: Record<Lang, Record<string, string>> = {
@@ -188,8 +222,8 @@ const TEKSTEN: Record<Lang, Record<string, string>> = {
     betaald: "Betaald",
     omschrijving: "Omschrijving",
     aantal: "Aantal",
-    stukprijs: "Stukprijs excl.",
-    exclBtw: "Excl. btw",
+    stukprijs: "Prijs p/st",
+    bedrag: "Bedrag",
     btw: "Btw 21%",
     verzendkosten: "Verzendkosten",
     korting: "Korting",
@@ -198,6 +232,7 @@ const TEKSTEN: Record<Lang, Record<string, string>> = {
     totaal: "Totaal",
     voldaanVoor: "Reeds voldaan op",
     voldaanNa: "— u hoeft niets meer te betalen.",
+    cadeau: "cadeau",
   },
   de: {
     factuur: "Rechnung",
@@ -210,8 +245,8 @@ const TEKSTEN: Record<Lang, Record<string, string>> = {
     betaald: "Bezahlt",
     omschrijving: "Beschreibung",
     aantal: "Menge",
-    stukprijs: "Stückpreis netto",
-    exclBtw: "Netto",
+    stukprijs: "Preis/St.",
+    bedrag: "Betrag",
     btw: "MwSt. 21%",
     verzendkosten: "Versandkosten",
     korting: "Rabatt",
@@ -220,6 +255,7 @@ const TEKSTEN: Record<Lang, Record<string, string>> = {
     totaal: "Gesamt",
     voldaanVoor: "Bereits bezahlt am",
     voldaanNa: "— es ist keine Zahlung mehr erforderlich.",
+    cadeau: "Geschenk",
   },
 };
 
@@ -228,7 +264,13 @@ const PRODUCT_DE: Record<string, string> = {
   "Bacteriostatisch water 3ml (inbegrepen)": "Bakteriostatisches Wasser 3ml (inklusive)",
 };
 
-function factuurHtml(o: any, entry: RegisterEntry, orderTotaal: number, betaaldOp?: string): string {
+function factuurHtml(
+  o: any,
+  entry: RegisterEntry,
+  orderTotaal: number,
+  betaaldOp?: string,
+  gifts: Gift[] = []
+): string {
   const adres = o.billing_address ?? o.shipping_address ?? {};
   const lang: Lang = (adres.country_code ?? "").toLowerCase() === "de" ? "de" : "nl";
   const t = TEKSTEN[lang];
@@ -244,33 +286,39 @@ function factuurHtml(o: any, entry: RegisterEntry, orderTotaal: number, betaaldO
     .filter(Boolean)
     .map(esc);
 
+  // Regels tonen de prijzen INCL. btw (wat de klant betaalde); de btw wordt
+  // alleen onderaan in het totalenblok uitgesplitst — leesbaarder dan drie
+  // prijskolommen per regel.
   const regels: string[] = [];
   let regelsIncl = 0;
   for (const it of o.items ?? []) {
     const aantal = Number(it.quantity ?? 1);
-    const incl = Math.round(Number(it.unit_price ?? 0) * aantal * 100) / 100;
+    const stukIncl = Math.round(Number(it.unit_price ?? 0) * 100) / 100;
+    const incl = Math.round(stukIncl * aantal * 100) / 100;
     regelsIncl += incl;
-    const { excl, btw } = splitsBtw(incl);
     // Variant (bv. "10 mg vial") erbij; "Standaard" is een niet-informatieve default.
     let naam = it.product_title ?? it.title;
     if (lang === "de" && PRODUCT_DE[naam]) naam = PRODUCT_DE[naam];
     const variant = it.variant_title && it.variant_title !== "Standaard" ? ` — ${it.variant_title}` : "";
-    regels.push(rij(`${naam}${variant}`, aantal, excl / aantal, excl, btw));
+    regels.push(rij(`${naam}${variant}`, aantal, stukIncl, incl));
+  }
+  // Gratis cadeaus (uit metadata.gifts) horen wél op de factuur, à € 0,00.
+  for (const g of gifts) {
+    const variant = g.variant ? ` — ${g.variant}` : "";
+    regels.push(rij(`${g.name}${variant} (${t.cadeau})`, g.quantity, 0, 0));
   }
   const verzendIncl = (o.shipping_methods ?? []).reduce(
     (som: number, m: any) => som + Number(m.amount ?? 0),
     0
   );
   if (verzendIncl > 0) {
-    const { excl, btw } = splitsBtw(verzendIncl);
-    regels.push(rij(t.verzendkosten, 1, excl, excl, btw));
+    regels.push(rij(t.verzendkosten, 1, verzendIncl, verzendIncl));
     regelsIncl += verzendIncl;
   }
   // Vangnet voor kortingen/afwijkingen: alles wat het ordertotaal nog niet dekt.
   const rest = Math.round((orderTotaal - regelsIncl) * 100) / 100;
   if (Math.abs(rest) >= 0.01) {
-    const { excl, btw } = splitsBtw(rest);
-    regels.push(rij(rest < 0 ? t.korting : t.toeslag, 1, excl, excl, btw));
+    regels.push(rij(rest < 0 ? t.korting : t.toeslag, 1, rest, rest));
   }
 
   const totaal = splitsBtw(orderTotaal);
@@ -311,7 +359,7 @@ function factuurHtml(o: any, entry: RegisterEntry, orderTotaal: number, betaaldO
     </div>
   </div>
   <table>
-    <tr><th>${t.omschrijving}</th><th class="r">${t.aantal}</th><th class="r">${t.stukprijs}</th><th class="r">${t.exclBtw}</th><th class="r">${t.btw}</th></tr>
+    <tr><th>${t.omschrijving}</th><th class="r">${t.aantal}</th><th class="r">${t.stukprijs}</th><th class="r">${t.bedrag}</th></tr>
     ${regels.join("\n    ")}
   </table>
   <div class="totalen">
@@ -328,8 +376,8 @@ function factuurHtml(o: any, entry: RegisterEntry, orderTotaal: number, betaaldO
 </div></body></html>`;
 }
 
-function rij(oms: string, aantal: number, stukExcl: number, excl: number, btw: number): string {
-  return `<tr><td>${esc(oms)}</td><td class="r">${aantal}</td><td class="r">${eur(Math.round(stukExcl * 100) / 100)}</td><td class="r">${eur(excl)}</td><td class="r">${eur(btw)}</td></tr>`;
+function rij(oms: string, aantal: number, stukIncl: number, bedragIncl: number): string {
+  return `<tr><td>${esc(oms)}</td><td class="r">${aantal}</td><td class="r">${eur(Math.round(stukIncl * 100) / 100)}</td><td class="r">${eur(bedragIncl)}</td></tr>`;
 }
 
 function datum(iso: string, lang: Lang): string {
