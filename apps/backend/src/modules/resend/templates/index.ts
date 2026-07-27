@@ -43,6 +43,14 @@ export type OrderEmailData = {
   customer_email?: string
 }
 
+/** Data voor de voorraad-herinnering (herbestel-mail) — zie lib/replenishment.ts. */
+export type ReplenishEmailData = {
+  locale: Locale
+  /** Ordernummer van de oorspronkelijke bestelling (alleen ter referentie). */
+  display_id: number | string
+  reorder_items: { title: string; subtitle?: string | null; url: string }[]
+}
+
 export type RenderedEmail = { subject: string; html: string }
 
 export type TemplateId =
@@ -51,6 +59,7 @@ export type TemplateId =
   | "payment-captured"
   | "order-shipped"
   | "admin-new-order"
+  | "replenish-reminder"
 
 const ORDER_URL = "https://gradepurity.com"
 
@@ -63,7 +72,18 @@ function resolveLocale(data: OrderEmailData): Locale {
 }
 
 /** Hoofdingang: render een template-id naar onderwerp + HTML. */
-export function render(template: TemplateId, data: OrderEmailData): RenderedEmail {
+export function render(
+  template: TemplateId,
+  data: OrderEmailData | ReplenishEmailData
+): RenderedEmail {
+  // De herbestel-mail heeft een eigen datamodel (geen orderregels/totalen).
+  if (template === "replenish-reminder") {
+    return replenishReminder(data as ReplenishEmailData)
+  }
+  return renderOrderTemplate(template, data as OrderEmailData)
+}
+
+function renderOrderTemplate(template: TemplateId, data: OrderEmailData): RenderedEmail {
   const locale = resolveLocale(data)
   switch (template) {
     case "order-placed":
@@ -233,6 +253,43 @@ function adminNewOrder(data: OrderEmailData): RenderedEmail {
   }
 }
 
+// ── 5. Voorraad-herinnering — herbestellen vóór het op is ─────────────────────
+
+function replenishReminder(data: ReplenishEmailData): RenderedEmail {
+  const locale = data.locale ?? "nl"
+  const c = COPY[locale]
+  const items = data.reorder_items ?? []
+
+  const rows = items
+    .map(
+      (i) => `
+      <tr>
+        <td style="padding:8px 0;border-bottom:1px solid ${UI.line};">
+          <a href="${escapeAttr(i.url)}" style="font-family:Georgia,serif;font-size:16px;color:${UI.navy};text-decoration:none;">${escapeAttr(i.title)}</a>
+          ${i.subtitle ? `<br/><span style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};">${escapeAttr(i.subtitle)}</span>` : ""}
+        </td>
+      </tr>`
+    )
+    .join("")
+
+  const body = `
+    <p style="margin:0 0 16px;">${c.replenish.intro}</p>
+    <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:8px 20px 12px;margin:0 0 24px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rows}</table>
+    </div>
+    <p style="margin:0 0 8px;color:${UI.muted};">${c.replenish.outro}</p>
+    ${items.length ? button(items[0].url, c.replenish.cta) : button(ORDER_URL, c.replenish.cta)}
+    <p style="margin:24px 0 0;font-size:12px;color:${UI.muted};">${c.replenish.ref} #${data.display_id}. ${c.replenish.optout}</p>
+  `
+  return {
+    subject: c.replenish.subject,
+    html: renderLayout(
+      { preheader: c.replenish.preheader, heading: c.replenish.heading, body },
+      locale
+    ),
+  }
+}
+
 // ── Gedeelde fragmenten ───────────────────────────────────────────────────────
 
 /**
@@ -341,6 +398,18 @@ const COPY = {
       cta: "Volg je pakket",
       ctaFallback: "Naar GradePurity",
     },
+    replenish: {
+      subject: "Je voorraad raakt binnenkort op",
+      preheader: "Op tijd bijbestellen bij GradePurity.",
+      heading: "Voorraad bijna op?",
+      intro:
+        "Een tijdje geleden ontving je je bestelling van GradePurity. Op basis van gangbare verbruiksschema's kan de voorraad van deze producten binnenkort op raken:",
+      outro: "Bestel op tijd bij, dan heb je nieuwe voorraad in huis voordat het op is.",
+      cta: "Opnieuw bestellen",
+      ref: "Naar aanleiding van bestelling",
+      optout:
+        "Liever geen voorraadherinneringen ontvangen? Beantwoord deze mail met 'geen herinnering', dan zetten we ze voor je uit.",
+    },
   },
   en: {
     orderNumber: "Order number",
@@ -397,6 +466,18 @@ const COPY = {
       cta: "Track your parcel",
       ctaFallback: "Go to GradePurity",
     },
+    replenish: {
+      subject: "Your supply may be running low",
+      preheader: "Reorder in time at GradePurity.",
+      heading: "Running low?",
+      intro:
+        "A little while ago you received your GradePurity order. Based on common usage schedules, your supply of these products may be running low:",
+      outro: "Reorder in time and you'll have fresh supply at home before you run out.",
+      cta: "Reorder",
+      ref: "Regarding order",
+      optout:
+        "Prefer not to receive stock reminders? Reply to this email with 'no reminders' and we'll turn them off.",
+    },
   },
   de: {
     orderNumber: "Bestellnummer",
@@ -452,6 +533,19 @@ const COPY = {
       trackingNo: "Sendungsverfolgung",
       cta: "Paket verfolgen",
       ctaFallback: "Zu GradePurity",
+    },
+    replenish: {
+      subject: "Ihr Vorrat geht möglicherweise zur Neige",
+      preheader: "Rechtzeitig nachbestellen bei GradePurity.",
+      heading: "Vorrat fast aufgebraucht?",
+      intro:
+        "Vor einiger Zeit haben Sie Ihre Bestellung von GradePurity erhalten. Auf Basis gängiger Verbrauchsschemata könnte Ihr Vorrat dieser Produkte bald zur Neige gehen:",
+      outro:
+        "Bestellen Sie rechtzeitig nach, damit Sie neuen Vorrat zu Hause haben, bevor er aufgebraucht ist.",
+      cta: "Nachbestellen",
+      ref: "Bezugnehmend auf Bestellung",
+      optout:
+        "Möchten Sie keine Vorratserinnerungen erhalten? Antworten Sie auf diese E-Mail mit 'keine Erinnerung', dann schalten wir sie ab.",
     },
   },
 } as const
