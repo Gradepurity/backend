@@ -7,10 +7,14 @@
  * (geen tussenrekening — settlement-vertraging zoals bij Wallid >€250 bestaat
  * hier niet). Statussen zijn ISO 20022-codes uit de bankwereld.
  *
- * API-contract gereverse-engineerd uit hun officiële WooCommerce-plugin
- * (wordpress.org: bankpay-open-banking-sepa-payments-for-woocommerce):
- * - POST /api/checkout   (Bearer <privateKey>, form-encoded) -> { uuid }
- * - POST /api/wc-status/ (form-encoded: checkout=<uuid>)     -> { uuid, correlationId, payment, paymentId }
+ * API-contract: aanmaken volgens hun officiële WooCommerce-plugin, status via
+ * de live geverifieerde GET-route (27-07 tegen de echte API getest; de
+ * `wc-status`-route uit de plugin bestaat niet meer):
+ * - POST /api/checkout        (Bearer <privateKey>, form-encoded)
+ *     -> { uuid, shortId, status: "created", redirectUrl }
+ * - GET  /api/checkout/<uuid> (Bearer)
+ *     -> { checkout: { uuid, correlationId, status, status_credited, ... },
+ *          amount: { value, currency }, urls: {...} }
  * - Hosted betaalpagina:  https://bankpay.plus/checkout/<uuid>
  * - IPN: BANKpay+ pingt de door ons meegegeven `ipn`-URL; de status halen we
  *   daarna zelf authoritative op (zelfde patroon als de Wallid-provider).
@@ -33,9 +37,10 @@ export type BankpayCheckout = {
 export type BankpayStatus = {
   uuid?: string
   correlationId?: string
-  /** ISO 20022 status, bv. ACSC, ACSP, RJCT, created, SCArequired. */
+  /** Checkout-status: ISO 20022-code of BANKpay+-woord (created, paid, …). */
   payment?: string
-  paymentId?: string
+  /** `status_credited` uit de API — gezet zodra het geld gecrediteerd is. */
+  credited?: string | null
   [key: string]: unknown
 }
 
@@ -88,22 +93,31 @@ const FAILED_STATUSES = new Set([
 
 export type MappedStatus = "paid" | "failed" | "pending"
 
-/** Map een ISO 20022 / BANKpay+-status naar ons interne drieluik. */
-export function mapBankpayStatus(status: string | undefined): MappedStatus {
-  if (!status) {
+// BANKpay+ gebruikt naast ISO-codes ook gewone woorden (dashboard toont
+// "Pending"/"Successful"); vang beide vocabulaires af.
+const PAID_WORDS = new Set(["paid", "success", "successful", "completed", "credited", "settled"])
+const FAILED_WORDS = new Set(["failed", "rejected", "cancelled", "canceled", "expired", "error"])
+
+/** Map een BANKpay+-statusrespons naar ons interne drieluik. */
+export function mapBankpayStatus(status: BankpayStatus): MappedStatus {
+  // `status_credited` gezet = geld gecrediteerd, ongeacht de statustekst.
+  if (status.credited) {
+    return "paid"
+  }
+
+  const code = status.payment
+  if (!code) {
     return "pending"
   }
   // Cancellation-request-flow (AcceptedCancellationRequest e.d.) is nooit
   // "betaald", ook al begint de code met "Accepted".
-  if (status.includes("Cancellation")) {
-    return FAILED_STATUSES.has(status) || status.startsWith("Rejected")
-      ? "failed"
-      : "pending"
+  if (code.includes("Cancellation")) {
+    return code.startsWith("Rejected") ? "failed" : "pending"
   }
-  if (PAID_STATUSES.has(status)) {
+  if (PAID_STATUSES.has(code) || PAID_WORDS.has(code.toLowerCase())) {
     return "paid"
   }
-  if (FAILED_STATUSES.has(status)) {
+  if (FAILED_STATUSES.has(code) || FAILED_WORDS.has(code.toLowerCase())) {
     return "failed"
   }
   // created / SCArequired / RCVD / PDNG / UNKN / ...
@@ -126,19 +140,22 @@ export class BankpayClient {
     return `${this.apiUrl}/checkout/${checkoutUuid}`
   }
 
-  private async post<T>(
+  private async request<T>(
     path: string,
-    body: Record<string, string>,
-    withAuth: boolean
+    init: { method: "GET" } | { method: "POST"; form: Record<string, string> }
   ): Promise<T> {
     const res = await fetch(`${this.apiUrl}${path}`, {
-      method: "POST",
+      method: init.method,
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
-        ...(withAuth ? { Authorization: `Bearer ${this.privateKey}` } : {}),
+        Authorization: `Bearer ${this.privateKey}`,
+        ...(init.method === "POST"
+          ? { "Content-Type": "application/x-www-form-urlencoded" }
+          : {}),
       },
-      body: new URLSearchParams(body).toString(),
+      ...(init.method === "POST"
+        ? { body: new URLSearchParams(init.form).toString() }
+        : {}),
     })
 
     const text = await res.text()
@@ -155,9 +172,9 @@ export class BankpayClient {
   }
 
   async createCheckout(params: CreateCheckoutParams): Promise<BankpayCheckout> {
-    const checkout = await this.post<BankpayCheckout>(
-      "/api/checkout",
-      {
+    const checkout = await this.request<BankpayCheckout>("/api/checkout", {
+      method: "POST",
+      form: {
         reference: params.reference,
         amount: params.amount,
         ipn: params.ipnUrl,
@@ -166,8 +183,7 @@ export class BankpayClient {
         returnUrl: params.returnUrl,
         checkoutUrl: params.checkoutUrl,
       },
-      true
-    )
+    })
     if (!checkout?.uuid) {
       throw new Error(
         `BANKpay+ /api/checkout -> geen uuid in antwoord: ${JSON.stringify(checkout).slice(0, 200)}`
@@ -176,16 +192,24 @@ export class BankpayClient {
     return checkout
   }
 
-  /**
-   * Actuele status van een checkout (authoritative). De plugin-endpoint
-   * `wc-status/` werkt zonder auth-header; we sturen 'm toch mee voor het
-   * geval ze dat aanscherpen.
-   */
-  getStatus(checkoutUuid: string): Promise<BankpayStatus> {
-    return this.post<BankpayStatus>(
-      "/api/wc-status/",
-      { checkout: checkoutUuid, client: this.clientId },
-      true
-    )
+  /** Actuele status van een checkout (authoritative). */
+  async getStatus(checkoutUuid: string): Promise<BankpayStatus> {
+    const raw = await this.request<{
+      checkout?: {
+        uuid?: string
+        correlationId?: string
+        status?: string
+        status_credited?: string | null
+      }
+      amount?: { value?: number; currency?: string }
+    }>(`/api/checkout/${encodeURIComponent(checkoutUuid)}`, { method: "GET" })
+
+    return {
+      uuid: raw.checkout?.uuid,
+      correlationId: raw.checkout?.correlationId,
+      payment: raw.checkout?.status,
+      credited: raw.checkout?.status_credited ?? null,
+      amount: raw.amount?.value,
+    }
   }
 }

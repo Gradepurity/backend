@@ -161,7 +161,7 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
     }
     try {
       const status = await this.client_.getStatus(checkoutUuid)
-      return mapBankpayStatus(status.payment)
+      return mapBankpayStatus(status)
     } catch (e) {
       this.logger_.warn(
         `BANKpay+: status-call mislukt voor ${checkoutUuid}: ${

@@ -68,7 +68,7 @@ async function handleIpn(req: MedusaRequest, res: MedusaResponse) {
     }
 
     const status = await client.getStatus(checkoutUuid)
-    const mapped = mapBankpayStatus(status.payment)
+    const mapped = mapBankpayStatus(status)
     logger.info(
       `[BANKPAY-IPN] sessie ${sessionId}: checkout ${checkoutUuid} status ${status.payment} -> ${mapped}.`
     )

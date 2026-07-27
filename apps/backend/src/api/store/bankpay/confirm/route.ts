@@ -71,7 +71,7 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   })
 
   const status = await client.getStatus(checkoutUuid)
-  const mapped = mapBankpayStatus(status.payment)
+  const mapped = mapBankpayStatus(status)
 
   if (mapped === "paid") {
     await processPaymentWorkflow(req.scope).run({

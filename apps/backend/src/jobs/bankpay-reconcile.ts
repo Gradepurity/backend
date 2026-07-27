@@ -61,7 +61,7 @@ export default async function bankpayReconcileJob(container: MedusaContainer) {
 
     try {
       const status = await client.getStatus(checkoutUuid)
-      if (mapBankpayStatus(status.payment) !== "paid") continue
+      if (mapBankpayStatus(status) !== "paid") continue
 
       await processPaymentWorkflow(container).run({
         input: {
