@@ -11,39 +11,44 @@ import * as path from "path";
  *   npx medusa exec ./src/scripts/send-checkout-recovery.ts           → dry-run (alleen preview)
  *   npx medusa exec ./src/scripts/send-checkout-recovery.ts send      → echt versturen
  *
- * Eerdere rondes: 21-07 (Anissa, Michiel) · 24-07 (Emre)
+ * Eerdere rondes: 21-07 (Anissa, Michiel) · 24-07 (Emre, Kaw) · 27-07 (Mike)
  */
 
 const RECIPIENTS = [
   {
-    email: "emre_2013@live.be",
-    firstName: "Emre",
-    items: "1× GHK-Cu en 1× Melanotan II",
-    total: "€ 69,90",
-    moment: "vannacht",
+    email: "tdraw33@gmail.com",
+    firstName: "Mike",
+    items: "1× PT-141 10 mg, 1× insulinenaalden 10× 1ml",
+    total: "€ 46,85",
+    reference: "Mike Rozenblad",
   },
 ];
 
 function buildEmail(r: (typeof RECIPIENTS)[number]) {
   const body = `
-<p style="margin:0 0 16px;">Hi ${r.firstName},</p>
-<p style="margin:0 0 16px;">We zagen dat je ${r.moment} wilde afrekenen bij GradePurity (${r.items}, ${r.total}), maar dat de betaalpagina verliep voordat de betaling doorkwam. Dat lag niet aan jou &mdash; de betaalsessie sluit na 15 minuten vanzelf.</p>
-<p style="margin:0 0 16px;">Je winkelwagen staat nog gewoon voor je klaar. Afronden duurt nog geen minuut:</p>
-<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
-  <tr><td style="background:${UI.navy};border-radius:8px;">
-    <a href="https://gradepurity.com/nl/afrekenen" style="display:inline-block;padding:14px 28px;font-family:Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;color:#FFFFFF;text-decoration:none;">Bestelling afronden &rarr;</a>
+<p style="margin:0 0 24px;">Hi ${r.firstName},</p>
+
+<p style="margin:0 0 24px;">Je betaling kwam vandaag niet door. Je kunt je bestelling (${r.items} &mdash; ${r.total} incl. verzending) gewoon per overboeking betalen:</p>
+
+<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background:#F5F3EE;border-radius:8px;">
+  <tr><td style="padding:24px 28px;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:2;color:#1A1A1A;">
+    <strong>Bedrag:</strong>&nbsp; ${r.total}<br/>
+    <strong>Rekening:</strong>&nbsp; NL81 FNOM 0779 1759 17<br/>
+    <strong>T.n.v.:</strong>&nbsp; Gradepurity<br/>
+    <strong>Omschrijving:</strong>&nbsp; ${r.reference}
   </td></tr>
 </table>
-<p style="margin:0 0 8px;font-weight:700;">Reken je af op een computer?</p>
-<p style="margin:0 0 16px;">Op de betaalpagina verschijnt een QR-code. Scan die met de gewone <strong>camera-app</strong> van je telefoon &mdash; niet met de QR-scanner in je bank-app. Via de camera opent de betaalpagina vanzelf op je telefoon en rond je de betaling daar af.</p>
-<p style="margin:0;">Lukt het toch niet? Antwoord op deze mail of stuur een appje naar <a href="https://wa.me/31615605502" style="color:${UI.navy};">+31 6 15 60 55 02</a> &mdash; dan helpen we je direct verder.</p>`;
+
+<p style="margin:0 0 24px;">Zodra de betaling binnen is, versturen wij je bestelling direct.</p>
+
+<p style="margin:0;">Vragen? Antwoord op deze mail of stuur een appje naar <a href="https://wa.me/31615605502" style="color:${UI.navy};">+31 6 15 60 55 02</a>.</p>`;
 
   return {
-    subject: "Je betaling kwam niet door — je winkelwagen staat nog klaar",
+    subject: "Rond je bestelling af — betaal per overboeking",
     html: renderLayout(
       {
-        preheader: `Je bestelling (${r.total}) staat nog klaar — afronden duurt nog geen minuut.`,
-        heading: "Je bestelling stond al klaar.",
+        preheader: `Je bestelling (${r.total}) kun je per overboeking betalen.`,
+        heading: "Rond je bestelling af.",
         body,
       },
       "nl"
