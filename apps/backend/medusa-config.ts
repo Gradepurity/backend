@@ -87,6 +87,14 @@ const wallidEnabled =
   !!process.env.WALLID_KEY_SECRET &&
   !!process.env.WALLID_WEBHOOK_SECRET
 
+// ── BANKpay+ pay-by-bank (SEPA Instant) ───────────────────────────────────────
+// Zelfde gate-patroon. Provider-key wordt `pp_sepa_bankpay`; de IPN gaat naar
+// <backend>/hooks/payment/pp_sepa_bankpay (URL geven we per checkout zelf mee).
+// Settlement direct op eigen IBAN — geen tussenpartij. Dekt óók Duitsland
+// (Sparkassen/Volksbanken), in tegenstelling tot Wallid.
+const bankpayEnabled =
+  !!process.env.BANKPAY_API_KEY && !!process.env.BANKPAY_CLIENT_ID
+
 // ── Transactionele e-mail (Resend) ────────────────────────────────────────────
 // Order­bevestiging / betaling ontvangen / verzonden lopen via de Resend-provider.
 // ALTIJD registreren, desnoods met dummy-key: elke boot (ook een lokale
@@ -129,6 +137,25 @@ const paymentProviders = [
             storefrontUrl,
             successPath:
               process.env.CRYPTO_SUCCESS_PATH || '/nl/bestelling-ontvangen',
+          },
+        },
+      ]
+    : []),
+  ...(bankpayEnabled
+    ? [
+        {
+          resolve: './src/modules/bankpay',
+          id: 'bankpay',
+          options: {
+            apiUrl: process.env.BANKPAY_API_URL || 'https://bankpay.plus',
+            privateKey: process.env.BANKPAY_API_KEY,
+            clientId: process.env.BANKPAY_CLIENT_ID,
+            backendUrl:
+              process.env.BACKEND_PUBLIC_URL ||
+              'https://backend-production-2a64.up.railway.app',
+            storefrontUrl,
+            successPath: '/nl/bestelling-ontvangen',
+            failPath: '/nl/afrekenen',
           },
         },
       ]
