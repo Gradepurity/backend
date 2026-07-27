@@ -125,7 +125,11 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
       id: checkout.uuid,
       data: {
         checkout_uuid: checkout.uuid,
-        payment_link: this.client_.checkoutPageUrl(checkout.uuid),
+        // De API geeft de hosted URL zelf terug; zelf bouwen is de fallback.
+        payment_link:
+          checkout.redirectUrl ??
+          checkout.checkout_url ??
+          this.client_.checkoutPageUrl(checkout.uuid),
         session_id: sessionId,
         price_amount: amount,
       } as Record<string, unknown>,

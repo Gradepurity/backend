@@ -31,6 +31,9 @@ export type BankpayClientOptions = {
 
 export type BankpayCheckout = {
   uuid: string
+  /** Hosted betaalpagina — de API geeft 'm zelf terug (redirectUrl/checkout_url). */
+  redirectUrl?: string
+  checkout_url?: string
   [key: string]: unknown
 }
 
@@ -177,6 +180,7 @@ export class BankpayClient {
       form: {
         reference: params.reference,
         amount: params.amount,
+        currency: "EUR",
         ipn: params.ipnUrl,
         correlationId: params.correlationId,
         clientId: this.clientId,
