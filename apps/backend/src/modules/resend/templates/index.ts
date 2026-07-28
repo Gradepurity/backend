@@ -68,6 +68,7 @@ function resolveLocale(data: OrderEmailData): Locale {
   const cc = data.shipping_address?.country_code?.toLowerCase()
   if (cc === "de" || cc === "at") return "de"
   if (cc === "nl" || cc === "be") return "nl"
+  if (cc === "fr") return "fr"
   return cc ? "en" : "nl" // geen adres bekend -> NL (primaire markt)
 }
 
@@ -409,6 +410,72 @@ const COPY = {
       ref: "Naar aanleiding van bestelling",
       optout:
         "Liever geen voorraadherinneringen ontvangen? Beantwoord deze mail met 'geen herinnering', dan zetten we ze voor je uit.",
+    },
+  },
+  fr: {
+    orderNumber: "Numéro de commande",
+    summary: "Récapitulatif",
+    shippingTo: "Adresse de livraison",
+    placed: {
+      subject: "Nous avons bien reçu votre commande —",
+      preheader: "Merci pour votre commande chez GradePurity.",
+      heading: "Merci pour votre commande",
+      intro: "Nous avons bien reçu votre commande et nous la traiterons dès réception du paiement.",
+      cta: "Vers GradePurity",
+      bank: {
+        title: "Effectuez le virement du montant pour finaliser votre commande",
+        text: "Utilisez les coordonnées ci-dessous et indiquez la référence lors de votre virement. Dès réception du paiement, nous vous enverrons une confirmation et expédierons votre commande.",
+      },
+      bankDetails: {
+        payee: "Au nom de",
+        amount: "Montant",
+        reference: "Référence",
+      },
+      crypto: {
+        title: "En attente de votre paiement",
+        text: "Votre paiement en crypto est en cours de confirmation sur la blockchain. Dès que la transaction est confirmée, vous recevrez une confirmation de notre part et nous expédierons votre commande.",
+      },
+      generic: {
+        title: "En attente de paiement",
+        text: "Dès que votre paiement sera traité, vous recevrez une confirmation et nous expédierons votre commande.",
+      },
+    },
+    reminder: {
+      subject: "Rappel : votre commande est en attente de paiement —",
+      preheader: "Nous n'avons pas encore reçu votre paiement.",
+      heading: "Votre commande est toujours en attente de paiement",
+      intro: "Il y a quelque temps, vous avez passé une commande chez GradePurity, mais nous n'avons pas encore reçu votre paiement.",
+      text: "Effectuez le virement du montant avec les coordonnées ci-dessous et indiquez la référence lors de votre virement. Dès réception du paiement, nous vous enverrons une confirmation et expédierons votre commande.",
+      outro: "Déjà payé ? Dans ce cas, le paiement et cet e-mail se sont peut-être croisés, vous n'avez rien à faire. Vous préférez annuler la commande ou vous avez une question ? N'hésitez pas à répondre à cet e-mail.",
+    },
+    paid: {
+      subject: "Paiement reçu —",
+      preheader: "Votre paiement est bien reçu, votre commande est en préparation.",
+      heading: "Paiement reçu",
+      badge: "Paiement confirmé",
+      intro: "Bonne nouvelle, nous avons reçu votre paiement et votre commande est confirmée.",
+      next: "Nous préparons votre commande pour l'expédition. Vous recevrez un message avec le suivi de colis dès que le colis sera en route.",
+      cta: "Vers GradePurity",
+    },
+    shipped: {
+      subject: "Votre commande est en route —",
+      preheader: "Votre colis a été expédié.",
+      heading: "Votre commande est en route",
+      intro: "Votre commande a été expédiée et est en route vers vous.",
+      carrier: "Transporteur",
+      trackingNo: "Suivi de colis",
+      cta: "Suivez votre colis",
+      ctaFallback: "Vers GradePurity",
+    },
+    replenish: {
+      subject: "Votre stock sera bientôt épuisé",
+      preheader: "Recommandez à temps chez GradePurity.",
+      heading: "Stock bientôt épuisé ?",
+      intro: "Il y a quelque temps, vous avez reçu votre commande de GradePurity. D'après les schémas de consommation habituels, le stock de ces produits pourrait bientôt être épuisé :",
+      outro: "Recommandez à temps, ainsi vous aurez un nouveau stock avant d'être à court.",
+      cta: "Commander à nouveau",
+      ref: "Suite à la commande",
+      optout: "Vous préférez ne plus recevoir de rappels de stock ? Répondez à cet e-mail avec « pas de rappel », et nous les désactiverons pour vous.",
     },
   },
   en: {

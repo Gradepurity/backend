@@ -213,6 +213,7 @@ function localeForCountry(cc?: string | null): Locale {
   const c = cc?.toLowerCase()
   if (c === "de" || c === "at") return "de"
   if (c === "nl" || c === "be") return "nl"
+  if (c === "fr") return "fr"
   return c ? "en" : "nl"
 }
 

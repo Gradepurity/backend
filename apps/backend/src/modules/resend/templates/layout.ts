@@ -2,7 +2,7 @@
 // E-mailclients negeren <style>-blokken en externe fonts grotendeels, dus alles
 // staat inline en we leunen op web-safe fallbacks (Georgia ~ Bodoni-gevoel).
 
-export type Locale = "nl" | "en" | "de"
+export type Locale = "nl" | "en" | "de" | "fr"
 
 // GradePurity-palet (zie design system): marineblauw, near-black, off-white, brons.
 const COLORS = {
@@ -73,6 +73,7 @@ const FOOTER: Record<Locale, string> = {
   nl: `GradePurity &middot; <a href="https://gradepurity.com" style="color:${COLORS.navy};text-decoration:none;">gradepurity.com</a><br/>Vragen? Mail ons op <a href="mailto:info@gradepurity.com" style="color:${COLORS.navy};text-decoration:none;">info@gradepurity.com</a>`,
   en: `GradePurity &middot; <a href="https://gradepurity.com" style="color:${COLORS.navy};text-decoration:none;">gradepurity.com</a><br/>Questions? Email us at <a href="mailto:info@gradepurity.com" style="color:${COLORS.navy};text-decoration:none;">info@gradepurity.com</a>`,
   de: `GradePurity &middot; <a href="https://gradepurity.com" style="color:${COLORS.navy};text-decoration:none;">gradepurity.com</a><br/>Fragen? Schreiben Sie uns an <a href="mailto:info@gradepurity.com" style="color:${COLORS.navy};text-decoration:none;">info@gradepurity.com</a>`,
+  fr: `GradePurity &middot; <a href="https://gradepurity.com" style="color:${COLORS.navy};text-decoration:none;">gradepurity.com</a><br/>Des questions ? Écrivez-nous à <a href="mailto:info@gradepurity.com" style="color:${COLORS.navy};text-decoration:none;">info@gradepurity.com</a>`,
 }
 
 // ── Gedeelde bouwstenen voor mails met een orderoverzicht ─────────────────────
@@ -120,7 +121,13 @@ export function money(amount: number, currency: string, locale: Locale): string 
 }
 
 function localeTag(locale: Locale): string {
-  return locale === "nl" ? "nl-NL" : locale === "de" ? "de-DE" : "en-US"
+  return locale === "nl"
+    ? "nl-NL"
+    : locale === "de"
+      ? "de-DE"
+      : locale === "fr"
+        ? "fr-FR"
+        : "en-US"
 }
 
 /** HTML-tabel met de orderregels + totalen. Hergebruikt over meerdere mails. */
@@ -185,6 +192,7 @@ const TABLE_LABELS: Record<Locale, Record<string, string>> = {
   nl: { subtotal: "Subtotaal", discount: "Korting", shipping: "Verzending", tax: "Waarvan btw", total: "Totaal", free: "Gratis" },
   en: { subtotal: "Subtotal", discount: "Discount", shipping: "Shipping", tax: "Incl. VAT", total: "Total", free: "Free" },
   de: { subtotal: "Zwischensumme", discount: "Rabatt", shipping: "Versand", tax: "Inkl. MwSt.", total: "Gesamt", free: "Kostenlos" },
+  fr: { subtotal: "Sous-total", discount: "Remise", shipping: "Livraison", tax: "TVA incluse", total: "Total", free: "Gratuit" },
 }
 
 export function escapeHtml(s: string): string {
