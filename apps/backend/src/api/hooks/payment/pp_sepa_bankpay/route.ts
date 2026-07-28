@@ -32,13 +32,33 @@ async function handleIpn(req: MedusaRequest, res: MedusaResponse) {
     return
   }
 
+  // Twee aanvoerroutes: (1) de per-checkout webhook_url met onze eigen
+  // ?session_id=… query, (2) de globale developer-webhook (payment.completed
+  // e.d.) die de identifiers in de BODY meestuurt. Vang beide af; de body is
+  // onvertrouwd en dient alleen om de sessie te vinden — de authoritative
+  // status-check hieronder blijft de poort. (Signing-secret whsec_… staat in
+  // BANKPAY_WEBHOOK_SECRET voor als hun signature-scheme gedocumenteerd raakt.)
+  const body = (req.body ?? {}) as Record<string, unknown>
+  const bodyData = (body.data ?? body.payload ?? body.checkout ?? {}) as Record<
+    string,
+    unknown
+  >
+  const fromBody = (key: string): string | undefined => {
+    const v = bodyData[key] ?? body[key]
+    return typeof v === "string" && v ? v : undefined
+  }
+
   const sessionId = String(
     (req.query.session_id as string | undefined) ??
       (req.query.correlationId as string | undefined) ??
+      fromBody("correlation_id") ??
+      fromBody("correlationId") ??
       ""
   )
   if (!sessionId.startsWith("payses_")) {
-    logger.warn(`[BANKPAY-IPN] geen bruikbare session_id in ping (${sessionId || "leeg"}).`)
+    logger.warn(
+      `[BANKPAY-IPN] geen bruikbare session_id in ping (query=${JSON.stringify(req.query)}, body-keys=${Object.keys(body).join(",") || "geen"}).`
+    )
     res.sendStatus(200)
     return
   }
