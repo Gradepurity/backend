@@ -150,6 +150,11 @@ const paymentProviders = [
             apiUrl: process.env.BANKPAY_API_URL || 'https://bankpay.plus',
             privateKey: process.env.BANKPAY_API_KEY,
             clientId: process.env.BANKPAY_CLIENT_ID,
+            // Begunstigde in de betaalopdracht (v1-route eist deze expliciet;
+            // zonder zag de klant een overboeking zonder naam in de bank-app).
+            recipientIban:
+              process.env.BANKPAY_RECIPIENT_IBAN || 'NL81FNOM0779175917',
+            recipientName: process.env.BANKPAY_RECIPIENT_NAME || 'Gradepurity',
             backendUrl:
               process.env.BACKEND_PUBLIC_URL ||
               'https://backend-production-2a64.up.railway.app',

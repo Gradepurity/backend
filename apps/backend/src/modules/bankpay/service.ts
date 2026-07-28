@@ -37,6 +37,9 @@ export type BankpayOptions = {
   privateKey: string
   /** CloudPOS instance UUID. */
   clientId: string
+  /** Begunstigde (eigen IBAN + tenaamstelling) — verplicht op de v1-route. */
+  recipientIban: string
+  recipientName: string
   /** Publieke backend-URL — basis voor de IPN-URL die we per checkout meegeven. */
   backendUrl: string
   /** Storefront-origin, e.g. https://gradepurity.com — voor de retour-URL's. */
@@ -70,7 +73,14 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
   protected client_: BankpayClient
 
   static validateOptions(options: Record<string, unknown>): void {
-    const required = ["apiUrl", "privateKey", "clientId", "backendUrl"] as const
+    const required = [
+      "apiUrl",
+      "privateKey",
+      "clientId",
+      "recipientIban",
+      "recipientName",
+      "backendUrl",
+    ] as const
     for (const key of required) {
       if (!options[key]) {
         throw new MedusaError(
@@ -90,6 +100,8 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
       apiUrl: options.apiUrl,
       privateKey: options.privateKey,
       clientId: options.clientId,
+      recipientIban: options.recipientIban,
+      recipientName: options.recipientName,
     })
   }
 
@@ -117,8 +129,9 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
       returnUrl:
         opts.successUrl ??
         this.buildReturnUrl(this.options_.successPath, "/nl/bestelling-ontvangen"),
-      checkoutUrl:
-        opts.failUrl ?? this.buildReturnUrl(this.options_.failPath, "/nl/afrekenen"),
+      // Zelfde sessie + zelfde bedrag = zelfde checkout; ander bedrag
+      // (updatePayment) mint bewust een nieuwe.
+      idempotencyKey: `${sessionId}-${Math.round(amount * 100)}`,
     })
 
     return {

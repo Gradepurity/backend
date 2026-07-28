@@ -7,17 +7,20 @@
  * (geen tussenrekening — settlement-vertraging zoals bij Wallid >€250 bestaat
  * hier niet). Statussen zijn ISO 20022-codes uit de bankwereld.
  *
- * API-contract: aanmaken volgens hun officiële WooCommerce-plugin, status via
- * de live geverifieerde GET-route (27-07 tegen de echte API getest; de
- * `wc-status`-route uit de plugin bestaat niet meer):
- * - POST /api/checkout        (Bearer <privateKey>, form-encoded)
- *     -> { uuid, shortId, status: "created", redirectUrl }
+ * API-contract, volledig live geverifieerd 27/28-07 tegen de echte API:
+ * - POST /api/v1/checkouts (Bearer, JSON, Idempotency-Key-header verplicht)
+ *     velden: amount, currency, reference+description, recipient_iban,
+ *     recipient_name, correlation_id, return_url, webhook_url (= IPN)
+ *     -> { success, data: { checkout_id, checkout_url, ... } }
+ *   De oude plugin-route POST /api/checkout werkt óók maar NEGEERT
+ *   returnUrl/checkoutUrl en koppelt de ontvanger (naam/IBAN) NIET — de
+ *   klant zag dan een betaling zonder begunstigde in z'n bank-app.
  * - GET  /api/checkout/<uuid> (Bearer)
  *     -> { checkout: { uuid, correlationId, status, status_credited, ... },
- *          amount: { value, currency }, urls: {...} }
+ *          amount: { value }, urls: { return, ipn } }
  * - Hosted betaalpagina:  https://bankpay.plus/checkout/<uuid>
- * - IPN: BANKpay+ pingt de door ons meegegeven `ipn`-URL; de status halen we
- *   daarna zelf authoritative op (zelfde patroon als de Wallid-provider).
+ * - IPN: BANKpay+ pingt de webhook_url; de status halen we daarna zelf
+ *   authoritative op (zelfde patroon als de Wallid-provider).
  */
 
 export type BankpayClientOptions = {
@@ -27,6 +30,10 @@ export type BankpayClientOptions = {
   privateKey: string
   /** CloudPOS instance UUID ("Gradepurity"). */
   clientId: string
+  /** Begunstigde van de overboeking — verplicht voor createCheckout (v1-route);
+   *  status-only gebruik (IPN/confirm/reconcile) mag ze weglaten. */
+  recipientIban?: string
+  recipientName?: string
 }
 
 export type BankpayCheckout = {
@@ -58,8 +65,8 @@ export type CreateCheckoutParams = {
   correlationId: string
   /** URL waar de klant na betalen landt. */
   returnUrl: string
-  /** URL terug naar de checkout (bij afbreken). */
-  checkoutUrl: string
+  /** Verplichte Idempotency-Key: zelfde key = zelfde checkout bij retries. */
+  idempotencyKey: string
 }
 
 /**
@@ -68,8 +75,15 @@ export type CreateCheckoutParams = {
  * bank van de klant verlaten), ACCP/ACTC/ACWC/ACWP = geaccepteerd na SCA
  * (uitvoering volgt; bij niet-instant banken kan settlement een dag duren,
  * maar de klant kan de betaling dan niet meer intrekken).
+ *
+ * RCVD hoort er óók bij: live vastgesteld 28-07 dat een daadwerkelijk
+ * betaalde checkout (geld aantoonbaar op Finom) bij BANKpay+ als eindstatus
+ * RCVD houdt — hun platform pollt de bank daarna niet verder. RCVD wordt pas
+ * gezet nadat de bank de opdracht na SCA heeft aangenomen; onbetaalde
+ * checkouts blijven op created/pending staan.
  */
 const PAID_STATUSES = new Set([
+  "RCVD",
   "ACCC",
   "ACCP",
   "ACSC",
@@ -131,11 +145,15 @@ export class BankpayClient {
   private readonly apiUrl: string
   private readonly privateKey: string
   readonly clientId: string
+  private readonly recipientIban: string
+  private readonly recipientName: string
 
   constructor(options: BankpayClientOptions) {
     this.apiUrl = options.apiUrl.replace(/\/$/, "")
     this.privateKey = options.privateKey
     this.clientId = options.clientId
+    this.recipientIban = options.recipientIban ?? ""
+    this.recipientName = options.recipientName ?? ""
   }
 
   /** De hosted betaalpagina voor een checkout. */
@@ -145,7 +163,9 @@ export class BankpayClient {
 
   private async request<T>(
     path: string,
-    init: { method: "GET" } | { method: "POST"; form: Record<string, string> }
+    init:
+      | { method: "GET" }
+      | { method: "POST"; json: Record<string, unknown>; idempotencyKey: string }
   ): Promise<T> {
     const res = await fetch(`${this.apiUrl}${path}`, {
       method: init.method,
@@ -153,12 +173,13 @@ export class BankpayClient {
         Accept: "application/json",
         Authorization: `Bearer ${this.privateKey}`,
         ...(init.method === "POST"
-          ? { "Content-Type": "application/x-www-form-urlencoded" }
+          ? {
+              "Content-Type": "application/json",
+              "Idempotency-Key": init.idempotencyKey,
+            }
           : {}),
       },
-      ...(init.method === "POST"
-        ? { body: new URLSearchParams(init.form).toString() }
-        : {}),
+      ...(init.method === "POST" ? { body: JSON.stringify(init.json) } : {}),
     })
 
     const text = await res.text()
@@ -175,25 +196,39 @@ export class BankpayClient {
   }
 
   async createCheckout(params: CreateCheckoutParams): Promise<BankpayCheckout> {
-    const checkout = await this.request<BankpayCheckout>("/api/checkout", {
+    if (!this.recipientIban || !this.recipientName) {
+      throw new Error("BANKpay+: recipientIban/recipientName ontbreken voor createCheckout.")
+    }
+    const res = await this.request<{
+      success?: boolean
+      data?: { checkout_id?: string; checkout_url?: string }
+      error?: { code?: string; message?: string }
+    }>("/api/v1/checkouts", {
       method: "POST",
-      form: {
-        reference: params.reference,
+      idempotencyKey: params.idempotencyKey,
+      json: {
         amount: params.amount,
         currency: "EUR",
-        ipn: params.ipnUrl,
-        correlationId: params.correlationId,
-        clientId: this.clientId,
-        returnUrl: params.returnUrl,
-        checkoutUrl: params.checkoutUrl,
+        reference: params.reference,
+        description: params.reference,
+        recipient_iban: this.recipientIban,
+        recipient_name: this.recipientName,
+        correlation_id: params.correlationId,
+        return_url: params.returnUrl,
+        webhook_url: params.ipnUrl,
       },
     })
-    if (!checkout?.uuid) {
+
+    const uuid = res.data?.checkout_id
+    if (!res.success || !uuid) {
       throw new Error(
-        `BANKpay+ /api/checkout -> geen uuid in antwoord: ${JSON.stringify(checkout).slice(0, 200)}`
+        `BANKpay+ /api/v1/checkouts -> geen checkout_id: ${JSON.stringify(res).slice(0, 200)}`
       )
     }
-    return checkout
+    return {
+      uuid,
+      redirectUrl: res.data?.checkout_url,
+    }
   }
 
   /** Actuele status van een checkout (authoritative). */
