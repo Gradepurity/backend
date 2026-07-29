@@ -193,6 +193,13 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
     input: AuthorizePaymentInput
   ): Promise<AuthorizePaymentOutput> {
     const data = (input.data ?? {}) as Record<string, unknown>
+    // Handmatige override: de QR-optie op BANKpay+'s betaalpagina is een kale
+    // SEPA-overboeking die hun tracking nooit ziet (checkout blijft "created").
+    // complete-bankpay-session.ts zet deze vlag pas nadat het geld op de
+    // rekening geverifieerd is — de enige route die dan nog werkt.
+    if (data.manual_paid) {
+      return { status: PaymentSessionStatus.AUTHORIZED, data }
+    }
     const mapped = await this.fetchMappedStatus(data)
 
     switch (mapped) {
@@ -219,6 +226,9 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
     const data = (input.data ?? {}) as Record<string, unknown>
     if (data.captured) {
       return { status: PaymentSessionStatus.CAPTURED, data }
+    }
+    if (data.manual_paid) {
+      return { status: PaymentSessionStatus.AUTHORIZED, data }
     }
     const mapped = await this.fetchMappedStatus(data)
     switch (mapped) {
