@@ -11,20 +11,60 @@ import * as path from "path";
  *   npx medusa exec ./src/scripts/send-checkout-recovery.ts           → dry-run (alleen preview)
  *   npx medusa exec ./src/scripts/send-checkout-recovery.ts send      → echt versturen
  *
- * Eerdere rondes: 21-07 (Anissa, Michiel) · 24-07 (Emre, Kaw) · 27-07 (Mike) · 28-07 (Henna) · 29-07 (Michel)
+ * Eerdere rondes: 21-07 (Anissa, Michiel) · 24-07 (Emre, Kaw) · 27-07 (Mike) · 28-07 (Henna) · 29-07 (Michel) · 29-07 (Dragan, DE)
  */
 
-const RECIPIENTS = [
+const RECIPIENTS: {
+  email: string;
+  firstName: string;
+  items: string;
+  total: string;
+  reference: string;
+  locale: "nl" | "de";
+}[] = [
   {
-    email: "jeanmichel88@gmail.com",
-    firstName: "Michel",
-    items: "2× bacteriostatisch water 10 ml, 2× bacteriostatisch water 3 ml",
-    total: "€ 40,75",
-    reference: "Michel Duarte",
+    email: "draganfljorija@hotmail.com",
+    firstName: "Dragan",
+    items: "2× PT-141 10 mg Vial",
+    total: "€ 69,87",
+    reference: "Dragan Nikolic",
+    locale: "de",
   },
 ];
 
 function buildEmail(r: (typeof RECIPIENTS)[number]) {
+  if (r.locale === "de") {
+    const body = `
+<p style="margin:0 0 24px;">Hallo ${r.firstName},</p>
+
+<p style="margin:0 0 24px;">deine Zahlung ist vorhin leider nicht durchgegangen. Du kannst deine Bestellung (${r.items}, ${r.total} inkl. Versand) ganz einfach per Überweisung bezahlen:</p>
+
+<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background:#F5F3EE;border-radius:8px;">
+  <tr><td style="padding:24px 28px;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:2;color:#1A1A1A;">
+    <strong>Betrag:</strong>&nbsp; ${r.total}<br/>
+    <strong>Konto:</strong>&nbsp; NL81 FNOM 0779 1759 17<br/>
+    <strong>Empfänger:</strong>&nbsp; Gradepurity<br/>
+    <strong>Verwendungszweck:</strong>&nbsp; ${r.reference}
+  </td></tr>
+</table>
+
+<p style="margin:0 0 24px;">Sobald die Zahlung bei uns eingegangen ist, versenden wir deine Bestellung direkt.</p>
+
+<p style="margin:0;">Fragen? Antworte einfach auf diese E-Mail oder schreib uns per WhatsApp an <a href="https://wa.me/31615605502" style="color:${UI.navy};">+31 6 15 60 55 02</a>.</p>`;
+
+    return {
+      subject: "Schließe deine Bestellung ab, Zahlung per Überweisung",
+      html: renderLayout(
+        {
+          preheader: `Deine Bestellung (${r.total}) kannst du per Überweisung bezahlen.`,
+          heading: "Schließe deine Bestellung ab.",
+          body,
+        },
+        "de"
+      ),
+    };
+  }
+
   const body = `
 <p style="margin:0 0 24px;">Hi ${r.firstName},</p>
 
