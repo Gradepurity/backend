@@ -21,8 +21,12 @@ export default async function resendOrderMails({ container, args }: ExecArgs) {
     return;
   }
 
-  const template =
-    payload.data.payment_method === "wallid" ? "payment-captured" : "order-placed";
+  // Zelfde keuze als de order-placed-subscriber: Wallid- en BANKpay+-orders
+  // bestaan pas ná betaling en krijgen direct de "betaling ontvangen"-mail.
+  const paidOnPlacement =
+    payload.data.payment_method === "wallid" ||
+    payload.data.payment_method === "bankpay";
+  const template = paidOnPlacement ? "payment-captured" : "order-placed";
   const notifications = container.resolve(Modules.NOTIFICATION);
 
   const klant = await notifications.createNotifications({
