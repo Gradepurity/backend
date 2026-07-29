@@ -60,6 +60,8 @@ export type BankpayStatus = {
   payment?: string
   /** `status_credited` uit de API — gezet zodra het geld gecrediteerd is. */
   credited?: string | null
+  /** `status_xs2a` — de open-banking-autorisatiestatus ("pending" tot SCA). */
+  xs2a?: string | null
   [key: string]: unknown
 }
 
@@ -85,14 +87,18 @@ export type CreateCheckoutParams = {
  * (uitvoering volgt; bij niet-instant banken kan settlement een dag duren,
  * maar de klant kan de betaling dan niet meer intrekken).
  *
- * RCVD hoort er óók bij: live vastgesteld 28-07 dat een daadwerkelijk
- * betaalde checkout (geld aantoonbaar op Finom) bij BANKpay+ als eindstatus
- * RCVD houdt — hun platform pollt de bank daarna niet verder. RCVD wordt pas
- * gezet nadat de bank de opdracht na SCA heeft aangenomen; onbetaalde
- * checkouts blijven op created/pending staan.
+ * RCVD hoort hier NIET bij (fout ontdekt 29-07 via valse order #1947): sinds
+ * de CloudPOS-binding zet BANKpay+ de checkout al op RCVD zodra de klant een
+ * bank kiest en een IBAN invult — vóór enige SCA/betaling. RCVD = "opdracht
+ * ontvangen", niet "betaald". De eerdere 28-07-observatie ("betaalde checkout
+ * blijft RCVD") stamt uit het tijdperk zonder POS-binding en is daarmee
+ * onbetrouwbaar. Betaald-signalen zijn nu: `status_credited` gezet, een
+ * settlement-/acceptatiecode (ACSC e.d.) op de checkout, of diezelfde codes
+ * in `status_xs2a` (de bankautorisatie-status). Blijkt uit de eerstvolgende
+ * echte betaling dat géén van die signalen komt, dan is dat een BANKpay-
+ * supportticket waard — nooit RCVD terugzetten in deze set.
  */
 const PAID_STATUSES = new Set([
-  "RCVD",
   "ACCC",
   "ACCP",
   "ACSC",
@@ -124,16 +130,10 @@ export type MappedStatus = "paid" | "failed" | "pending"
 const PAID_WORDS = new Set(["paid", "success", "successful", "completed", "credited", "settled"])
 const FAILED_WORDS = new Set(["failed", "rejected", "cancelled", "canceled", "expired", "error"])
 
-/** Map een BANKpay+-statusrespons naar ons interne drieluik. */
-export function mapBankpayStatus(status: BankpayStatus): MappedStatus {
-  // `status_credited` gezet = geld gecrediteerd, ongeacht de statustekst.
-  if (status.credited) {
-    return "paid"
-  }
-
-  const code = status.payment
+/** Eén statuscode (checkout of xs2a) naar het drieluik, of null als onbekend. */
+function mapCode(code: string | null | undefined): MappedStatus | null {
   if (!code) {
-    return "pending"
+    return null
   }
   // Cancellation-request-flow (AcceptedCancellationRequest e.d.) is nooit
   // "betaald", ook al begint de code met "Accepted".
@@ -146,8 +146,28 @@ export function mapBankpayStatus(status: BankpayStatus): MappedStatus {
   if (FAILED_STATUSES.has(code) || FAILED_WORDS.has(code.toLowerCase())) {
     return "failed"
   }
-  // created / SCArequired / RCVD / PDNG / UNKN / ...
+  // created / SCArequired / RCVD / PDNG / UNKN / pending / ...
   return "pending"
+}
+
+/** Map een BANKpay+-statusrespons naar ons interne drieluik. */
+export function mapBankpayStatus(status: BankpayStatus): MappedStatus {
+  // `status_credited` gezet = geld gecrediteerd, ongeacht de statustekst.
+  if (status.credited) {
+    return "paid"
+  }
+
+  const checkout = mapCode(status.payment)
+  if (checkout === "paid" || checkout === "failed") {
+    return checkout
+  }
+  // Checkout-status is RCVD/pending — kijk naar de bankautorisatie (xs2a):
+  // die springt pas na SCA en is daarmee het betrouwbare betaald-signaal.
+  const xs2a = mapCode(status.xs2a)
+  if (xs2a === "paid" || xs2a === "failed") {
+    return xs2a
+  }
+  return checkout ?? xs2a ?? "pending"
 }
 
 export class BankpayClient {
@@ -246,6 +266,7 @@ export class BankpayClient {
         status_credited?: string | null
       }
       amount?: { value?: number; currency?: string }
+      status_xs2a?: string | null
     }>(`/api/checkout/${encodeURIComponent(checkoutUuid)}`, { method: "GET" })
 
     return {
@@ -253,6 +274,7 @@ export class BankpayClient {
       correlationId: raw.checkout?.correlationId,
       payment: raw.checkout?.status,
       credited: raw.checkout?.status_credited ?? null,
+      xs2a: raw.status_xs2a ?? null,
       amount: raw.amount?.value,
     }
   }
