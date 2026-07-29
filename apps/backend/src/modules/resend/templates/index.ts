@@ -13,7 +13,7 @@ import {
   UI,
 } from "./layout"
 
-export type PaymentMethod = "bank" | "crypto" | "wallid" | "other"
+export type PaymentMethod = "bank" | "crypto" | "wallid" | "bankpay" | "other"
 
 /**
  * Bankgegevens voor de vooruitbetaling-mail. Spiegel van BANK_DETAILS in de
@@ -218,13 +218,15 @@ function adminNewOrder(data: OrderEmailData): RenderedEmail {
   const methodLabel =
     method === "wallid"
       ? "Wallid — BETAALD"
-      : method === "bank"
-        ? "Bankoverschrijving — wacht op betaling (kenmerk GP-" +
-          String(data.display_id).padStart(5, "0") +
-          ")"
-        : method === "crypto"
-          ? "Crypto"
-          : "Onbekend"
+      : method === "bankpay"
+        ? "BANKpay+ (eigen bank) — BETAALD"
+        : method === "bank"
+          ? "Bankoverschrijving — wacht op betaling (kenmerk GP-" +
+            String(data.display_id).padStart(5, "0") +
+            ")"
+          : method === "crypto"
+            ? "Crypto"
+            : "Onbekend"
 
   const body = `
     <p style="margin:0 0 16px;">Er is een nieuwe bestelling geplaatst op gradepurity.com.</p>

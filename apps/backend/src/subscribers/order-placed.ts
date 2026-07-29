@@ -19,8 +19,12 @@ export default async function orderPlacedHandler({
     const payload = await buildOrderEmailData(container, data.id)
     if (!payload) return
 
-    const template =
-      payload.data.payment_method === "wallid" ? "payment-captured" : "order-placed"
+    // Wallid- en BANKpay+-orders ontstaan pas ná betaling: die klant krijgt
+    // direct de "betaling ontvangen"-mail, nooit de "in afwachting"-variant.
+    const paidOnPlacement =
+      payload.data.payment_method === "wallid" ||
+      payload.data.payment_method === "bankpay"
+    const template = paidOnPlacement ? "payment-captured" : "order-placed"
 
     const notificationModuleService = container.resolve(Modules.NOTIFICATION)
     await notificationModuleService.createNotifications({

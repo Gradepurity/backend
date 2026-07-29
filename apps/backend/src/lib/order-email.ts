@@ -188,6 +188,10 @@ function derivePaymentMethod(order: any): PaymentMethod {
   if (providerIds.some((id) => id.includes("wallid") || id.includes("pp_card"))) {
     return "wallid"
   }
+  // BANKpay+ (pp_sepa_bankpay): zelfde model als Wallid — order pas na betaling.
+  if (providerIds.some((id) => id.includes("bankpay") || id.includes("sepa"))) {
+    return "bankpay"
+  }
   if (providerIds.some((id) => id.includes("btcpay") || id.includes("crypto"))) {
     return "crypto"
   }
