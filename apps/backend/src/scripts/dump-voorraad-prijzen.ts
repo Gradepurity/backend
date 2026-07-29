@@ -20,6 +20,7 @@ export default async function dumpVoorraadPrijzen({ container }: { container: Me
       "variants.sku",
       "variants.prices.amount",
       "variants.prices.currency_code",
+      "variants.prices.min_quantity",
       "variants.inventory_items.inventory.location_levels.stocked_quantity",
       "variants.inventory_items.inventory.location_levels.reserved_quantity",
     ],
@@ -31,13 +32,19 @@ export default async function dumpVoorraadPrijzen({ container }: { container: Me
     if (p.status !== "published") continue;
     for (const v of p.variants ?? []) {
       const lvl = v.inventory_items?.[0]?.inventory?.location_levels?.[0];
-      const eur = (v.prices ?? []).find((pr: any) => pr.currency_code === "eur");
+      // basisprijs = EUR-prijs zonder staffel (min_quantity leeg of 1);
+      // de overige EUR-prijzen zijn bulkkorting-staffels
+      const eurPrices = (v.prices ?? []).filter((pr: any) => pr.currency_code === "eur");
+      const base = eurPrices.find((pr: any) => !pr.min_quantity || Number(pr.min_quantity) <= 1) ?? eurPrices[0];
       rows.push({
         product: p.title,
         handle: p.handle,
         variant: v.title,
         sku: v.sku ?? null,
-        prijs_eur: eur ? Number(eur.amount) : null,
+        prijs_eur: base ? Number(base.amount) : null,
+        staffels_eur: eurPrices
+          .filter((pr: any) => pr !== base)
+          .map((pr: any) => `${pr.min_quantity}+: €${pr.amount}`),
         plank: lvl ? Number(lvl.stocked_quantity) : null,
         gereserveerd: lvl ? Number(lvl.reserved_quantity) : null,
       });
