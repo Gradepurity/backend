@@ -108,9 +108,19 @@ function orderPlaced(data: OrderEmailData, locale: Locale): RenderedEmail {
   const c = COPY[locale]
   const orderNo = `#${data.display_id}`
   const method = data.payment_method ?? "other"
-  const payNote = method === "bank" ? c.placed.bank : method === "crypto" ? c.placed.crypto : c.placed.generic
+  const payNote =
+    method === "bank"
+      ? c.placed.bank
+      : method === "bankpay"
+        ? c.placed.bankpay
+        : method === "crypto"
+          ? c.placed.crypto
+          : c.placed.generic
 
-  const bankBlock = method === "bank" ? bankDetailsBlock(data, locale) : ""
+  // Bankgegevens ook bij BANKpay+ meesturen: betaalt de klant tóch buiten de
+  // betaalpagina om (QR/afgebroken), dan heeft hij alles om over te maken.
+  const bankBlock =
+    method === "bank" || method === "bankpay" ? bankDetailsBlock(data, locale) : ""
 
   const body = `
     <p style="margin:0 0 16px;">${c.placed.intro}</p>
@@ -219,7 +229,9 @@ function adminNewOrder(data: OrderEmailData): RenderedEmail {
     method === "wallid"
       ? "Wallid — BETAALD"
       : method === "bankpay"
-        ? "BANKpay+ (eigen bank) — BETAALD"
+        ? "BANKpay+ (eigen bank) — wacht op betaling (kenmerk GP-" +
+          String(data.display_id).padStart(5, "0") +
+          " of GradePurity-…)"
         : method === "bank"
           ? "Bankoverschrijving — wacht op betaling (kenmerk GP-" +
             String(data.display_id).padStart(5, "0") +
@@ -360,6 +372,10 @@ const COPY = {
         title: "Maak het bedrag over om je bestelling af te ronden",
         text: "Gebruik onderstaande gegevens en vermeld het kenmerk bij je overschrijving. Zodra de betaling binnen is, sturen we je een bevestiging en verzenden we je bestelling.",
       },
+      bankpay: {
+        title: "Rond je betaling af via je bank",
+        text: "Je betaalt via de beveiligde betaalpagina van je eigen bank. Al betaald? Dan ontvang je zo een bevestiging van ons. Lukte het betalen niet, maak het bedrag dan gewoon over met onderstaande gegevens en vermeld het kenmerk.",
+      },
       bankDetails: {
         payee: "Ten name van",
         amount: "Bedrag",
@@ -428,6 +444,10 @@ const COPY = {
         title: "Effectuez le virement du montant pour finaliser votre commande",
         text: "Utilisez les coordonnées ci-dessous et indiquez la référence lors de votre virement. Dès réception du paiement, nous vous enverrons une confirmation et expédierons votre commande.",
       },
+      bankpay: {
+        title: "Finalisez votre paiement via votre banque",
+        text: "Vous payez via la page de paiement sécurisée de votre propre banque. Déjà payé ? Vous recevrez une confirmation sous peu. Si le paiement n'a pas abouti, virez simplement le montant avec les coordonnées ci-dessous en indiquant la référence.",
+      },
       bankDetails: {
         payee: "Au nom de",
         amount: "Montant",
@@ -493,6 +513,10 @@ const COPY = {
       bank: {
         title: "Transfer the amount to complete your order",
         text: "Use the details below and include the reference with your transfer. Once the payment arrives, we'll send a confirmation and ship your order.",
+      },
+      bankpay: {
+        title: "Complete your payment via your bank",
+        text: "You pay on your own bank's secure payment page. Already paid? You'll receive a confirmation from us shortly. If the payment didn't go through, simply transfer the amount using the details below and include the reference.",
       },
       bankDetails: {
         payee: "Payee",
@@ -561,6 +585,10 @@ const COPY = {
       bank: {
         title: "Überweisen Sie den Betrag, um Ihre Bestellung abzuschließen",
         text: "Nutzen Sie die untenstehenden Daten und geben Sie den Verwendungszweck bei Ihrer Überweisung an. Sobald die Zahlung eingeht, senden wir eine Bestätigung und versenden Ihre Bestellung.",
+      },
+      bankpay: {
+        title: "Schließen Sie Ihre Zahlung über Ihre Bank ab",
+        text: "Sie bezahlen über die sichere Bezahlseite Ihrer eigenen Bank. Schon bezahlt? Dann erhalten Sie in Kürze eine Bestätigung von uns. Hat die Zahlung nicht geklappt, überweisen Sie den Betrag einfach mit den untenstehenden Daten und geben Sie den Verwendungszweck an.",
       },
       bankDetails: {
         payee: "Empfänger",

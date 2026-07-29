@@ -193,30 +193,21 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
     input: AuthorizePaymentInput
   ): Promise<AuthorizePaymentOutput> {
     const data = (input.data ?? {}) as Record<string, unknown>
-    // Handmatige override: de QR-optie op BANKpay+'s betaalpagina is een kale
-    // SEPA-overboeking die hun tracking nooit ziet (checkout blijft "created").
-    // complete-bankpay-session.ts zet deze vlag pas nadat het geld op de
-    // rekening geverifieerd is — de enige route die dan nog werkt.
-    if (data.manual_paid) {
-      return { status: PaymentSessionStatus.AUTHORIZED, data }
-    }
-    const mapped = await this.fetchMappedStatus(data)
-
-    switch (mapped) {
-      case "paid":
-        return { status: PaymentSessionStatus.AUTHORIZED, data }
-      case "failed":
-        return { status: PaymentSessionStatus.ERROR, data }
-      default:
-        return { status: PaymentSessionStatus.PENDING, data }
-    }
+    // Vorkasse-model (sinds 29-07, eigenaarsbesluit): de order ontstaat direct
+    // bij het afrekenen, vóór de betaling — net als bij pp_system_default. Zo
+    // heeft elke poging een order met items/kenmerk (geen onzichtbare
+    // QR-betalingen meer) en krijgt de klant meteen de besteld-mail met
+    // bankgegevens als vangnet. Betaald = de CAPTURE, die pas volgt via
+    // IPN/reconcile (BANKpay+-status) of handmatig (capture-bank-payment.ts).
+    return { status: PaymentSessionStatus.AUTHORIZED, data }
   }
 
   async capturePayment(
     input: CapturePaymentInput
   ): Promise<CapturePaymentOutput> {
-    // Het geld staat al op onze eigen IBAN zodra de bank de betaling uitvoert;
-    // capture is een administratieve marker.
+    // Capture = "geld staat aantoonbaar op de eigen IBAN": gezet door de
+    // reconcile/IPN (BANKpay+-status betaald) of handmatig na een QR-/losse
+    // overboeking (capture-bank-payment.ts). Administratieve marker.
     return { data: { ...(input.data ?? {}), captured: true } }
   }
 
@@ -227,18 +218,9 @@ class BankpayProviderService extends AbstractPaymentProvider<BankpayOptions> {
     if (data.captured) {
       return { status: PaymentSessionStatus.CAPTURED, data }
     }
-    if (data.manual_paid) {
-      return { status: PaymentSessionStatus.AUTHORIZED, data }
-    }
-    const mapped = await this.fetchMappedStatus(data)
-    switch (mapped) {
-      case "paid":
-        return { status: PaymentSessionStatus.AUTHORIZED, data }
-      case "failed":
-        return { status: PaymentSessionStatus.ERROR, data }
-      default:
-        return { status: PaymentSessionStatus.PENDING, data }
-    }
+    // Vorkasse-model: de sessie is bij plaatsing geautoriseerd; "betaald"
+    // wordt uitgedrukt in de capture, niet in deze status.
+    return { status: PaymentSessionStatus.AUTHORIZED, data }
   }
 
   async updatePayment(

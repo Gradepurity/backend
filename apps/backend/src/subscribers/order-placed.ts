@@ -19,12 +19,12 @@ export default async function orderPlacedHandler({
     const payload = await buildOrderEmailData(container, data.id)
     if (!payload) return
 
-    // Wallid- en BANKpay+-orders ontstaan pas ná betaling: die klant krijgt
-    // direct de "betaling ontvangen"-mail, nooit de "in afwachting"-variant.
-    const paidOnPlacement =
-      payload.data.payment_method === "wallid" ||
-      payload.data.payment_method === "bankpay"
-    const template = paidOnPlacement ? "payment-captured" : "order-placed"
+    // Wallid-orders ontstaan pas ná betaling: die klant krijgt direct de
+    // "betaling ontvangen"-mail. BANKpay+ draait sinds 29-07 op het
+    // Vorkasse-model (order vóór betaling): eerst de besteld-mail met
+    // bankgegevens als vangnet, de betaald-mail volgt bij de capture.
+    const template =
+      payload.data.payment_method === "wallid" ? "payment-captured" : "order-placed"
 
     const notificationModuleService = container.resolve(Modules.NOTIFICATION)
     await notificationModuleService.createNotifications({
