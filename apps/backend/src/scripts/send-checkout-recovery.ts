@@ -11,16 +11,16 @@ import * as path from "path";
  *   npx medusa exec ./src/scripts/send-checkout-recovery.ts           → dry-run (alleen preview)
  *   npx medusa exec ./src/scripts/send-checkout-recovery.ts send      → echt versturen
  *
- * Eerdere rondes: 21-07 (Anissa, Michiel) · 24-07 (Emre, Kaw) · 27-07 (Mike) · 28-07 (Henna)
+ * Eerdere rondes: 21-07 (Anissa, Michiel) · 24-07 (Emre, Kaw) · 27-07 (Mike) · 28-07 (Henna) · 29-07 (Michel)
  */
 
 const RECIPIENTS = [
   {
-    email: "hennagrunholz09@icloud.com",
-    firstName: "Henna",
-    items: "1× Melanotan II 10 mg, 1× bacteriostatisch water 10 ml, 3× insulinenaalden 10× 1ml, 3× alcohol swabs",
-    total: "€ 80,55",
-    reference: "Henna Grunholz",
+    email: "jeanmichel88@gmail.com",
+    firstName: "Michel",
+    items: "2× bacteriostatisch water 10 ml, 2× bacteriostatisch water 3 ml",
+    total: "€ 40,75",
+    reference: "Michel Duarte",
   },
 ];
 
@@ -28,7 +28,7 @@ function buildEmail(r: (typeof RECIPIENTS)[number]) {
   const body = `
 <p style="margin:0 0 24px;">Hi ${r.firstName},</p>
 
-<p style="margin:0 0 24px;">Je betaling kwam gisteravond niet door. Je kunt je bestelling (${r.items} &mdash; ${r.total} incl. verzending) gewoon per overboeking betalen:</p>
+<p style="margin:0 0 24px;">Je betaling kwam gisteren niet door. Je kunt je bestelling (${r.items} &mdash; ${r.total} incl. verzending) gewoon per overboeking betalen:</p>
 
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 24px;background:#F5F3EE;border-radius:8px;">
   <tr><td style="padding:24px 28px;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:2;color:#1A1A1A;">

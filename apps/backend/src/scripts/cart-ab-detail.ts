@@ -1,11 +1,11 @@
-import { MedusaContainer } from "@medusajs/framework";
+import { ExecArgs } from "@medusajs/framework/types";
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 
 /**
- * READ-ONLY: volledige adres/contactgegevens van één cart.
- *   npx medusa exec ./src/scripts/cart-ab-detail.ts
+ * READ-ONLY: volledige adres/contactgegevens + totalen van één cart.
+ *   npx medusa exec ./src/scripts/cart-ab-detail.ts <cart_id>
  */
-export default async function cartAbDetail({ container }: { container: MedusaContainer }) {
+export default async function cartAbDetail({ container, args }: ExecArgs) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
   const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
@@ -36,7 +36,7 @@ export default async function cartAbDetail({ container }: { container: MedusaCon
       "item_total",
       "shipping_total",
     ],
-    filters: { id: "cart_01KYJQEXZ63406HM5G1FHFZ311" },
+    filters: { id: args?.[0] ?? "cart_01KYJQEXZ63406HM5G1FHFZ311" },
   });
 
   logger.info(JSON.stringify(carts, null, 2));
