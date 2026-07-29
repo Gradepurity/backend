@@ -7,19 +7,27 @@
  * (geen tussenrekening — settlement-vertraging zoals bij Wallid >€250 bestaat
  * hier niet). Statussen zijn ISO 20022-codes uit de bankwereld.
  *
- * API-contract, volledig live geverifieerd 27/28-07 tegen de echte API:
- * - POST /api/v1/checkouts (Bearer, JSON, Idempotency-Key-header verplicht)
- *     velden: amount, currency, reference+description, recipient_iban,
- *     recipient_name, correlation_id, return_url, webhook_url (= IPN)
- *     -> { success, data: { checkout_id, checkout_url, ... } }
- *   De oude plugin-route POST /api/checkout werkt óók maar NEGEERT
- *   returnUrl/checkoutUrl en koppelt de ontvanger (naam/IBAN) NIET — de
- *   klant zag dan een betaling zonder begunstigde in z'n bank-app.
+ * API-contract, volledig live geverifieerd 29-07 tegen de echte API:
+ * - POST /api/checkout (Bearer, JSON) — de route die de officiële
+ *   WooCommerce-plugin gebruikt. KRITIEK veld: `cloudPosId` (camelCase, de
+ *   CloudPOS-instance-uuid). Zonder dat veld wordt de checkout NIET aan onze
+ *   CloudPOS gekoppeld en 500't hun POST /api/payments bij elke bankkeuze
+ *   ("select * from cloud_pos where uuid = ''"), en blijft de begunstigde
+ *   leeg op de betaalpagina. Mét cloudPosId binden begunstigde (uit het
+ *   CloudPOS-record) en IPN wél; `returnUrl` wordt op deze route genegeerd
+ *   (urls.return blijft null — alle veldnaam-varianten live getest 29-07;
+ *   de plugin stuurt hem ook en heeft hetzelfde). Terugkeer naar de site
+ *   loopt dus via de IPN + reconcile + het CloudPOS-domain.
+ *     velden: amount, reference, correlationId, cloudPosId, returnUrl, ipn
+ *     -> { uuid, shortId, status, redirectUrl }
+ *   De v1-route POST /api/v1/checkouts maakt óók checkouts aan maar negeert
+ *   cloudPosId in elke geteste vorm — daarmee is elke v1-checkout onbetaalbaar.
+ *   Niet meer gebruiken tot BANKpay+ dat fixt.
  * - GET  /api/checkout/<uuid> (Bearer)
  *     -> { checkout: { uuid, correlationId, status, status_credited, ... },
- *          amount: { value }, urls: { return, ipn } }
+ *          amount: { value }, recipient, urls: { return, ipn } }
  * - Hosted betaalpagina:  https://bankpay.plus/checkout/<uuid>
- * - IPN: BANKpay+ pingt de webhook_url; de status halen we daarna zelf
+ * - IPN: BANKpay+ pingt de ipn-URL; de status halen we daarna zelf
  *   authoritative op (zelfde patroon als de Wallid-provider).
  */
 
@@ -30,8 +38,9 @@ export type BankpayClientOptions = {
   privateKey: string
   /** CloudPOS instance UUID ("Gradepurity"). */
   clientId: string
-  /** Begunstigde van de overboeking — verplicht voor createCheckout (v1-route);
-   *  status-only gebruik (IPN/confirm/reconcile) mag ze weglaten. */
+  /** Begunstigde van de overboeking. Sinds de omschakeling naar de
+   *  plugin-route (29-07) komt de begunstigde uit het CloudPOS-record bij
+   *  BANKpay+ zelf; deze velden dienen alleen nog ter referentie. */
   recipientIban?: string
   recipientName?: string
 }
@@ -196,38 +205,34 @@ export class BankpayClient {
   }
 
   async createCheckout(params: CreateCheckoutParams): Promise<BankpayCheckout> {
-    if (!this.recipientIban || !this.recipientName) {
-      throw new Error("BANKpay+: recipientIban/recipientName ontbreken voor createCheckout.")
-    }
     const res = await this.request<{
-      success?: boolean
-      data?: { checkout_id?: string; checkout_url?: string }
-      error?: { code?: string; message?: string }
-    }>("/api/v1/checkouts", {
+      uuid?: string
+      shortId?: string
+      status?: string
+      redirectUrl?: string
+    }>("/api/checkout", {
       method: "POST",
       idempotencyKey: params.idempotencyKey,
       json: {
         amount: params.amount,
-        currency: "EUR",
         reference: params.reference,
-        description: params.reference,
-        recipient_iban: this.recipientIban,
-        recipient_name: this.recipientName,
-        correlation_id: params.correlationId,
-        return_url: params.returnUrl,
-        webhook_url: params.ipnUrl,
+        correlationId: params.correlationId,
+        // Zonder cloudPosId geen CloudPOS-binding -> bankkeuze 500't en de
+        // begunstigde blijft leeg. Zie het contract-commentaar bovenaan.
+        cloudPosId: this.clientId,
+        returnUrl: params.returnUrl,
+        ipn: params.ipnUrl,
       },
     })
 
-    const uuid = res.data?.checkout_id
-    if (!res.success || !uuid) {
+    if (!res.uuid) {
       throw new Error(
-        `BANKpay+ /api/v1/checkouts -> geen checkout_id: ${JSON.stringify(res).slice(0, 200)}`
+        `BANKpay+ /api/checkout -> geen uuid: ${JSON.stringify(res).slice(0, 200)}`
       )
     }
     return {
-      uuid,
-      redirectUrl: res.data?.checkout_url,
+      uuid: res.uuid,
+      redirectUrl: res.redirectUrl,
     }
   }
 
