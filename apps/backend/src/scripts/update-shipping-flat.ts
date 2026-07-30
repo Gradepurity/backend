@@ -4,15 +4,15 @@ import { updateShippingOptionsWorkflow } from "@medusajs/medusa/core-flows";
 
 /**
  * Trekt de verzending gelijk met Google Merchant Center + de voorwaarden:
- *   - €6,95 vast tarief
- *   - gratis (€0) vanaf een ordertotaal van €100
+ *   - €7,95 vast tarief
+ *   - gratis (€0) vanaf een ordertotaal van €125
  *   - voor alle EU-zonelanden, inclusief België (dat nog niet in de zone zat)
  *
  * Idempotent en veilig herhaalbaar:
  *   npx medusa exec ./src/scripts/update-shipping-flat.ts
  */
-const FLAT_EUR = 6.95;
-const FREE_FROM_EUR = 100;
+const FLAT_EUR = 7.95;
+const FREE_FROM_EUR = 125;
 
 export default async function updateShippingFlat({ container }: { container: MedusaContainer }) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
