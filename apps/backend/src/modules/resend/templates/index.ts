@@ -59,6 +59,7 @@ export type TemplateId =
   | "payment-captured"
   | "order-shipped"
   | "admin-new-order"
+  | "admin-payment-received"
   | "replenish-reminder"
 
 const ORDER_URL = "https://gradepurity.com"
@@ -97,6 +98,8 @@ function renderOrderTemplate(template: TemplateId, data: OrderEmailData): Render
       return orderShipped(data, locale)
     case "admin-new-order":
       return adminNewOrder(data)
+    case "admin-payment-received":
+      return adminPaymentReceived(data)
     default:
       throw new Error(`Onbekende e-mailtemplate: ${template}`)
   }
@@ -263,6 +266,46 @@ function adminNewOrder(data: OrderEmailData): RenderedEmail {
     subject: `Nieuwe bestelling ${orderNo} — ${money(data.totals.total, data.currency_code, locale)} (${method === "wallid" ? "betaald" : method === "bank" ? "vooruitbetaling" : method})`,
     html: renderLayout(
       { preheader: `Nieuwe bestelling ${orderNo}`, heading: "Nieuwe bestelling", body },
+      locale
+    ),
+  }
+}
+
+// ── 4b. Admin-notificatie — betaling binnen (intern, altijd NL) ───────────────
+// Vorkasse-model: de admin-new-order-mail zegt "wacht op betaling"; dit is het
+// vervolgsignaal zodra de capture er is (BANKpay-reconcile/wachtpagina of
+// handmatige capture van een bankoverschrijving). Wallid slaat dit over: daar
+// betekent admin-new-order al "betaald".
+
+function adminPaymentReceived(data: OrderEmailData): RenderedEmail {
+  const locale: Locale = "nl"
+  const orderNo = `#${data.display_id}`
+  const method = data.payment_method ?? "other"
+  const methodLabel =
+    method === "bankpay"
+      ? "BANKpay+ (eigen bank)"
+      : method === "bank"
+        ? "Bankoverschrijving"
+        : method === "crypto"
+          ? "Crypto"
+          : method
+
+  const body = `
+    <p style="margin:0 0 16px;">De betaling voor deze bestelling is binnen — hij kan ingepakt en verzonden worden.</p>
+    <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
+      <table role="presentation" cellpadding="0" cellspacing="0">
+        <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Bestelnummer</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${orderNo}</td></tr>
+        <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Klant</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${escapeAttr(data.customer_email ?? "onbekend")}</td></tr>
+        <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Betaald via</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;">${methodLabel}</td></tr>
+        <tr><td style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};padding:3px 16px 3px 0;">Bedrag</td><td style="font-family:Georgia,serif;font-size:15px;color:${UI.navy};padding:3px 0;"><strong>${money(data.totals.total, data.currency_code, locale)}</strong></td></tr>
+      </table>
+    </div>
+    ${button("https://backend-production-2a64.up.railway.app/app/orders", "Open Medusa-admin")}
+  `
+  return {
+    subject: `€ binnen: ${orderNo} betaald — ${money(data.totals.total, data.currency_code, locale)} (${methodLabel})`,
+    html: renderLayout(
+      { preheader: `Betaling binnen voor ${orderNo}`, heading: "Betaling binnen", body },
       locale
     ),
   }

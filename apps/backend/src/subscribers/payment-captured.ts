@@ -44,6 +44,23 @@ export default async function paymentCapturedHandler({
       template: "payment-captured",
       data: payload.data as unknown as Record<string, unknown>,
     })
+
+    // Interne notificatie: bij het Vorkasse-model zei admin-new-order alleen
+    // "wacht op betaling" — dit is het "geld is binnen, inpakken maar"-signaal.
+    try {
+      const adminEmail = process.env.ADMIN_ORDER_EMAIL || "info@gradepurity.com"
+      await notificationModuleService.createNotifications({
+        to: adminEmail,
+        channel: "email",
+        template: "admin-payment-received",
+        data: {
+          ...payload.data,
+          customer_email: payload.email,
+        } as unknown as Record<string, unknown>,
+      })
+    } catch (e: any) {
+      logger.error(`admin-betaald-notificatie mislukt voor payment ${data.id}: ${e?.message}`)
+    }
   } catch (e: any) {
     logger.error(`payment-captured mail mislukt voor payment ${data.id}: ${e?.message}`)
   }
