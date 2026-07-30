@@ -18,11 +18,18 @@ async function priced(query: any, itemTotal: number) {
   return data as any[];
 }
 
-export default async function verifyShipping({ container }: { container: MedusaContainer }) {
+export default async function verifyShipping({
+  container,
+  args,
+}: {
+  container: MedusaContainer;
+  args?: string[];
+}) {
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER);
   const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
-  for (const total of [50, 150]) {
+  const totals = args?.length ? args.map(Number).filter(Number.isFinite) : [50, 150];
+  for (const total of totals) {
     logger.info(`\n===== ordertotaal €${total} =====`);
     const rows = await priced(query, total);
     for (const o of rows) {
