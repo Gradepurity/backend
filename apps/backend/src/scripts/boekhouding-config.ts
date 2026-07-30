@@ -26,7 +26,9 @@ export const BTW_TARIEF = 0.21;
 
 // Orders die geen factuur horen te krijgen (display_id's van testorders).
 // Alle orders t/m 13-07-2026 waren Testproduct-tests (bevestigd door klant).
-export const SKIP_DISPLAY_IDS: number[] = [1, 2, 3, 4, 5, 6, 7, 8];
+// 1948-1950 + 1960-1961: BANKpay+ e2e-tests 29-07 (orders verwijderd 30-07;
+// facturen 2026-1880 t/m 1882 zijn vervallen, zie notitie in verkoopfacturen/).
+export const SKIP_DISPLAY_IDS: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 1948, 1949, 1950, 1960, 1961];
 
 // Waar de administratie-map staat, relatief aan apps/backend (= cwd bij `medusa exec`).
 // Overschrijfbaar met ADMINISTRATIE_DIR in .env.
