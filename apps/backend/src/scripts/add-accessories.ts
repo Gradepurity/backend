@@ -37,20 +37,22 @@ const ACCESSORIES: Accessory[] = [
     priceCents: 0,
   },
   {
-    // Los te koop in de shop. Prijs €6,95 — als het product al bestaat wordt
-    // het create hier overgeslagen; prijs zetten via set-variant-price.ts.
+    // Los te koop in de shop. Prijs €9,95 (verhoogd 30-07, was €6,95) — als het
+    // product al bestaat wordt het create hier overgeslagen; prijs zetten via
+    // set-variant-price.ts.
     handle: "bacteriostatisch-water-3ml",
     title: "Bacteriostatisch water 3ml",
     description:
       "3ml bacteriostatisch water voor reconstitutie. Uitsluitend voor laboratoriumonderzoek.",
-    priceCents: 695,
+    priceCents: 995,
   },
   {
+    // Prijs €17,95 (verhoogd 30-07, was €9,95).
     handle: "bacteriostatisch-water-10ml",
     title: "Bacteriostatisch water 10ml",
     description:
       "10ml bacteriostatisch water voor reconstitutie. Uitsluitend voor laboratoriumonderzoek.",
-    priceCents: 995,
+    priceCents: 1795,
   },
   {
     handle: "insulinenaalden-1ml-10",
