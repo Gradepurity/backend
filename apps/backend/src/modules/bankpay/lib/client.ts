@@ -92,28 +92,24 @@ export type CreateCheckoutParams = {
  * bank kiest en een IBAN invult — vóór enige SCA/betaling. RCVD = "opdracht
  * ontvangen", niet "betaald". De eerdere 28-07-observatie ("betaalde checkout
  * blijft RCVD") stamt uit het tijdperk zonder POS-binding en is daarmee
- * onbetrouwbaar. Betaald-signalen zijn nu: `status_credited` gezet, een
- * settlement-/acceptatiecode (ACSC e.d.) op de checkout, of diezelfde codes
- * in `status_xs2a` (de bankautorisatie-status). Blijkt uit de eerstvolgende
- * echte betaling dat géén van die signalen komt, dan is dat een BANKpay-
- * supportticket waard — nooit RCVD terugzetten in deze set.
+ * onbetrouwbaar.
+ *
+ * ACTC/ACCP/ACWC/ACWP hoorden hier óók niet bij (fout ontdekt 30-07 via valse
+ * capture van testorder #1972): BANKpay+ zet de checkout al op ACTC binnen
+ * seconden na de bankkeuze — "technisch gevalideerd", vóór SCA, zonder dat er
+ * ooit betaald wordt. Alleen settlement-niveau telt als betaald: ACSC/ACCC
+ * (afgerond) en ACSP (geld heeft de bank van de klant verlaten). De echte
+ * betaling #1975 bevestigt het patroon: checkout ACCC + status_xs2a "success";
+ * de valse #1972 bleef op ACTC + xs2a "pending" hangen. Overige betaald-
+ * signalen: `status_credited` gezet, of een succes-status in `status_xs2a`
+ * (de bankautorisatie springt pas na SCA).
  */
 const PAID_STATUSES = new Set([
   "ACCC",
-  "ACCP",
   "ACSC",
   "ACSP",
-  "ACTC",
-  "ACWC",
-  "ACWP",
-  "Accepted",
   "AcceptedSettlementCompleted",
   "AcceptedSettlementInProcess",
-  "AcceptedWithChange",
-  "AcceptedWithoutPosting",
-  "AcceptedTechnicalValidation",
-  "AcceptedCustomerProfile",
-  "AcceptedFundsChecked",
 ])
 
 const FAILED_STATUSES = new Set([
