@@ -29,7 +29,9 @@ export const BTW_TARIEF = 0.21;
 // 1948-1950 + 1960-1961: BANKpay+ e2e-tests 29-07. 1936 + 1962: eigen
 // testorders via info@gradepurity.com. Alle verwijderd 30-07; facturen
 // 2026-1873, 1880-1882 en 1886 vervallen, zie notitie in verkoopfacturen/.
-export const SKIP_DISPLAY_IDS: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 1936, 1948, 1949, 1950, 1960, 1961, 1962];
+// 1968-1971: BANKpay e2e-tests NL/BE-omschakeling 30-07; 1972: eigen test
+// eigenaar (vals gecaptured via ACTC-bug, geen echt geld). Verwijderd 31-07.
+export const SKIP_DISPLAY_IDS: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 1936, 1948, 1949, 1950, 1960, 1961, 1962, 1966, 1968, 1969, 1970, 1971, 1972, 1974];
 
 // Waar de administratie-map staat, relatief aan apps/backend (= cwd bij `medusa exec`).
 // Overschrijfbaar met ADMINISTRATIE_DIR in .env.
