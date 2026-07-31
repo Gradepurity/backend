@@ -52,16 +52,15 @@ export default async function exportConversieCsv({ container, args }: ExecArgs) 
   });
 
   const rows: string[] = [];
-  // Google's upload-template: kolomkoppen exact zo — user-provided data-match.
-  // Conversion Time in "yyyy-MM-dd HH:mm:ss+z"-formaat (kliktijdzone-onafhankelijk).
+  // Google's template "Conversions from clicks (user-provided data)" kent
+  // ALLEEN deze kolommen — extra kolommen (naam/postcode/land) laten de
+  // parser de hele file negeren ("No changes", geleerd 31-07). Tijden dragen
+  // een inline GMT-offset; de Parameters-regel is de sjabloon-conventie.
+  rows.push("Parameters:TimeZone=+0200");
   rows.push(
     [
       "Email",
       "Phone Number",
-      "First Name",
-      "Last Name",
-      "Zip",
-      "Country",
       "Conversion Name",
       "Conversion Time",
       "Conversion Value",
@@ -119,10 +118,6 @@ export default async function exportConversieCsv({ container, args }: ExecArgs) 
       [
         o.email ?? "",
         phone,
-        a.first_name ?? "",
-        a.last_name ?? "",
-        a.postal_code ?? "",
-        String(a.country_code ?? "").toUpperCase(),
         actieNaam,
         tijd,
         totaal,
