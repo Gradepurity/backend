@@ -58,6 +58,7 @@ export type TemplateId =
   | "payment-reminder"
   | "payment-captured"
   | "order-shipped"
+  | "order-auto-canceled"
   | "admin-new-order"
   | "admin-payment-received"
   | "replenish-reminder"
@@ -96,6 +97,8 @@ function renderOrderTemplate(template: TemplateId, data: OrderEmailData): Render
       return paymentCaptured(data, locale)
     case "order-shipped":
       return orderShipped(data, locale)
+    case "order-auto-canceled":
+      return orderAutoCanceled(data, locale)
     case "admin-new-order":
       return adminNewOrder(data)
     case "admin-payment-received":
@@ -219,6 +222,33 @@ function orderShipped(data: OrderEmailData, locale: Locale): RenderedEmail {
   return {
     subject: `${c.shipped.subject} ${orderNo}`,
     html: renderLayout({ preheader: c.shipped.preheader, heading: c.shipped.heading, body }, locale),
+  }
+}
+
+// ── 3b. Bestelling automatisch geannuleerd — betaling nooit binnengekomen ─────
+// Verstuurd door de cancel-stale-unpaid-job. Bewust vriendelijk: de klant kan
+// gewoon opnieuw bestellen, en wie tóch betaald heeft (gekruiste betaling)
+// wordt gevraagd te reageren zodat we het kunnen rechtzetten.
+
+function orderAutoCanceled(data: OrderEmailData, locale: Locale): RenderedEmail {
+  const c = COPY[locale]
+  const orderNo = `#${data.display_id}`
+  const body = `
+    <p style="margin:0 0 16px;">${c.autoCanceled.intro}</p>
+    <div style="background:#FBFAF6;border:1px solid ${UI.line};border-radius:6px;padding:16px 20px;margin:0 0 24px;">
+      <span style="font-family:Helvetica,Arial,sans-serif;font-size:13px;color:${UI.muted};">${c.orderNumber}</span><br/>
+      <span style="font-family:Georgia,serif;font-size:20px;color:${UI.navy};">${orderNo}</span>
+    </div>
+    <p style="margin:0 0 24px;color:${UI.muted};">${c.autoCanceled.text}</p>
+    <p style="margin:0 0 24px;color:${UI.muted};">${c.autoCanceled.crossed}</p>
+    ${button(ORDER_URL, c.autoCanceled.cta)}
+  `
+  return {
+    subject: `${c.autoCanceled.subject} ${orderNo}`,
+    html: renderLayout(
+      { preheader: c.autoCanceled.preheader, heading: c.autoCanceled.heading, body },
+      locale
+    ),
   }
 }
 
@@ -460,6 +490,15 @@ const COPY = {
       cta: "Volg je pakket",
       ctaFallback: "Naar GradePurity",
     },
+    autoCanceled: {
+      subject: "Je bestelling is geannuleerd —",
+      preheader: "We hebben je betaling niet ontvangen.",
+      heading: "Je bestelling is geannuleerd",
+      intro: "Een week geleden plaatste je een bestelling bij GradePurity, maar we hebben je betaling helaas niet ontvangen. Daarom hebben we de bestelling geannuleerd.",
+      text: "Wil je de producten alsnog bestellen? Dat kan gewoon, plaats dan een nieuwe bestelling op onze site.",
+      crossed: "Heb je wél betaald? Dan is er iets misgegaan met het verwerken van je betaling. Reageer in dat geval op deze mail, dan zetten we het meteen recht.",
+      cta: "Opnieuw bestellen",
+    },
     replenish: {
       subject: "Je voorraad raakt binnenkort op",
       preheader: "Op tijd bijbestellen bij GradePurity.",
@@ -532,6 +571,15 @@ const COPY = {
       cta: "Suivez votre colis",
       ctaFallback: "Vers GradePurity",
     },
+    autoCanceled: {
+      subject: "Votre commande a été annulée —",
+      preheader: "Nous n'avons pas reçu votre paiement.",
+      heading: "Votre commande a été annulée",
+      intro: "Il y a une semaine, vous avez passé une commande chez GradePurity, mais nous n'avons malheureusement pas reçu votre paiement. Nous avons donc annulé la commande.",
+      text: "Vous souhaitez tout de même commander ces produits ? C'est tout à fait possible, passez simplement une nouvelle commande sur notre site.",
+      crossed: "Vous avez pourtant payé ? Dans ce cas, un problème est survenu lors du traitement de votre paiement. Répondez à cet e-mail et nous corrigerons cela immédiatement.",
+      cta: "Commander à nouveau",
+    },
     replenish: {
       subject: "Votre stock sera bientôt épuisé",
       preheader: "Recommandez à temps chez GradePurity.",
@@ -601,6 +649,15 @@ const COPY = {
       trackingNo: "Tracking",
       cta: "Track your parcel",
       ctaFallback: "Go to GradePurity",
+    },
+    autoCanceled: {
+      subject: "Your order has been canceled —",
+      preheader: "We did not receive your payment.",
+      heading: "Your order has been canceled",
+      intro: "A week ago you placed an order at GradePurity, but unfortunately we did not receive your payment. We have therefore canceled the order.",
+      text: "Still want the products? No problem, simply place a new order on our site.",
+      crossed: "Did you pay after all? Then something went wrong processing your payment. Please reply to this email and we'll sort it out right away.",
+      cta: "Order again",
     },
     replenish: {
       subject: "Your supply may be running low",
@@ -673,6 +730,15 @@ const COPY = {
       trackingNo: "Sendungsverfolgung",
       cta: "Paket verfolgen",
       ctaFallback: "Zu GradePurity",
+    },
+    autoCanceled: {
+      subject: "Ihre Bestellung wurde storniert —",
+      preheader: "Wir haben Ihre Zahlung nicht erhalten.",
+      heading: "Ihre Bestellung wurde storniert",
+      intro: "Vor einer Woche haben Sie eine Bestellung bei GradePurity aufgegeben, wir haben Ihre Zahlung jedoch leider nicht erhalten. Daher haben wir die Bestellung storniert.",
+      text: "Möchten Sie die Produkte dennoch bestellen? Kein Problem, geben Sie einfach eine neue Bestellung auf unserer Website auf.",
+      crossed: "Haben Sie doch bezahlt? Dann ist bei der Verarbeitung Ihrer Zahlung etwas schiefgelaufen. Antworten Sie in dem Fall auf diese E-Mail, wir kümmern uns sofort darum.",
+      cta: "Erneut bestellen",
     },
     replenish: {
       subject: "Ihr Vorrat geht möglicherweise zur Neige",
