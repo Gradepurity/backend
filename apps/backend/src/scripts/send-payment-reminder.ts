@@ -51,9 +51,11 @@ export default async function sendPaymentReminder({ container, args }: ExecArgs)
     logger.error(`[reminder] geen maildata voor order #${displayId}`);
     return;
   }
-  if (payload.data.payment_method !== "bank") {
+  // "bank" = klassieke vooruitbetaling; "bankpay" = afgebroken BANKpay-poging —
+  // beide kunnen alsnog handmatig overmaken met het GP-kenmerk uit deze mail.
+  if (payload.data.payment_method !== "bank" && payload.data.payment_method !== "bankpay") {
     logger.error(
-      `Order #${displayId} is geen bankoverschrijving (${payload.data.payment_method}) — reminder is daarop gericht.`
+      `Order #${displayId} is geen vooruitbetaling (${payload.data.payment_method}) — reminder is daarop gericht.`
     );
     return;
   }
