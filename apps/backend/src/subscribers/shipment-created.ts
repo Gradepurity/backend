@@ -11,6 +11,12 @@ export default async function shipmentCreatedHandler({
   container,
 }: SubscriberArgs<{ id: string }>) {
   const logger = container.resolve("logger")
+  // Silent-modus: markeer wel als verzonden, maar stuur geen "onderweg"-mail.
+  // Gebruikt voor orders die fysiek al buiten de shop verstuurd zijn.
+  if (process.env.SHIP_SILENT === "1") {
+    logger.info(`shipment-created: SHIP_SILENT=1 -> mail overgeslagen voor fulfillment ${data.id}`)
+    return
+  }
   try {
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
