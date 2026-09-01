@@ -36,7 +36,7 @@ export default async function openOrdersInhoud({ container }: { container: Medus
 
   console.log(`\n===== OPEN (betaald, niet verzonden): ${open.length} orders =====\n`)
   for (const o of open) {
-    const a = o.shipping_address ?? {}
+    const a: any = o.shipping_address ?? {}
     const naam = `${a.first_name ?? ""} ${a.last_name ?? ""}`.trim()
     const pay = (o.payment_collections ?? []).map((p: any) => p?.status).join(",")
     console.log(`#${o.display_id} | ${o.created_at} | betaling=${pay} | €${num(o.total).toFixed(2)}`)
@@ -45,7 +45,7 @@ export default async function openOrdersInhoud({ container }: { container: Medus
     console.log(`        ${a.postal_code ?? ""} ${a.city ?? ""} (${(a.country_code ?? "?").toUpperCase()})`)
     console.log(`        tel: ${a.phone ?? "-"} | mail: ${o.email}`)
     console.log(`  Besteld:`)
-    for (const it of (o.items ?? [])) {
+    for (const it of ((o.items ?? []) as any[])) {
       const t = it.product_title || it.title || "?"
       const v = it.variant_title ? ` — ${it.variant_title}` : ""
       console.log(`        ${num(it.quantity)}x ${t}${v}`)
