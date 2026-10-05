@@ -5,8 +5,9 @@ import path from "path";
 import { SKIP_DISPLAY_IDS, eur, jaarDir, splitsBtw } from "./boekhouding-config";
 
 /**
- * BTW-kwartaaloverzicht: telt de omzet uit Medusa-orders op en spuugt precies
- * de rubrieken uit die je invult in Mijn Belastingdienst Zakelijk.
+ * BTW-kwartaaloverzicht: telt de ontvangen betalingen op Medusa-orders op
+ * (kasstelsel) en spuugt precies de rubrieken uit die je invult in Mijn
+ * Belastingdienst Zakelijk.
  * Voorbelasting (5b) komt uit administratie/<jaar>/kosten.csv als die bestaat.
  * Bewaakt ook de OSS-drempel (EUR 10.000 EU-brede B2C-omzet buiten NL, per kalenderjaar).
  *
@@ -47,6 +48,11 @@ export default async function btwKwartaal({
       "created_at",
       "summary.*",
       "shipping_address.country_code",
+      "payment_collections.payments.canceled_at",
+      "payment_collections.payments.captures.amount",
+      "payment_collections.payments.captures.created_at",
+      "payment_collections.payments.refunds.amount",
+      "payment_collections.payments.refunds.created_at",
     ],
   });
 
@@ -54,19 +60,34 @@ export default async function btwKwartaal({
     .filter((o) => o.status !== "canceled" && o.status !== "draft")
     .filter((o) => !SKIP_DISPLAY_IDS.includes(Number(o.display_id)));
 
-  const inKwartaal = geldig.filter((o) => {
-    const d = new Date(o.created_at);
-    return d >= start && d < eind;
-  });
+  // Kasstelsel (webwinkel): omzet telt in het kwartaal waarin de betaling
+  // binnenkomt, niet waarin de order is geplaatst. Onbetaalde orders tellen
+  // dus niet mee; refunds gaan eraf in het kwartaal van terugbetaling.
+  const inTijdvak = (d: any) => new Date(d) >= start && new Date(d) < eind;
+  const ontvangenInKwartaal = (o: any): number => {
+    let som = 0;
+    for (const pc of o.payment_collections ?? []) {
+      for (const p of pc.payments ?? []) {
+        if (p.canceled_at) continue;
+        for (const c of p.captures ?? []) if (inTijdvak(c.created_at)) som += Number(c.amount ?? 0);
+        for (const r of p.refunds ?? []) if (inTijdvak(r.created_at)) som -= Number(r.amount ?? 0);
+      }
+    }
+    return som;
+  };
 
-  logger.info(`\n===== BTW-OVERZICHT ${jaar} Q${kwartaal} (${inKwartaal.length} orders) =====`);
+  const inKwartaal = geldig
+    .map((o) => ({ ...o, ontvangen: ontvangenInKwartaal(o) }))
+    .filter((o) => o.ontvangen !== 0);
+
+  logger.info(`\n===== BTW-OVERZICHT ${jaar} Q${kwartaal} (${inKwartaal.length} betaalde orders) =====`);
 
   // Omzet per land (levering = bestemmingsland van de klant).
   const perLand = new Map<string, { aantal: number; incl: number }>();
   let omzetIncl = 0;
   for (const o of inKwartaal) {
     const land = String(o.shipping_address?.country_code ?? "nl").toLowerCase();
-    const incl = Number(o.summary?.current_order_total ?? 0);
+    const incl = o.ontvangen;
     omzetIncl += incl;
     const rec = perLand.get(land) ?? { aantal: 0, incl: 0 };
     rec.aantal++;
@@ -77,8 +98,18 @@ export default async function btwKwartaal({
     logger.info(`  ${land.toUpperCase()}: ${rec.aantal} orders, ${eur(rec.incl)} incl. btw`);
   }
 
+  // Ter verantwoording: orders uit dit kwartaal waarop niets is ontvangen.
+  const onbetaald = geldig.filter(
+    (o) => inTijdvak(o.created_at) && !inKwartaal.some((b) => b.id === o.id)
+  );
+  for (const o of onbetaald) {
+    logger.info(
+      `  Niet meegeteld (geen betaling ontvangen): #${o.display_id} ${eur(Number(o.summary?.current_order_total ?? 0))}`
+    );
+  }
+
   const totaal = splitsBtw(omzetIncl);
-  logger.info(`\nOmzet incl. btw: ${eur(omzetIncl)}`);
+  logger.info(`\nOntvangen omzet incl. btw: ${eur(omzetIncl)}`);
   logger.info(`-- Voor de aangifte (bedragen in hele euro's) --`);
   logger.info(`Rubriek 1a - Leveringen belast met hoog tarief:`);
   logger.info(`    omzet (excl.): EUR ${Math.round(totaal.excl)}`);
