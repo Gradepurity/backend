@@ -112,29 +112,49 @@ export default async function btwKwartaal({
   logger.info(`\nOntvangen omzet incl. btw: ${eur(omzetIncl)}`);
   logger.info(`-- Voor de aangifte (bedragen in hele euro's) --`);
   logger.info(`Rubriek 1a - Leveringen belast met hoog tarief:`);
+  // Btw-bedragen mogen in eigen voordeel worden afgerond: verschuldigd naar
+  // beneden, voorbelasting naar boven.
+  const btw1a = Math.floor(totaal.btw);
   logger.info(`    omzet (excl.): EUR ${Math.round(totaal.excl)}`);
-  logger.info(`    btw:           EUR ${Math.round(totaal.btw)}`);
+  logger.info(`    btw:           EUR ${btw1a}`);
 
-  // Voorbelasting uit kosten.csv (kolommen: datum;omschrijving;categorie;bedrag_incl;btw_bedrag;terugvorderbaar).
+  // Kosten uit kosten.csv (kolommen: datum;omschrijving;categorie;bedrag_incl;btw_bedrag;terugvorderbaar;verlegd).
+  // verlegd = 4a (dienst van buiten de EU) of 4b (dienst uit de EU): de factuur
+  // is zonder btw, btw_bedrag is de zelf berekende 21%. Die btw is verschuldigd
+  // in rubriek 4a/4b en gaat bij terugvorderbaar=ja ook weer mee in 5b.
   const kostenPad = path.join(jaarDir(jaar), "kosten.csv");
   if (fs.existsSync(kostenPad)) {
     let voorbelasting = 0;
     let kostenIncl = 0;
     let rijen = 0;
+    const verlegdTotaal = { "4a": { bedrag: 0, btw: 0 }, "4b": { bedrag: 0, btw: 0 } };
     const regels = fs.readFileSync(kostenPad, "utf8").split(/\r?\n/).slice(1);
     for (const regel of regels) {
       if (!regel.trim()) continue;
-      const [datum, , , bedragIncl, btwBedrag, terugvorderbaar] = regel.split(";");
+      const [datum, , , bedragIncl, btwBedrag, terugvorderbaar, verlegd] = regel.split(";");
       const d = new Date(datum);
       if (!(d >= start && d < eind)) continue;
       rijen++;
       kostenIncl += parseNl(bedragIncl);
+      const rubriek = (verlegd ?? "").trim().toLowerCase();
+      if (rubriek === "4a" || rubriek === "4b") {
+        verlegdTotaal[rubriek].bedrag += parseNl(bedragIncl);
+        verlegdTotaal[rubriek].btw += parseNl(btwBedrag);
+      }
       if ((terugvorderbaar ?? "").trim().toLowerCase() === "ja") {
         voorbelasting += parseNl(btwBedrag);
       }
     }
-    logger.info(`Rubriek 5b - Voorbelasting: EUR ${Math.round(voorbelasting)}   (${rijen} kostenregels, ${eur(kostenIncl)} incl.)`);
-    logger.info(`TE BETALEN: EUR ${Math.round(totaal.btw) - Math.round(voorbelasting)}`);
+    const btw4a = Math.floor(verlegdTotaal["4a"].btw);
+    const btw4b = Math.floor(verlegdTotaal["4b"].btw);
+    const btw5b = Math.ceil(voorbelasting);
+    logger.info(`Rubriek 4a - Diensten uit landen buiten de EU:`);
+    logger.info(`    omzet: EUR ${Math.round(verlegdTotaal["4a"].bedrag)}   btw: EUR ${btw4a}`);
+    logger.info(`Rubriek 4b - Diensten uit EU-landen:`);
+    logger.info(`    omzet: EUR ${Math.round(verlegdTotaal["4b"].bedrag)}   btw: EUR ${btw4b}`);
+    logger.info(`Rubriek 5a - Verschuldigde btw: EUR ${btw1a + btw4a + btw4b}`);
+    logger.info(`Rubriek 5b - Voorbelasting: EUR ${btw5b}   (${rijen} kostenregels, ${eur(kostenIncl)})`);
+    logger.info(`TE BETALEN: EUR ${btw1a + btw4a + btw4b - btw5b}`);
   } else {
     logger.info(`Rubriek 5b - Voorbelasting: geen kosten.csv gevonden (${kostenPad}) - zelf optellen.`);
   }
